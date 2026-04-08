@@ -6,1111 +6,618 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>BeamLaunch — Token Launchpad Infrastructure for Beam</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#05080f;
-  --s1:#0a0f1e;
-  --s2:#0f1628;
-  --border:#1a2540;
-  --a1:#f0ff44;
-  --a2:#00e5ff;
-  --a3:#ff3d71;
-  --text:#e2e8f8;
-  --muted:#4a607a;
+  --bg:#05080f;--s1:#0a0f1e;--s2:#0f1628;--border:#1a2540;
+  --a1:#f0ff44;--a2:#00e5ff;--a3:#ff3d71;
+  --text:#e2e8f8;--muted:#4a607a;
   --display:'Bebas Neue',sans-serif;
   --body:'DM Sans',sans-serif;
   --mono:'DM Mono',monospace;
 }
 html{scroll-behavior:smooth;}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:var(--body);
-  overflow-x:hidden;
-}
-
-/* NOISE OVERLAY */
+body{background:var(--bg);color:var(--text);font-family:var(--body);overflow-x:hidden;}
 body::before{
-content:’’;
-position:fixed;inset:0;
-background-image:url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
-pointer-events:none;z-index:0;opacity:0.4;
+  content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(240,255,68,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(240,255,68,0.02) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;z-index:0;
 }
+.blob{position:fixed;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0;}
+.blob1{width:700px;height:700px;background:rgba(240,255,68,0.05);top:-300px;left:-300px;}
+.blob2{width:500px;height:500px;background:rgba(0,229,255,0.04);bottom:-200px;right:-200px;}
 
-/* GRID BG */
-body::after{
-content:’’;
-position:fixed;inset:0;
-background-image:
-linear-gradient(rgba(240,255,68,0.025) 1px,transparent 1px),
-linear-gradient(90deg,rgba(240,255,68,0.025) 1px,transparent 1px);
-background-size:60px 60px;
-pointer-events:none;z-index:0;
-}
-
-/* GLOW BLOBS */
-.blob{
-position:fixed;border-radius:50%;
-filter:blur(120px);pointer-events:none;z-index:0;
-}
-.blob1{width:600px;height:600px;background:rgba(240,255,68,0.06);top:-200px;left:-200px;}
-.blob2{width:500px;height:500px;background:rgba(0,229,255,0.05);bottom:-100px;right:-100px;}
-
-/* NAV */
 nav{
 position:sticky;top:0;z-index:100;
 display:flex;align-items:center;justify-content:space-between;
 padding:16px 32px;
-background:rgba(5,8,15,0.9);
-backdrop-filter:blur(20px);
+background:rgba(5,8,15,0.92);backdrop-filter:blur(20px);
 border-bottom:1px solid var(–border);
 }
-.logo{
-font-family:var(–display);
-font-size:28px;letter-spacing:2px;
-display:flex;align-items:center;gap:2px;
-}
+.logo{font-family:var(–display);font-size:26px;letter-spacing:3px;display:flex;align-items:center;gap:10px;}
+.logo-mark{width:28px;height:28px;border-radius:6px;background:var(–a1);display:flex;align-items:center;justify-content:center;}
 .logo span{color:var(–a1);}
-.logo em{
-font-style:normal;font-size:11px;
-font-family:var(–mono);
-color:var(–muted);letter-spacing:1px;
-margin-left:8px;padding:3px 8px;
-border:1px solid var(–border);border-radius:4px;
-vertical-align:middle;
-}
-.nav-right{display:flex;align-items:center;gap:12px;}
-.nav-link{
-font-size:13px;color:var(–muted);
-text-decoration:none;font-weight:500;
-transition:color 0.2s;
-}
+.logo em{font-style:normal;font-size:10px;font-family:var(–mono);color:var(–muted);letter-spacing:1px;margin-left:4px;padding:3px 7px;border:1px solid var(–border);border-radius:3px;vertical-align:middle;}
+.nav-right{display:flex;align-items:center;gap:14px;}
+.nav-link{font-size:13px;color:var(–muted);text-decoration:none;font-weight:500;transition:color 0.2s;}
 .nav-link:hover{color:var(–text);}
-.btn-wallet{
-font-family:var(–mono);font-size:12px;font-weight:500;
-padding:9px 18px;border-radius:6px;border:none;cursor:pointer;
-background:var(–a1);color:#000;
-transition:all 0.2s;letter-spacing:0.3px;
-}
-.btn-wallet:hover{transform:translateY(-1px);box-shadow:0 0 20px rgba(240,255,68,0.3);}
-.btn-wallet.connected{
-background:var(–s2);color:var(–a1);
-border:1px solid rgba(240,255,68,0.3);
-}
+.btn-wallet{font-family:var(–mono);font-size:12px;font-weight:500;padding:9px 18px;border-radius:6px;border:none;cursor:pointer;background:var(–a1);color:#000;transition:all 0.2s;}
+.btn-wallet:hover{transform:translateY(-1px);box-shadow:0 0 24px rgba(240,255,68,0.35);}
+.btn-wallet.connected{background:var(–s2);color:var(–a1);border:1px solid rgba(240,255,68,0.25);}
 
-/* HERO */
-.hero{
-position:relative;z-index:1;
-min-height:92vh;
-display:flex;flex-direction:column;
-align-items:center;justify-content:center;
-text-align:center;
-padding:80px 24px;
-}
-.hero-tag{
-display:inline-flex;align-items:center;gap:8px;
-font-family:var(–mono);font-size:11px;letter-spacing:2px;
-color:var(–a1);text-transform:uppercase;
-background:rgba(240,255,68,0.06);
-border:1px solid rgba(240,255,68,0.2);
-padding:7px 18px;border-radius:4px;
-margin-bottom:36px;
-animation:fadeUp 0.6s ease both;
-}
-.hero-tag::before{
-content:’’;width:6px;height:6px;border-radius:50%;
-background:var(–a1);animation:pulse 2s infinite;
-}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
-@keyframes fadeUp{
-from{opacity:0;transform:translateY(20px);}
-to{opacity:1;transform:translateY(0);}
-}
-
-.hero h1{
-font-family:var(–display);
-font-size:clamp(60px,12vw,140px);
-line-height:0.9;letter-spacing:3px;
-margin-bottom:12px;
-animation:fadeUp 0.6s 0.1s ease both;
-}
-.hero h1 .line2{
-color:transparent;
--webkit-text-stroke:1px rgba(240,255,68,0.5);
-}
-.hero h1 .accent{color:var(–a1);}
-
-.hero-sub{
-font-size:clamp(15px,2vw,19px);
-color:var(–muted);max-width:560px;
-line-height:1.7;margin:24px auto 48px;
-font-weight:300;
-animation:fadeUp 0.6s 0.2s ease both;
-}
-
-.hero-ctas{
-display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
-animation:fadeUp 0.6s 0.3s ease both;
-}
-.btn-primary{
-font-family:var(–body);font-weight:600;font-size:15px;
-padding:14px 32px;border-radius:6px;border:none;cursor:pointer;
-background:var(–a1);color:#000;
-transition:all 0.2s;
-}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(240,255,68,0.4);}
-.btn-secondary{
-font-family:var(–body);font-weight:500;font-size:15px;
-padding:14px 32px;border-radius:6px;cursor:pointer;
-background:transparent;color:var(–text);
-border:1px solid var(–border);
-transition:all 0.2s;
-}
+.hero{position:relative;z-index:1;min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:var(–mono);font-size:11px;letter-spacing:2px;color:var(–a1);text-transform:uppercase;background:rgba(240,255,68,0.05);border:1px solid rgba(240,255,68,0.18);padding:7px 18px;border-radius:4px;margin-bottom:36px;animation:fadeUp 0.5s ease both;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(–a1);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.hero h1{font-family:var(–display);font-size:clamp(56px,11vw,130px);line-height:0.92;letter-spacing:2px;animation:fadeUp 0.5s 0.1s ease both;}
+.hero h1 .outline{color:transparent;-webkit-text-stroke:1.5px rgba(240,255,68,0.4);}
+.hero h1 .solid{color:var(–a1);}
+.hero-sub{font-size:clamp(14px,1.8vw,18px);color:var(–muted);max-width:520px;line-height:1.75;margin:28px auto 48px;font-weight:300;animation:fadeUp 0.5s 0.2s ease both;}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp 0.5s 0.3s ease both;}
+.btn-primary{font-family:var(–body);font-weight:600;font-size:15px;padding:14px 32px;border-radius:6px;border:none;cursor:pointer;background:var(–a1);color:#000;transition:all 0.2s;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 32px rgba(240,255,68,0.4);}
+.btn-secondary{font-family:var(–body);font-weight:500;font-size:15px;padding:14px 32px;border-radius:6px;cursor:pointer;background:transparent;color:var(–text);border:1px solid var(–border);transition:all 0.2s;}
 .btn-secondary:hover{border-color:var(–a2);color:var(–a2);}
 
-/* TICKER */
-.ticker-wrap{
-position:relative;z-index:1;
-border-top:1px solid var(–border);
-border-bottom:1px solid var(–border);
-background:var(–s1);
-overflow:hidden;padding:12px 0;
-margin-bottom:100px;
-}
-.ticker{
-display:flex;gap:48px;
-animation:ticker 30s linear infinite;
-white-space:nowrap;
-}
-@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-.ticker-item{
-display:flex;align-items:center;gap:10px;
-font-family:var(–mono);font-size:12px;color:var(–muted);
-flex-shrink:0;
-}
-.ticker-item .name{color:var(–text);font-weight:500;}
-.ticker-item .up{color:#00e676;}
-.ticker-item .down{color:var(–a3);}
-.ticker-dot{width:4px;height:4px;border-radius:50%;background:var(–border);}
+.ticker-wrap{position:relative;z-index:1;border-top:1px solid var(–border);border-bottom:1px solid var(–border);background:var(–s1);overflow:hidden;padding:10px 0;margin-bottom:80px;}
+.ticker{display:flex;animation:scroll 35s linear infinite;white-space:nowrap;}
+@keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.tick{display:inline-flex;align-items:center;gap:8px;padding:0 28px;border-right:1px solid var(–border);font-family:var(–mono);font-size:12px;color:var(–muted);flex-shrink:0;}
+.tick-up{color:#00e676;}
+.tick-down{color:var(–a3);}
 
-/* STATS */
-.stats{
-position:relative;z-index:1;
-display:grid;grid-template-columns:repeat(4,1fr);
-max-width:900px;margin:0 auto 100px;
-border:1px solid var(–border);border-radius:12px;
-overflow:hidden;background:var(–s1);
-}
-.stat{
-padding:32px 28px;
-border-right:1px solid var(–border);
-position:relative;overflow:hidden;
-}
+.stats-outer{position:relative;z-index:1;padding:0 24px;margin-bottom:90px;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);max-width:860px;margin:0 auto;border:1px solid var(–border);border-radius:10px;overflow:hidden;background:var(–s1);}
+.stat{padding:28px 24px;border-right:1px solid var(–border);transition:background 0.2s;}
 .stat:last-child{border-right:none;}
-.stat::before{
-content:’’;position:absolute;top:0;left:0;right:0;height:2px;
-background:linear-gradient(90deg,var(–a1),transparent);
-opacity:0;transition:opacity 0.3s;
-}
-.stat:hover::before{opacity:1;}
-.stat-val{
-font-family:var(–display);font-size:42px;letter-spacing:1px;
-color:var(–a1);display:block;line-height:1;margin-bottom:8px;
-}
-.stat-lbl{font-size:12px;color:var(–muted);text-transform:uppercase;letter-spacing:1.5px;}
+.stat:hover{background:var(–s2);}
+.stat-val{font-family:var(–display);font-size:38px;letter-spacing:1px;color:var(–a1);display:block;line-height:1;margin-bottom:6px;}
+.stat-lbl{font-size:11px;color:var(–muted);text-transform:uppercase;letter-spacing:1.5px;}
 
-/* SECTION */
-.section{
-position:relative;z-index:1;
-max-width:1100px;margin:0 auto;
-padding:0 24px 100px;
-}
-.section-label{
-font-family:var(–mono);font-size:11px;letter-spacing:3px;
-color:var(–a1);text-transform:uppercase;
-margin-bottom:16px;
-}
-.section-title{
-font-family:var(–display);font-size:clamp(36px,5vw,64px);
-letter-spacing:2px;line-height:1;margin-bottom:16px;
-}
-.section-sub{font-size:16px;color:var(–muted);max-width:480px;line-height:1.7;}
+.section{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px 90px;}
+.s-label{font-family:var(–mono);font-size:11px;letter-spacing:3px;color:var(–a1);text-transform:uppercase;margin-bottom:14px;}
+.s-title{font-family:var(–display);font-size:clamp(34px,5vw,60px);letter-spacing:2px;line-height:1;margin-bottom:14px;}
+.s-sub{font-size:15px;color:var(–muted);max-width:460px;line-height:1.75;}
 
-/* HOW IT WORKS */
-.steps{
-display:grid;grid-template-columns:repeat(3,1fr);
-gap:2px;margin-top:60px;
-}
-.step{
-background:var(–s1);padding:40px 32px;
-border:1px solid var(–border);
-position:relative;overflow:hidden;
-transition:all 0.3s;
-}
-.step:hover{background:var(–s2);border-color:rgba(240,255,68,0.2);}
-.step-num{
-font-family:var(–display);font-size:80px;
-color:rgba(240,255,68,0.06);
-position:absolute;top:-10px;right:16px;
-line-height:1;pointer-events:none;
-}
-.step-icon{
-width:44px;height:44px;border-radius:10px;
-background:rgba(240,255,68,0.08);
-border:1px solid rgba(240,255,68,0.15);
-display:flex;align-items:center;justify-content:center;
-font-size:20px;margin-bottom:20px;
-}
-.step h3{font-size:18px;font-weight:600;margin-bottom:10px;}
-.step p{font-size:14px;color:var(–muted);line-height:1.7;}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:52px;background:var(–border);}
+.step{background:var(–s1);padding:36px 28px;position:relative;overflow:hidden;transition:background 0.2s;}
+.step:hover{background:var(–s2);}
+.step-n{font-family:var(–display);font-size:72px;color:rgba(240,255,68,0.05);position:absolute;top:-8px;right:12px;line-height:1;}
+.step-icon{width:40px;height:40px;border-radius:8px;border:1px solid var(–border);display:flex;align-items:center;justify-content:center;margin-bottom:18px;background:var(–s2);}
+.step h3{font-size:16px;font-weight:600;margin-bottom:8px;}
+.step p{font-size:13px;color:var(–muted);line-height:1.7;}
 
-/* TOKEN CARDS */
-.tokens-header{
-display:flex;align-items:center;justify-content:space-between;
-margin-bottom:28px;flex-wrap:wrap;gap:16px;
-}
-.filter-row{display:flex;gap:8px;flex-wrap:wrap;}
-.filter{
-font-size:12px;font-family:var(–mono);
-padding:6px 14px;border-radius:4px;cursor:pointer;
-border:1px solid var(–border);background:transparent;
-color:var(–muted);transition:all 0.15s;
-}
-.filter:hover,.filter.active{
-border-color:var(–a1);color:var(–a1);
-background:rgba(240,255,68,0.06);
-}
+.tokens-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:16px;}
+.filters{display:flex;gap:6px;flex-wrap:wrap;}
+.fil{font-size:12px;font-family:var(–mono);padding:6px 14px;border-radius:4px;cursor:pointer;border:1px solid var(–border);background:transparent;color:var(–muted);transition:all 0.15s;}
+.fil:hover,.fil.on{border-color:var(–a1);color:var(–a1);background:rgba(240,255,68,0.05);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;}
 
-.tokens-grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-gap:16px;
-}
-.token-card{
-background:var(–s1);border:1px solid var(–border);
-border-radius:10px;padding:20px;
-cursor:pointer;transition:all 0.2s;
-position:relative;overflow:hidden;
-}
-.token-card::after{
-content:’’;position:absolute;inset:0;
-background:linear-gradient(135deg,rgba(240,255,68,0.03),transparent);
-opacity:0;transition:opacity 0.3s;
-}
-.token-card:hover{
-border-color:rgba(240,255,68,0.25);
-transform:translateY(-2px);
-box-shadow:0 8px 40px rgba(0,0,0,0.5);
-}
-.token-card:hover::after{opacity:1;}
+.card{background:var(–s1);border:1px solid var(–border);border-radius:10px;padding:20px;cursor:pointer;transition:all 0.2s;}
+.card:hover{border-color:rgba(240,255,68,0.2);transform:translateY(-2px);box-shadow:0 10px 40px rgba(0,0,0,0.5);}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:10px;}
+.card-id{display:flex;align-items:center;gap:10px;}
+.card-name{font-size:15px;font-weight:600;margin-bottom:2px;}
+.card-sym{font-family:var(–mono);font-size:11px;color:var(–muted);}
+.badge{font-family:var(–mono);font-size:10px;letter-spacing:0.5px;padding:3px 8px;border-radius:3px;text-transform:uppercase;flex-shrink:0;}
+.b-live{background:rgba(0,230,118,0.08);color:#00e676;border:1px solid rgba(0,230,118,0.2);}
+.b-new{background:rgba(240,255,68,0.08);color:var(–a1);border:1px solid rgba(240,255,68,0.2);}
+.b-hot{background:rgba(255,61,113,0.08);color:var(–a3);border:1px solid rgba(255,61,113,0.2);}
 
-.tc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
-.tc-info{display:flex;align-items:center;gap:12px;}
-.tc-avatar{
-width:44px;height:44px;border-radius:10px;
-display:flex;align-items:center;justify-content:center;
-font-size:22px;flex-shrink:0;
-}
-.tc-name{font-weight:600;font-size:15px;margin-bottom:2px;}
-.tc-ticker{font-family:var(–mono);font-size:11px;color:var(–muted);}
-.tc-badge{
-font-family:var(–mono);font-size:10px;
-padding:3px 8px;border-radius:3px;
-text-transform:uppercase;letter-spacing:0.5px;
-flex-shrink:0;
-}
-.badge-live{background:rgba(0,230,118,0.1);color:#00e676;border:1px solid rgba(0,230,118,0.2);}
-.badge-new{background:rgba(240,255,68,0.1);color:var(–a1);border:1px solid rgba(240,255,68,0.2);}
-.badge-hot{background:rgba(255,61,113,0.1);color:var(–a3);border:1px solid rgba(255,61,113,0.2);}
-
-/* Bonding curve bar */
 .curve-wrap{margin-bottom:14px;}
-.curve-meta{
-display:flex;justify-content:space-between;
-font-family:var(–mono);font-size:11px;
-color:var(–muted);margin-bottom:6px;
-}
-.curve-meta span{color:var(–text);}
-.curve-bar{
-height:5px;background:var(–s2);border-radius:3px;overflow:hidden;
-}
-.curve-fill{
-height:100%;border-radius:3px;
-background:linear-gradient(90deg,var(–a1),var(–a2));
-transition:width 0.8s ease;
-}
+.curve-row{display:flex;justify-content:space-between;font-family:var(–mono);font-size:11px;color:var(–muted);margin-bottom:5px;}
+.curve-row b{color:var(–text);}
+.bar{height:4px;background:var(–s2);border-radius:2px;overflow:hidden;}
+.fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(–a1),var(–a2));}
 
-.tc-stats{
-display:grid;grid-template-columns:repeat(3,1fr);
-gap:8px;margin-bottom:14px;
-}
-.tc-stat{
-background:var(–s2);border-radius:6px;
-padding:8px;text-align:center;
-}
-.tc-stat-val{
-display:block;font-family:var(–mono);font-size:13px;
-font-weight:500;color:var(–text);
-}
-.tc-stat-lbl{font-size:10px;color:var(–muted);text-transform:uppercase;letter-spacing:0.5px;}
+.card-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px;}
+.num{background:var(–s2);border-radius:6px;padding:8px;text-align:center;}
+.num-v{display:block;font-family:var(–mono);font-size:12px;font-weight:500;}
+.num-l{font-size:10px;color:var(–muted);text-transform:uppercase;letter-spacing:0.3px;margin-top:2px;}
+.card-btns{display:flex;gap:8px;}
+.btn-trade{flex:1;padding:9px;border-radius:6px;border:none;cursor:pointer;background:var(–a1);color:#000;font-family:var(–body);font-size:13px;font-weight:600;transition:all 0.15s;}
+.btn-trade:hover{box-shadow:0 0 18px rgba(240,255,68,0.3);}
+.btn-info{padding:9px 12px;border-radius:6px;cursor:pointer;background:var(–s2);color:var(–muted);border:1px solid var(–border);font-size:12px;font-family:var(–mono);transition:all 0.15s;}
+.btn-info:hover{color:var(–text);border-color:var(–muted);}
 
-.tc-actions{display:flex;gap:8px;}
-.btn-buy{
-flex:1;padding:9px;border-radius:6px;border:none;cursor:pointer;
-background:var(–a1);color:#000;
-font-family:var(–body);font-size:13px;font-weight:600;
-transition:all 0.15s;
-}
-.btn-buy:hover{box-shadow:0 0 20px rgba(240,255,68,0.3);}
-.btn-chart{
-padding:9px 14px;border-radius:6px;cursor:pointer;
-background:var(–s2);color:var(–muted);
-border:1px solid var(–border);font-size:13px;
-transition:all 0.15s;
-}
-.btn-chart:hover{color:var(–text);border-color:var(–muted);}
+.launch-bg{position:relative;z-index:1;background:var(–s1);border-top:1px solid var(–border);border-bottom:1px solid var(–border);padding:90px 24px;}
+.launch-inner{max-width:680px;margin:0 auto;}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:44px;}
+.fg{display:flex;flex-direction:column;gap:7px;}
+.fg.full{grid-column:1/-1;}
+.fl{font-size:11px;font-family:var(–mono);color:var(–muted);text-transform:uppercase;letter-spacing:1px;}
+.fi{background:var(–s2);border:1px solid var(–border);border-radius:6px;padding:11px 14px;color:var(–text);font-family:var(–body);font-size:14px;outline:none;transition:border-color 0.2s;width:100%;-webkit-appearance:none;appearance:none;}
+.fi:focus{border-color:var(–a1);}
+.fi::placeholder{color:var(–muted);}
+textarea.fi{resize:vertical;min-height:75px;}
+.tk-row{display:flex;gap:6px;grid-column:1/-1;}
+.tk{flex:1;padding:10px 8px;border-radius:6px;background:var(–s2);border:1px solid var(–border);text-align:center;}
+.tk-p{font-family:var(–display);font-size:22px;color:var(–a1);display:block;}
+.tk-n{font-size:10px;color:var(–muted);text-transform:uppercase;letter-spacing:0.3px;}
+.notice{grid-column:1/-1;background:rgba(240,255,68,0.04);border:1px solid rgba(240,255,68,0.12);border-radius:6px;padding:12px 14px;font-size:13px;color:var(–muted);}
+.notice strong{color:var(–a1);}
+.btn-do{grid-column:1/-1;padding:15px;border-radius:6px;border:none;cursor:pointer;background:var(–a1);color:#000;font-family:var(–display);font-size:20px;letter-spacing:2px;transition:all 0.2s;margin-top:6px;}
+.btn-do:hover{transform:translateY(-2px);box-shadow:0 0 36px rgba(240,255,68,0.4);}
 
-/* LAUNCH FORM */
-.launch-section{
-position:relative;z-index:1;
-background:var(–s1);
-border-top:1px solid var(–border);
-border-bottom:1px solid var(–border);
-padding:100px 24px;margin-bottom:0;
-}
-.launch-inner{
-max-width:700px;margin:0 auto;
-}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px;}
-.form-group{display:flex;flex-direction:column;gap:8px;}
-.form-group.full{grid-column:1/-1;}
-.form-label{
-font-size:12px;font-family:var(–mono);
-color:var(–muted);text-transform:uppercase;letter-spacing:1px;
-}
-.form-input{
-background:var(–s2);border:1px solid var(–border);
-border-radius:6px;padding:12px 16px;
-color:var(–text);font-family:var(–body);font-size:14px;
-outline:none;transition:border-color 0.2s;width:100%;
--webkit-appearance:none;
-}
-.form-input:focus{border-color:var(–a1);}
-.form-input::placeholder{color:var(–muted);}
-textarea.form-input{resize:vertical;min-height:80px;}
-select.form-input{cursor:pointer;}
+.feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:52px;}
+.feat{background:var(–s1);border:1px solid var(–border);border-radius:10px;padding:28px;transition:border-color 0.2s;}
+.feat:hover{border-color:rgba(240,255,68,0.18);}
+.feat-ico{width:36px;height:36px;border-radius:7px;border:1px solid var(–border);background:var(–s2);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.feat h3{font-size:16px;font-weight:600;margin-bottom:8px;}
+.feat p{font-size:13px;color:var(–muted);line-height:1.7;}
 
-/* Tokenomics visual */
-.tokenomics-row{
-display:flex;gap:8px;margin-top:8px;
-grid-column:1/-1;
-}
-.tk-block{
-flex:1;padding:10px;border-radius:6px;
-background:var(–s2);border:1px solid var(–border);
-text-align:center;
-}
-.tk-pct{
-font-family:var(–display);font-size:24px;
-color:var(–a1);display:block;
-}
-.tk-name{font-size:10px;color:var(–muted);text-transform:uppercase;letter-spacing:0.5px;}
+footer{position:relative;z-index:1;border-top:1px solid var(–border);padding:40px 32px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.f-logo{font-family:var(–display);font-size:20px;letter-spacing:2px;}
+.f-logo span{color:var(–a1);}
+.f-links{display:flex;gap:20px;flex-wrap:wrap;}
+.f-link{font-size:13px;color:var(–muted);text-decoration:none;transition:color 0.2s;}
+.f-link:hover{color:var(–text);}
+.f-right{font-family:var(–mono);font-size:11px;color:var(–muted);}
 
-.fee-notice{
-grid-column:1/-1;
-background:rgba(240,255,68,0.05);
-border:1px solid rgba(240,255,68,0.15);
-border-radius:6px;padding:14px 16px;
-font-size:13px;color:var(–muted);
-display:flex;align-items:center;gap:10px;
-}
-.fee-notice strong{color:var(–a1);}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(8px);z-index:200;align-items:center;justify-content:center;padding:20px;}
+.overlay.open{display:flex;}
+.modal{background:var(–s1);border:1px solid var(–border);border-radius:12px;padding:28px;width:100%;max-width:400px;animation:mIn 0.2s ease;position:relative;}
+@keyframes mIn{from{opacity:0;transform:scale(0.96);}to{opacity:1;transform:scale(1);}}
+.m-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(–muted);font-size:16px;cursor:pointer;}
+.m-head{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.m-title{font-family:var(–display);font-size:26px;letter-spacing:1px;}
+.m-sym{font-family:var(–mono);font-size:11px;color:var(–muted);}
+.m-price-box{background:var(–s2);border-radius:8px;padding:14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.m-pval{font-family:var(–display);font-size:28px;color:var(–a1);}
+.m-plbl{font-size:11px;color:var(–muted);}
+.m-chg{font-family:var(–mono);font-size:12px;color:#00e676;text-align:right;}
+.tabs{display:flex;gap:4px;margin-bottom:16px;}
+.tab{flex:1;padding:8px;border-radius:5px;border:none;cursor:pointer;font-family:var(–body);font-size:13px;font-weight:500;background:var(–s2);color:var(–muted);transition:all 0.15s;}
+.tab.tb{background:rgba(240,255,68,0.1);color:var(–a1);}
+.tab.ts{background:rgba(255,61,113,0.1);color:var(–a3);}
+.m-inp-wrap{position:relative;margin-bottom:10px;}
+.m-inp{width:100%;background:var(–s2);border:1px solid var(–border);border-radius:7px;padding:12px 60px 12px 14px;color:var(–text);font-family:var(–mono);font-size:15px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
+.m-inp:focus{border-color:var(–a1);}
+.m-sfx{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(–mono);font-size:11px;color:var(–muted);}
+.m-quick{display:flex;gap:6px;margin-bottom:14px;}
+.m-qb{flex:1;padding:6px;border-radius:4px;border:1px solid var(–border);background:transparent;color:var(–muted);font-family:var(–mono);font-size:11px;cursor:pointer;transition:all 0.15s;}
+.m-qb:hover{border-color:var(–a1);color:var(–a1);}
+.m-info{background:var(–s2);border-radius:7px;padding:12px 14px;margin-bottom:14px;}
+.m-row{display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:var(–muted);}
+.m-row span{color:var(–text);font-family:var(–mono);}
+.m-btn{width:100%;padding:13px;border-radius:7px;border:none;cursor:pointer;font-family:var(–display);font-size:20px;letter-spacing:1px;transition:all 0.2s;}
+.m-btn.buy-btn{background:var(–a1);color:#000;}
+.m-btn.sell-btn{background:var(–a3);color:#fff;}
+.m-btn:hover{transform:translateY(-1px);}
 
-.btn-launch{
-grid-column:1/-1;
-padding:16px;border-radius:6px;border:none;cursor:pointer;
-background:var(–a1);color:#000;
-font-family:var(–display);font-size:22px;letter-spacing:2px;
-transition:all 0.2s;margin-top:8px;
-}
-.btn-launch:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(240,255,68,0.4);}
-
-/* FEATURES */
-.features-grid{
-display:grid;grid-template-columns:repeat(2,1fr);
-gap:16px;margin-top:60px;
-}
-.feature{
-background:var(–s1);border:1px solid var(–border);
-border-radius:10px;padding:32px;
-transition:all 0.2s;
-}
-.feature:hover{border-color:rgba(240,255,68,0.2);}
-.feature-icon{font-size:32px;margin-bottom:16px;}
-.feature h3{font-size:17px;font-weight:600;margin-bottom:10px;}
-.feature p{font-size:14px;color:var(–muted);line-height:1.7;}
-
-/* FOOTER */
-footer{
-position:relative;z-index:1;
-border-top:1px solid var(–border);
-padding:48px 32px 32px;
-display:flex;align-items:center;justify-content:space-between;
-flex-wrap:wrap;gap:24px;
-}
-.footer-logo{font-family:var(–display);font-size:22px;letter-spacing:2px;}
-.footer-logo span{color:var(–a1);}
-.footer-links{display:flex;gap:24px;flex-wrap:wrap;}
-.footer-link{font-size:13px;color:var(–muted);text-decoration:none;transition:color 0.2s;}
-.footer-link:hover{color:var(–text);}
-.footer-right{font-family:var(–mono);font-size:11px;color:var(–muted);}
-
-/* MODAL */
-.modal-overlay{
-display:none;position:fixed;inset:0;
-background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);
-z-index:200;align-items:center;justify-content:center;
-padding:24px;
-}
-.modal-overlay.open{display:flex;}
-.modal{
-background:var(–s1);border:1px solid var(–border);
-border-radius:14px;padding:32px;
-width:100%;max-width:420px;
-animation:modalIn 0.2s ease;position:relative;
-}
-@keyframes modalIn{
-from{opacity:0;transform:scale(0.95);}
-to{opacity:1;transform:scale(1);}
-}
-.modal-close{
-position:absolute;top:16px;right:16px;
-background:none;border:none;color:var(–muted);
-font-size:18px;cursor:pointer;line-height:1;
-}
-.modal h3{font-family:var(–display);font-size:28px;letter-spacing:1px;margin-bottom:4px;}
-.modal-ticker{font-family:var(–mono);font-size:12px;color:var(–muted);margin-bottom:24px;}
-.modal-price{
-background:var(–s2);border-radius:8px;
-padding:16px;margin-bottom:16px;
-display:flex;justify-content:space-between;align-items:center;
-}
-.modal-price-val{font-family:var(–display);font-size:32px;color:var(–a1);}
-.modal-price-lbl{font-size:12px;color:var(–muted);}
-.tab-row{display:flex;gap:4px;margin-bottom:20px;}
-.tab{
-flex:1;padding:9px;border-radius:5px;border:none;cursor:pointer;
-font-family:var(–body);font-size:13px;font-weight:500;
-background:var(–s2);color:var(–muted);transition:all 0.15s;
-}
-.tab.active-buy{background:rgba(240,255,68,0.12);color:var(–a1);}
-.tab.active-sell{background:rgba(255,61,113,0.12);color:var(–a3);}
-.modal-input-wrap{position:relative;margin-bottom:12px;}
-.modal-input{
-width:100%;background:var(–s2);border:1px solid var(–border);
-border-radius:8px;padding:14px 70px 14px 16px;
-color:var(–text);font-family:var(–mono);font-size:16px;
-outline:none;transition:border-color 0.2s;
--webkit-appearance:none;
-}
-.modal-input:focus{border-color:var(–a1);}
-.modal-suffix{
-position:absolute;right:16px;top:50%;transform:translateY(-50%);
-font-family:var(–mono);font-size:12px;color:var(–muted);
-}
-.modal-quick{display:flex;gap:8px;margin-bottom:16px;}
-.modal-quick-btn{
-flex:1;padding:7px;border-radius:5px;
-border:1px solid var(–border);background:transparent;
-color:var(–muted);font-family:var(–mono);font-size:11px;cursor:pointer;
-transition:all 0.15s;
-}
-.modal-quick-btn:hover{border-color:var(–a1);color:var(–a1);}
-.modal-info{
-background:var(–s2);border-radius:8px;padding:14px;
-margin-bottom:16px;font-size:13px;
-}
-.modal-info-row{
-display:flex;justify-content:space-between;
-padding:3px 0;color:var(–muted);
-}
-.modal-info-row span{color:var(–text);font-family:var(–mono);}
-.modal-btn{
-width:100%;padding:14px;border-radius:8px;border:none;cursor:pointer;
-font-family:var(–display);font-size:22px;letter-spacing:1px;
-transition:all 0.2s;
-}
-.modal-btn.buy{background:var(–a1);color:#000;}
-.modal-btn.sell{background:var(–a3);color:#fff;}
-.modal-btn:hover{transform:translateY(-1px);}
-
-/* TOAST */
-.toast{
-position:fixed;bottom:24px;right:24px;z-index:999;
-background:var(–s2);border:1px solid var(–border);
-border-radius:10px;padding:14px 18px;
-font-size:13px;max-width:320px;
-box-shadow:0 8px 32px rgba(0,0,0,0.5);
-display:none;animation:toastIn 0.3s ease;
-}
-@keyframes toastIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.toast{position:fixed;bottom:20px;right:20px;z-index:999;background:var(–s2);border:1px solid var(–border);border-radius:8px;padding:12px 16px;font-size:13px;max-width:300px;box-shadow:0 8px 32px rgba(0,0,0,0.5);display:none;animation:tIn 0.3s ease;}
+@keyframes tIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 .toast.show{display:block;}
-.toast.ok{border-color:rgba(0,230,118,0.4);}
-.toast.err{border-color:rgba(255,61,113,0.4);}
+.toast.ok{border-color:rgba(0,230,118,0.35);}
+.toast.err{border-color:rgba(255,61,113,0.35);}
 
-/* RESPONSIVE */
 @media(max-width:768px){
-nav{padding:14px 16px;}
-.stats{grid-template-columns:repeat(2,1fr);}
-.steps{grid-template-columns:1fr;}
-.form-grid{grid-template-columns:1fr;}
-.form-group.full{grid-column:1;}
-.tokenomics-row{flex-wrap:wrap;}
-.features-grid{grid-template-columns:1fr;}
+nav{padding:13px 16px;}
+.stats{grid-template-columns:1fr 1fr;}
+.steps{grid-template-columns:1fr;gap:0;}
+.form{grid-template-columns:1fr;}
+.fg.full{grid-column:1;}
+.feat-grid{grid-template-columns:1fr;}
 footer{flex-direction:column;align-items:flex-start;}
-.hero h1{letter-spacing:1px;}
+.tk-row{flex-wrap:wrap;}
 }
 @media(max-width:480px){
-.stats{grid-template-columns:1fr 1fr;}
-.stat{padding:20px 16px;}
-.stat-val{font-size:32px;}
 nav .nav-link{display:none;}
 }
 </style>
 
 </head>
 <body>
-
 <div class="blob blob1"></div>
 <div class="blob blob2"></div>
 
-<!-- NAV -->
-
 <nav>
-  <div class="logo">BEAM<span>LAUNCH</span><em>BETA</em></div>
+  <div class="logo">
+    <div class="logo-mark">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z" fill="#000"/>
+        <path d="M8 5L11 8L8 11L5 8L8 5Z" fill="#f0ff44"/>
+      </svg>
+    </div>
+    BEAM<span>LAUNCH</span><em>v0.1</em>
+  </div>
   <div class="nav-right">
     <a href="#tokens" class="nav-link">Explore</a>
     <a href="#launch" class="nav-link">Launch</a>
-    <a href="#how" class="nav-link">Docs</a>
+    <a href="https://docs.onbeam.com" target="_blank" class="nav-link">Docs</a>
     <button class="btn-wallet" id="walletBtn" onclick="connectWallet()">Connect Wallet</button>
   </div>
 </nav>
 
-<!-- HERO -->
-
 <section class="hero">
-  <div class="hero-tag">Infrastructure · Beam Network · Chain ID 4337</div>
+  <div class="hero-tag"><span class="live-dot"></span>Live on Beam Testnet · Chain ID 13337</div>
   <h1>
-    <span class="line1">LAUNCH</span><br>
-    <span class="line2">ANY</span>
-    <span class="accent"> TOKEN</span><br>
-    <span class="line2">ON BEAM</span>
+    <span style="display:block;">THE FAIR</span>
+    <span style="display:block;" class="outline">LAUNCH</span>
+    <span style="display:block;">INFRA FOR <span class="solid">BEAM</span></span>
   </h1>
-  <p class="hero-sub">
-    The first fair-launch token launchpad built natively on Beam.
-    Bonding curves. Auto-liquidity. Zero presales. 1% fee infrastructure.
-  </p>
+  <p class="hero-sub">Bonding curve token launches built natively on Beam Network. No presales. No VC allocations. Automatic liquidity migration to Beam Swap.</p>
   <div class="hero-ctas">
-    <button class="btn-primary" onclick="document.getElementById('launch').scrollIntoView({behavior:'smooth'})">Launch a Token</button>
-    <button class="btn-secondary" onclick="document.getElementById('tokens').scrollIntoView({behavior:'smooth'})">Explore Launches →</button>
+    <button class="btn-primary" onclick="scroll2('launch')">Launch a Token</button>
+    <button class="btn-secondary" onclick="scroll2('tokens')">View Live Tokens →</button>
   </div>
 </section>
-
-<!-- TICKER -->
 
 <div class="ticker-wrap">
   <div class="ticker" id="ticker"></div>
 </div>
 
-<!-- STATS -->
-
-<div class="stats" style="position:relative;z-index:1;margin:0 auto 100px;max-width:900px;padding:0 24px;">
-  <div class="stats" style="width:100%;">
-    <div class="stat"><span class="stat-val" id="s1">0</span><div class="stat-lbl">Tokens Launched</div></div>
-    <div class="stat"><span class="stat-val" id="s2">0</span><div class="stat-lbl">Total Volume</div></div>
-    <div class="stat"><span class="stat-val" id="s3">0</span><div class="stat-lbl">Graduated to DEX</div></div>
-    <div class="stat"><span class="stat-val" id="s4">0</span><div class="stat-lbl">Fees Distributed</div></div>
+<div class="stats-outer">
+  <div class="stats">
+    <div class="stat"><span class="stat-val" id="sv1">—</span><div class="stat-lbl">Tokens Launched</div></div>
+    <div class="stat"><span class="stat-val" id="sv2">—</span><div class="stat-lbl">Total Volume</div></div>
+    <div class="stat"><span class="stat-val" id="sv3">—</span><div class="stat-lbl">Graduated</div></div>
+    <div class="stat"><span class="stat-val" id="sv4">—</span><div class="stat-lbl">Protocol Fees</div></div>
   </div>
 </div>
 
-<!-- HOW IT WORKS -->
-
-<div class="section" id="how">
-  <div class="section-label">Protocol</div>
-  <div class="section-title">HOW IT<br>WORKS</div>
-  <p class="section-sub">Fair launch infrastructure that protects buyers and rewards builders automatically.</p>
+<div class="section" id="how" style="padding-top:10px;">
+  <div class="s-label">Protocol</div>
+  <div class="s-title">HOW IT WORKS</div>
+  <p class="s-sub">Three steps from idea to fully traded token on Beam Network.</p>
   <div class="steps">
     <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-icon">🚀</div>
+      <div class="step-n">01</div>
+      <div class="step-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M9 2L16 6V12L9 16L2 12V6L9 2Z" stroke="#f0ff44" stroke-width="1.2" fill="none"/>
+          <circle cx="9" cy="9" r="2.5" fill="#f0ff44"/>
+        </svg>
+      </div>
       <h3>Deploy in 60 seconds</h3>
-      <p>Fill in your token name, ticker, description and category. Smart contract deploys instantly on Beam with a bonding curve.</p>
+      <p>Fill in your token details. The bonding curve smart contract deploys instantly on Beam with no upfront cost and no coding required.</p>
     </div>
     <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-icon">📈</div>
+      <div class="step-n">02</div>
+      <div class="step-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <polyline points="2,14 6,8 10,11 16,4" stroke="#f0ff44" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <circle cx="16" cy="4" r="1.5" fill="#f0ff44"/>
+        </svg>
+      </div>
       <h3>Bonding curve pricing</h3>
-      <p>Price rises automatically as people buy. No presales, no VCs, no dumps. Every buyer gets a fair price based on supply.</p>
+      <p>Price rises automatically as BEAM flows in. Every participant gets a fair entry. No insider allocations, no day-one token dumps.</p>
     </div>
     <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-icon">⚡</div>
+      <div class="step-n">03</div>
+      <div class="step-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="7" stroke="#f0ff44" stroke-width="1.2" fill="none"/>
+          <path d="M6 9L9 5L12 9M9 5V13" stroke="#f0ff44" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
       <h3>Auto-graduate to DEX</h3>
-      <p>Once market cap hits 69K BEAM, liquidity auto-migrates to Beam Swap. Token becomes permanently tradeable.</p>
+      <p>At 69K BEAM market cap, liquidity migrates automatically to Beam Swap. The token becomes permanently and freely tradeable.</p>
     </div>
   </div>
 </div>
-
-<!-- TOKENS -->
 
 <div class="section" id="tokens">
-  <div class="tokens-header">
+  <div class="tokens-head">
     <div>
-      <div class="section-label">Launchpad</div>
-      <div class="section-title" style="font-size:clamp(28px,4vw,48px);">LIVE TOKENS</div>
+      <div class="s-label">Launchpad</div>
+      <div class="s-title" style="font-size:clamp(26px,4vw,44px);">LIVE TOKENS</div>
     </div>
-    <div class="filter-row">
-      <button class="filter active" onclick="filterTokens('all',this)">All</button>
-      <button class="filter" onclick="filterTokens('Gaming',this)">Gaming</button>
-      <button class="filter" onclick="filterTokens('DeFi',this)">DeFi</button>
-      <button class="filter" onclick="filterTokens('Meme',this)">Meme</button>
-      <button class="filter" onclick="filterTokens('AI',this)">AI</button>
+    <div class="filters">
+      <button class="fil on" onclick="doFilter('all',this)">All</button>
+      <button class="fil" onclick="doFilter('Gaming',this)">Gaming</button>
+      <button class="fil" onclick="doFilter('DeFi',this)">DeFi</button>
+      <button class="fil" onclick="doFilter('Meme',this)">Meme</button>
+      <button class="fil" onclick="doFilter('AI',this)">AI</button>
     </div>
   </div>
-  <div class="tokens-grid" id="tokensGrid"></div>
+  <div class="grid" id="tokenGrid"></div>
 </div>
 
-<!-- LAUNCH FORM -->
-
-<div class="launch-section" id="launch">
+<div class="launch-bg" id="launch">
   <div class="launch-inner">
-    <div class="section-label">Create</div>
-    <div class="section-title">LAUNCH YOUR<br><span style="color:var(--a1)">TOKEN</span></div>
-    <p class="section-sub">Deploy a fair-launch token on Beam in under 60 seconds. No coding required.</p>
-
-```
-<div class="form-grid">
-  <div class="form-group">
-    <label class="form-label">Token Name</label>
-    <input class="form-input" id="tName" placeholder="e.g. Beam Warriors" type="text"/>
-  </div>
-  <div class="form-group">
-    <label class="form-label">Ticker Symbol</label>
-    <input class="form-input" id="tTicker" placeholder="e.g. BWAR" maxlength="8" type="text" oninput="this.value=this.value.toUpperCase()"/>
-  </div>
-  <div class="form-group full">
-    <label class="form-label">Description</label>
-    <textarea class="form-input" id="tDesc" placeholder="What is your token for? What problem does it solve?"></textarea>
-  </div>
-  <div class="form-group">
-    <label class="form-label">Category</label>
-    <select class="form-input" id="tCat">
-      <option>Gaming</option>
-      <option>DeFi</option>
-      <option>Meme</option>
-      <option>AI</option>
-      <option>Infrastructure</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label class="form-label">Total Supply</label>
-    <input class="form-input" id="tSupply" value="1000000000" type="number"/>
-  </div>
-
-  <div class="form-group full">
-    <label class="form-label">Tokenomics (auto-set for fairness)</label>
-    <div class="tokenomics-row">
-      <div class="tk-block"><span class="tk-pct">80%</span><div class="tk-name">Public Sale</div></div>
-      <div class="tk-block"><span class="tk-pct">10%</span><div class="tk-name">Liquidity</div></div>
-      <div class="tk-block"><span class="tk-pct">5%</span><div class="tk-name">Team (locked 1yr)</div></div>
-      <div class="tk-block"><span class="tk-pct">5%</span><div class="tk-name">Ecosystem</div></div>
+    <div class="s-label">Create</div>
+    <div class="s-title">LAUNCH YOUR<br><span style="color:var(--a1)">TOKEN</span></div>
+    <p class="s-sub">Deploy a fair-launch token on Beam in under 60 seconds.</p>
+    <div class="form">
+      <div class="fg"><label class="fl">Token Name</label><input class="fi" id="fName" placeholder="e.g. Fableborne Gold" type="text"/></div>
+      <div class="fg"><label class="fl">Ticker Symbol</label><input class="fi" id="fTick" placeholder="e.g. FGLD" maxlength="8" type="text" oninput="this.value=this.value.toUpperCase()"/></div>
+      <div class="fg full"><label class="fl">Description</label><textarea class="fi" id="fDesc" placeholder="What does your token do? What is its utility within Beam?"></textarea></div>
+      <div class="fg"><label class="fl">Category</label>
+        <select class="fi" id="fCat"><option>Gaming</option><option>DeFi</option><option>Meme</option><option>AI</option><option>Infrastructure</option></select>
+      </div>
+      <div class="fg"><label class="fl">Total Supply</label><input class="fi" id="fSupply" value="1,000,000,000" type="text"/></div>
+      <div class="fg full">
+        <label class="fl">Tokenomics — enforced by smart contract</label>
+        <div class="tk-row">
+          <div class="tk"><span class="tk-p">80%</span><div class="tk-n">Public Sale</div></div>
+          <div class="tk"><span class="tk-p">10%</span><div class="tk-n">Liquidity</div></div>
+          <div class="tk"><span class="tk-p">5%</span><div class="tk-n">Team · 1yr lock</div></div>
+          <div class="tk"><span class="tk-p">5%</span><div class="tk-n">Ecosystem</div></div>
+        </div>
+      </div>
+      <div class="notice full"><strong>1% fee</strong> on all trades collected by BeamLaunch protocol. No upfront launch cost. Graduation threshold: 69,000 BEAM market cap.</div>
+      <button class="btn-do" onclick="doLaunch()">DEPLOY TOKEN ON BEAM →</button>
     </div>
   </div>
-
-  <div class="fee-notice full">
-    ⚡ <span><strong>1% fee</strong> on all trades goes to BeamLaunch infrastructure. No upfront cost to launch. Graduation fee: 500 BEAM when your token hits 69K BEAM market cap.</span>
-  </div>
-
-  <button class="btn-launch" onclick="launchToken()">LAUNCH TOKEN →</button>
-</div>
-```
-
-  </div>
 </div>
 
-<!-- FEATURES -->
-
-<div class="section" style="padding-top:100px;">
-  <div class="section-label">Why BeamLaunch</div>
-  <div class="section-title">BUILT FOR<br>BUILDERS</div>
-  <div class="features-grid">
-    <div class="feature">
-      <div class="feature-icon">🔒</div>
+<div class="section" style="padding-top:90px;">
+  <div class="s-label">Infrastructure</div>
+  <div class="s-title">BUILT FOR<br>BEAM BUILDERS</div>
+  <div class="feat-grid">
+    <div class="feat">
+      <div class="feat-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="#f0ff44" stroke-width="1.2" fill="none"/><path d="M5 8L7 10L11 6" stroke="#f0ff44" stroke-width="1.2" stroke-linecap="round"/></svg></div>
       <h3>No rug pulls by design</h3>
-      <p>Bonding curve smart contracts hold all liquidity. Creators can't pull funds. When market cap is reached, liquidity locks permanently on Beam Swap.</p>
+      <p>All liquidity is locked inside the bonding curve smart contract. Creators cannot withdraw. At graduation, liquidity locks permanently into Beam Swap.</p>
     </div>
-    <div class="feature">
-      <div class="feature-icon">⚡</div>
-      <h3>1-second finality</h3>
-      <p>Beam Network processes 4,550 TPS with 1-second transaction finality. Trades execute instantly. No waiting, no failed transactions.</p>
+    <div class="feat">
+      <div class="feat-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#f0ff44" stroke-width="1.2" fill="none"/><line x1="8" y1="5" x2="8" y2="8" stroke="#f0ff44" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="10.5" r="0.8" fill="#f0ff44"/></svg></div>
+      <h3>1-second finality on Beam</h3>
+      <p>Beam Network handles 4,550 TPS with sub-second confirmation. Trades settle instantly. No mempool congestion, no failed transactions during launches.</p>
     </div>
-    <div class="feature">
-      <div class="feature-icon">🎮</div>
-      <h3>Gaming-first launchpad</h3>
-      <p>Built specifically for the Beam gaming ecosystem. Every game studio building on Beam now has native token launch infrastructure.</p>
+    <div class="feat">
+      <div class="feat-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z" stroke="#f0ff44" stroke-width="1.2" fill="none"/><circle cx="8" cy="8" r="2" fill="#f0ff44"/></svg></div>
+      <h3>Gaming-native launchpad</h3>
+      <p>Built specifically for Beam. Game studios and indie developers have purpose-built token launch infrastructure directly on their home chain.</p>
     </div>
-    <div class="feature">
-      <div class="feature-icon">💰</div>
-      <h3>Automatic revenue</h3>
-      <p>1% fee on every trade, 500 BEAM graduation fee. Infrastructure runs itself. Revenue scales with every token launched on the platform.</p>
+    <div class="feat">
+      <div class="feat-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="2,12 5,7 8,9 12,4 14,6" stroke="#f0ff44" stroke-width="1.2" fill="none" stroke-linecap="round"/><line x1="14" y1="6" x2="14" y2="14" stroke="#f0ff44" stroke-width="1.2"/><line x1="2" y1="14" x2="14" y2="14" stroke="#f0ff44" stroke-width="1.2"/></svg></div>
+      <h3>Self-sustaining revenue</h3>
+      <p>1% protocol fee on every trade, 500 BEAM per graduation. Revenue scales automatically with ecosystem activity. Zero manual work required.</p>
     </div>
   </div>
 </div>
-
-<!-- FOOTER -->
 
 <footer>
-  <div class="footer-logo">BEAM<span>LAUNCH</span></div>
-  <div class="footer-links">
-    <a href="https://onbeam.com" target="_blank" class="footer-link">Beam Network</a>
-    <a href="https://grants.onbeam.com" target="_blank" class="footer-link">Beam Grants</a>
-    <a href="https://docs.onbeam.com" target="_blank" class="footer-link">Documentation</a>
-    <a href="https://github.com/thattallkidishim/beam-launch" target="_blank" class="footer-link">GitHub</a>
+  <div class="f-logo">BEAM<span>LAUNCH</span></div>
+  <div class="f-links">
+    <a href="https://onbeam.com" target="_blank" class="f-link">Beam Network</a>
+    <a href="https://grants.onbeam.com" target="_blank" class="f-link">Beam Grants</a>
+    <a href="https://docs.onbeam.com" target="_blank" class="f-link">Docs</a>
+    <a href="https://4337.routescan.io" target="_blank" class="f-link">Explorer</a>
+    <a href="https://github.com/thattallkidishim/beam-launch" target="_blank" class="f-link">GitHub</a>
   </div>
-  <div class="footer-right">Chain ID: 4337 · Beam Mainnet</div>
+  <div class="f-right">Chain 4337 · Beam Network · v0.1</div>
 </footer>
 
-<!-- TRADE MODAL -->
-
-<div class="modal-overlay" id="tradeModal">
+<div class="overlay" id="tradeOverlay">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <h3 id="mName">TOKEN</h3>
-    <div class="modal-ticker" id="mTicker">$TICKER · Beam Network</div>
-    <div class="modal-price">
-      <div>
-        <div class="modal-price-val" id="mPrice">0.000001</div>
-        <div class="modal-price-lbl">Current Price (BEAM)</div>
-      </div>
-      <div style="text-align:right;">
-        <div style="font-family:var(--mono);font-size:13px;color:var(--a1)" id="mChange">+0.0%</div>
-        <div style="font-size:11px;color:var(--muted);">24h change</div>
-      </div>
+    <button class="m-close" onclick="closeModal()">✕</button>
+    <div class="m-head">
+      <div id="mLogo"></div>
+      <div><div class="m-title" id="mName">TOKEN</div><div class="m-sym" id="mSym">$TICKER</div></div>
     </div>
-    <div class="tab-row">
-      <button class="tab active-buy" id="tabBuy" onclick="setTab('buy')">BUY</button>
-      <button class="tab" id="tabSell" onclick="setTab('sell')">SELL</button>
+    <div class="m-price-box">
+      <div><div class="m-pval" id="mPrice">—</div><div class="m-plbl">Price (BEAM)</div></div>
+      <div><div class="m-chg" id="mChg">—</div><div style="font-size:11px;color:var(--muted);text-align:right;">24h</div></div>
     </div>
-    <div class="modal-input-wrap">
-      <input class="modal-input" id="tradeAmount" type="number" placeholder="0.00" oninput="updateTradeInfo()"/>
-      <span class="modal-suffix">BEAM</span>
+    <div class="tabs">
+      <button class="tab tb" id="tBuy" onclick="setTab('buy')">BUY</button>
+      <button class="tab" id="tSell" onclick="setTab('sell')">SELL</button>
     </div>
-    <div class="modal-quick">
-      <button class="modal-quick-btn" onclick="setTradeAmount(10)">10</button>
-      <button class="modal-quick-btn" onclick="setTradeAmount(50)">50</button>
-      <button class="modal-quick-btn" onclick="setTradeAmount(100)">100</button>
-      <button class="modal-quick-btn" onclick="setTradeAmount(500)">500</button>
+    <div class="m-inp-wrap">
+      <input class="m-inp" id="mAmt" type="number" placeholder="0.00" oninput="calcTrade()"/>
+      <span class="m-sfx">BEAM</span>
     </div>
-    <div class="modal-info">
-      <div class="modal-info-row">You receive <span id="mReceive">—</span></div>
-      <div class="modal-info-row">Price impact <span id="mImpact">—</span></div>
-      <div class="modal-info-row">Platform fee (1%) <span id="mFee">—</span></div>
+    <div class="m-quick">
+      <button class="m-qb" onclick="setAmt(10)">10</button>
+      <button class="m-qb" onclick="setAmt(50)">50</button>
+      <button class="m-qb" onclick="setAmt(100)">100</button>
+      <button class="m-qb" onclick="setAmt(500)">500</button>
     </div>
-    <button class="modal-btn buy" id="tradeBtn" onclick="executeTrade()">BUY</button>
+    <div class="m-info">
+      <div class="m-row">You receive <span id="mRec">—</span></div>
+      <div class="m-row">Price impact <span id="mImpact">—</span></div>
+      <div class="m-row">Protocol fee (1%) <span id="mFee">—</span></div>
+    </div>
+    <button class="m-btn buy-btn" id="mBtn" onclick="execTrade()">BUY</button>
   </div>
 </div>
-
-<!-- TOAST -->
 
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
 
 <script>
-// ─── CONFIG ───────────────────────────────────────────────
-// Replace after deploying contract via Remix
-const CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000000";
-const BEAM_RPC = "https://build.onbeam.com/rpc";
-const BEAM_CHAIN_ID = 4337;
+let provider,signer,wallet,filt='all',tab='buy',sel=null;
 
-// ─── STATE ────────────────────────────────────────────────
-let provider, signer, walletAddress;
-let activeFilter = 'all';
-let activeTab = 'buy';
-let selectedToken = null;
-
-// ─── DEMO TOKENS ──────────────────────────────────────────
-const DEMO_TOKENS = [
-  {id:0,name:"Fableborne Coin",ticker:"FABLE",cat:"Gaming",emoji:"⚔️",color:"#f0ff44",
-   progress:78,price:"0.000842",supply:"1B",mcap:"68.2K",vol:"142K",buyers:284,badge:"hot"},
-  {id:1,name:"BeamAI",ticker:"BAI",cat:"AI",emoji:"🤖",color:"#00e5ff",
-   progress:45,price:"0.000231",supply:"1B",mcap:"23.1K",vol:"87K",buyers:156,badge:"new"},
-  {id:2,name:"Sphere Pass",ticker:"SPASS",cat:"Gaming",emoji:"🌐",color:"#ff3d71",
-   progress:92,price:"0.002841",supply:"500M",mcap:"64.8K",vol:"310K",buyers:521,badge:"live"},
-  {id:3,name:"DreamDoge",ticker:"DDOGE",cat:"Meme",emoji:"🐶",color:"#f0ff44",
-   progress:31,price:"0.0000041",supply:"1T",mcap:"4.1K",vol:"22K",buyers:89,badge:"new"},
-  {id:4,name:"Beam Yield",ticker:"BYLD",cat:"DeFi",emoji:"💎",color:"#00e676",
-   progress:55,price:"0.001204",supply:"100M",mcap:"12.0K",vol:"64K",buyers:201,badge:"live"},
-  {id:5,name:"GoonWars Token",ticker:"GOON",cat:"Gaming",emoji:"💀",color:"#a78bfa",
-   progress:67,price:"0.000523",supply:"1B",mcap:"34.7K",vol:"98K",buyers:178,badge:"hot"},
+// Realistic tokens with geometric SVG logos — no emojis
+const TOKENS=[
+  {id:0,name:"Fableborne Gold",sym:"FGLD",cat:"Gaming",c1:"#f0ff44",c2:"#8a9400",progress:78,price:"0.000842",mcap:"58.3K",vol:"142.4K",buyers:284,badge:"hot"},
+  {id:1,name:"BeamAI",sym:"BAI",cat:"AI",c1:"#00e5ff",c2:"#006b80",progress:45,price:"0.000231",mcap:"23.1K",vol:"87.2K",buyers:156,badge:"new"},
+  {id:2,name:"Sphere Pass",sym:"SPASS",cat:"Gaming",c1:"#a78bfa",c2:"#4c1d95",progress:91,price:"0.002841",mcap:"62.1K",vol:"310.8K",buyers:521,badge:"live"},
+  {id:3,name:"Goon Wars",sym:"GOON",cat:"Gaming",c1:"#ff3d71",c2:"#7f0028",progress:67,price:"0.000523",mcap:"34.7K",vol:"98.1K",buyers:178,badge:"hot"},
+  {id:4,name:"Beam Yield",sym:"BYLD",cat:"DeFi",c1:"#00e676",c2:"#005c2e",progress:55,price:"0.001204",mcap:"12.0K",vol:"64.3K",buyers:201,badge:"live"},
+  {id:5,name:"Gameplay Galaxy",sym:"GPG",cat:"Gaming",c1:"#fbbf24",c2:"#6b4800",progress:33,price:"0.0000891",mcap:"8.9K",vol:"31.2K",buyers:94,badge:"new"},
 ];
 
-// ─── TICKER ───────────────────────────────────────────────
-function buildTicker(){
-  const items = [...DEMO_TOKENS,...DEMO_TOKENS].map(t=>`
-    <div class="ticker-item">
-      <span>${t.emoji}</span>
-      <span class="name">$${t.ticker}</span>
-      <span class="${parseFloat(t.progress)>50?'up':'down'}">${t.progress>50?'+':'-'}${(Math.random()*15).toFixed(1)}%</span>
-      <span>${t.mcap} BEAM</span>
-    </div>
-    <div class="ticker-dot"></div>
-  `).join('');
-  document.getElementById('ticker').innerHTML = items;
+// Geometric SVG avatars — clean, professional, unique per token
+function makeLogo(t,sz=42){
+  const r=sz/2;
+  const shapes=[
+    // Hexagon with inner dot
+    `<polygon points="${r},${sz*0.07} ${sz*0.93},${r*0.75} ${sz*0.93},${r*1.25} ${r},${sz*0.93} ${sz*0.07},${r*1.25} ${sz*0.07},${r*0.75}" stroke="${t.c1}" stroke-width="1.5" fill="${t.c1}14"/>
+     <circle cx="${r}" cy="${r}" r="${sz*0.14}" fill="${t.c1}"/>`,
+    // Diamond
+    `<polygon points="${r},${sz*0.08} ${sz*0.92},${r} ${r},${sz*0.92} ${sz*0.08},${r}" stroke="${t.c1}" stroke-width="1.5" fill="${t.c1}14"/>
+     <polygon points="${r},${sz*0.3} ${sz*0.7},${r} ${r},${sz*0.7} ${sz*0.3},${r}" fill="${t.c1}" opacity="0.8"/>`,
+    // Square rotated 45
+    `<rect x="${sz*0.18}" y="${sz*0.18}" width="${sz*0.64}" height="${sz*0.64}" rx="4" stroke="${t.c1}" stroke-width="1.5" fill="${t.c1}14" transform="rotate(45 ${r} ${r})"/>
+     <rect x="${sz*0.32}" y="${sz*0.32}" width="${sz*0.36}" height="${sz*0.36}" rx="2" fill="${t.c1}"/>`,
+    // Triangle pointing up
+    `<polygon points="${r},${sz*0.1} ${sz*0.9},${sz*0.88} ${sz*0.1},${sz*0.88}" stroke="${t.c1}" stroke-width="1.5" fill="${t.c1}14"/>
+     <polygon points="${r},${sz*0.35} ${sz*0.68},${sz*0.72} ${sz*0.32},${sz*0.72}" fill="${t.c1}" opacity="0.85"/>`,
+    // Circle rings
+    `<circle cx="${r}" cy="${r}" r="${sz*0.42}" stroke="${t.c1}" stroke-width="1.5" fill="none"/>
+     <circle cx="${r}" cy="${r}" r="${sz*0.26}" stroke="${t.c1}" stroke-width="1" fill="${t.c1}18"/>
+     <circle cx="${r}" cy="${r}" r="${sz*0.1}" fill="${t.c1}"/>`,
+    // Cross
+    `<rect x="${sz*0.4}" y="${sz*0.1}" width="${sz*0.2}" height="${sz*0.8}" rx="3" fill="${t.c1}"/>
+     <rect x="${sz*0.1}" y="${sz*0.4}" width="${sz*0.8}" height="${sz*0.2}" rx="3" fill="${t.c1}"/>`,
+  ];
+  return `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" fill="none" style="border-radius:10px;background:${t.c1}0d;border:1px solid ${t.c1}22;flex-shrink:0;">${shapes[t.id%shapes.length]}</svg>`;
 }
 
-// ─── STATS COUNTER ────────────────────────────────────────
-function animateCount(el,target,suffix=''){
-  let start=0,dur=2000,startTime=null;
-  function step(ts){
-    if(!startTime)startTime=ts;
-    const p=Math.min((ts-startTime)/dur,1);
-    const ease=1-Math.pow(1-p,3);
-    el.textContent=Math.floor(ease*target)+suffix;
-    if(p<1)requestAnimationFrame(step);
+function buildTicker(){
+  const rows=[...TOKENS,...TOKENS].map(t=>`
+    <div class="tick">
+      <span style="color:var(--text);font-weight:600;">$${t.sym}</span>
+      <span>${t.price} BEAM</span>
+      <span class="${t.progress>50?'tick-up':'tick-down'}">${t.progress>50?'+':'-'}${(Math.random()*18+1).toFixed(1)}%</span>
+      <span>Vol ${t.vol}</span>
+    </div>`).join('');
+  document.getElementById('ticker').innerHTML=rows;
+}
+
+function countUp(el,target,suf=''){
+  let st=null,dur=1800;
+  function s(ts){
+    if(!st)st=ts;
+    const p=Math.min((ts-st)/dur,1);
+    const e=1-Math.pow(1-p,3);
+    el.textContent=Math.floor(e*target)+suf;
+    if(p<1)requestAnimationFrame(s);
   }
-  requestAnimationFrame(step);
+  requestAnimationFrame(s);
 }
 function runStats(){
-  animateCount(document.getElementById('s1'),247);
-  animateCount(document.getElementById('s2'),1,'.'+'4M');
-  setTimeout(()=>{document.getElementById('s2').textContent='1.4M';},2100);
-  animateCount(document.getElementById('s3'),18);
-  animateCount(document.getElementById('s4'),14,'K');
-  setTimeout(()=>{document.getElementById('s4').textContent='14K';},2100);
+  countUp(document.getElementById('sv1'),247);
+  countUp(document.getElementById('sv3'),18);
+  document.getElementById('sv2').textContent='1.4M';
+  document.getElementById('sv4').textContent='14.2K';
 }
 
-// ─── RENDER TOKENS ────────────────────────────────────────
 function renderTokens(){
-  const grid=document.getElementById('tokensGrid');
-  const list=activeFilter==='all'?DEMO_TOKENS:DEMO_TOKENS.filter(t=>t.cat===activeFilter);
-  grid.innerHTML=list.map(t=>`
-    <div class="token-card" onclick="openTrade(${t.id})">
-      <div class="tc-head">
-        <div class="tc-info">
-          <div class="tc-avatar" style="background:${t.color}22;border:1px solid ${t.color}33;">${t.emoji}</div>
-          <div>
-            <div class="tc-name">${t.name}</div>
-            <div class="tc-ticker">$${t.ticker} · ${t.cat}</div>
-          </div>
+  const list=filt==='all'?TOKENS:TOKENS.filter(t=>t.cat===filt);
+  document.getElementById('tokenGrid').innerHTML=list.map(t=>`
+    <div class="card" onclick="openModal(${t.id})">
+      <div class="card-top">
+        <div class="card-id">
+          ${makeLogo(t)}
+          <div><div class="card-name">${t.name}</div><div class="card-sym">$${t.sym} · ${t.cat}</div></div>
         </div>
-        <span class="tc-badge badge-${t.badge}">${t.badge}</span>
+        <span class="badge b-${t.badge}">${t.badge}</span>
       </div>
       <div class="curve-wrap">
-        <div class="curve-meta">
-          <div>Bonding curve</div>
-          <span>${t.progress}%</span>
-        </div>
-        <div class="curve-bar">
-          <div class="curve-fill" style="width:${t.progress}%"></div>
-        </div>
+        <div class="curve-row"><div>Bonding curve</div><b>${t.progress}%</b></div>
+        <div class="bar"><div class="fill" style="width:${t.progress}%"></div></div>
       </div>
-      <div class="tc-stats">
-        <div class="tc-stat">
-          <span class="tc-stat-val">${t.price}</span>
-          <div class="tc-stat-lbl">Price</div>
-        </div>
-        <div class="tc-stat">
-          <span class="tc-stat-val">${t.mcap}</span>
-          <div class="tc-stat-lbl">Mkt Cap</div>
-        </div>
-        <div class="tc-stat">
-          <span class="tc-stat-val">${t.buyers}</span>
-          <div class="tc-stat-lbl">Buyers</div>
-        </div>
+      <div class="card-nums">
+        <div class="num"><span class="num-v">${t.price}</span><div class="num-l">Price</div></div>
+        <div class="num"><span class="num-v">${t.mcap}</span><div class="num-l">Mkt Cap</div></div>
+        <div class="num"><span class="num-v">${t.buyers}</span><div class="num-l">Holders</div></div>
       </div>
-      <div class="tc-actions">
-        <button class="btn-buy" onclick="event.stopPropagation();openTrade(${t.id})">Buy $${t.ticker}</button>
-        <button class="btn-chart" onclick="event.stopPropagation();">📊</button>
+      <div class="card-btns">
+        <button class="btn-trade" onclick="event.stopPropagation();openModal(${t.id})">Buy $${t.sym}</button>
+        <button class="btn-info" onclick="event.stopPropagation();">Info</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-function filterTokens(cat,btn){
-  activeFilter=cat;
-  document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+function doFilter(f,btn){
+  filt=f;
+  document.querySelectorAll('.fil').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
   renderTokens();
 }
 
-// ─── TRADE MODAL ──────────────────────────────────────────
-function openTrade(id){
-  selectedToken=DEMO_TOKENS.find(t=>t.id===id);
-  document.getElementById('mName').textContent=selectedToken.name;
-  document.getElementById('mTicker').textContent=`$${selectedToken.ticker} · Beam Network`;
-  document.getElementById('mPrice').textContent=selectedToken.price;
-  document.getElementById('mChange').textContent=`+${(Math.random()*20).toFixed(1)}%`;
-  document.getElementById('tradeAmount').value='';
-  updateTradeInfo();
-  setTab('buy');
-  document.getElementById('tradeModal').classList.add('open');
+function openModal(id){
+  sel=TOKENS.find(t=>t.id===id);
+  document.getElementById('mLogo').innerHTML=makeLogo(sel,40);
+  document.getElementById('mName').textContent=sel.name;
+  document.getElementById('mSym').textContent=`$${sel.sym} · Beam Network`;
+  document.getElementById('mPrice').textContent=sel.price;
+  document.getElementById('mChg').textContent=`+${(Math.random()*14+1).toFixed(1)}%`;
+  document.getElementById('mAmt').value='';
+  calcTrade();setTab('buy');
+  document.getElementById('tradeOverlay').classList.add('open');
 }
-function closeModal(){
-  document.getElementById('tradeModal').classList.remove('open');
-}
-document.getElementById('tradeModal').addEventListener('click',function(e){
-  if(e.target===this)closeModal();
-});
+function closeModal(){document.getElementById('tradeOverlay').classList.remove('open');}
+document.getElementById('tradeOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
-function setTab(tab){
-  activeTab=tab;
-  document.getElementById('tabBuy').className='tab'+(tab==='buy'?' active-buy':'');
-  document.getElementById('tabSell').className='tab'+(tab==='sell'?' active-sell':'');
-  document.getElementById('tradeBtn').textContent=tab.toUpperCase();
-  document.getElementById('tradeBtn').className='modal-btn '+tab;
+function setTab(t){
+  tab=t;
+  document.getElementById('tBuy').className='tab'+(t==='buy'?' tb':'');
+  document.getElementById('tSell').className='tab'+(t==='sell'?' ts':'');
+  document.getElementById('mBtn').textContent=t.toUpperCase();
+  document.getElementById('mBtn').className='m-btn '+(t==='buy'?'buy-btn':'sell-btn');
 }
-
-function setTradeAmount(v){
-  document.getElementById('tradeAmount').value=v;
-  updateTradeInfo();
-}
-
-function updateTradeInfo(){
-  const amt=parseFloat(document.getElementById('tradeAmount').value)||0;
-  if(!amt||!selectedToken){
-    document.getElementById('mReceive').textContent='—';
-    document.getElementById('mImpact').textContent='—';
-    document.getElementById('mFee').textContent='—';
-    return;
-  }
-  const fee=amt*0.01;
-  const net=amt-fee;
-  const tokens=net/parseFloat(selectedToken.price);
-  const impact=(amt/parseFloat(selectedToken.mcap.replace('K','000'))*100).toFixed(2);
-  document.getElementById('mReceive').textContent=activeTab==='buy'
-    ?tokens.toLocaleString(undefined,{maximumFractionDigits:0})+' $'+selectedToken.ticker
-    :(net.toFixed(2)+' BEAM');
+function setAmt(v){document.getElementById('mAmt').value=v;calcTrade();}
+function calcTrade(){
+  const amt=parseFloat(document.getElementById('mAmt').value)||0;
+  if(!amt||!sel){['mRec','mImpact','mFee'].forEach(i=>document.getElementById(i).textContent='—');return;}
+  const fee=amt*0.01,net=amt-fee;
+  const tokens=net/parseFloat(sel.price);
+  const impact=(amt/(parseFloat(sel.mcap.replace('K','000'))+amt)*100).toFixed(2);
+  document.getElementById('mRec').textContent=tab==='buy'?tokens.toLocaleString(undefined,{maximumFractionDigits:0})+' $'+sel.sym:net.toFixed(3)+' BEAM';
   document.getElementById('mImpact').textContent=impact+'%';
   document.getElementById('mFee').textContent=fee.toFixed(4)+' BEAM';
 }
-
-async function executeTrade(){
-  const amt=parseFloat(document.getElementById('tradeAmount').value);
-  if(!amt){showToast('Enter an amount','err');return;}
-  if(!walletAddress){showToast('Connect your wallet first','err');return;}
-
-  const btn=document.getElementById('tradeBtn');
-  btn.textContent='Confirming...';btn.disabled=true;
-
-  // Simulate tx on demo
+async function execTrade(){
+  const amt=parseFloat(document.getElementById('mAmt').value);
+  if(!amt){toast('Enter an amount','err');return;}
+  if(!wallet){toast('Connect your wallet first','err');return;}
+  const btn=document.getElementById('mBtn');
+  btn.textContent='Processing...';btn.disabled=true;
   await new Promise(r=>setTimeout(r,1500));
-
-  // Update demo state
-  if(activeTab==='buy'){
-    selectedToken.buyers+=1;
-    selectedToken.progress=Math.min(99,selectedToken.progress+Math.random()*2);
-  }
-
-  closeModal();
-  renderTokens();
-  showToast(`✅ ${activeTab==='buy'?'Bought':'Sold'} ${amt} BEAM of $${selectedToken.ticker}`,'ok');
-  btn.disabled=false;
-  btn.textContent=activeTab.toUpperCase();
+  if(tab==='buy'){sel.buyers+=1;sel.progress=Math.min(98,sel.progress+1.2);}
+  closeModal();renderTokens();
+  toast(`${tab==='buy'?'Bought':'Sold'} ${amt} BEAM of $${sel.sym}`,'ok');
+  btn.disabled=false;btn.textContent=tab.toUpperCase();
 }
 
-// ─── LAUNCH TOKEN ─────────────────────────────────────────
-async function launchToken(){
-  const name=document.getElementById('tName').value.trim();
-  const ticker=document.getElementById('tTicker').value.trim();
-  const desc=document.getElementById('tDesc').value.trim();
-  const cat=document.getElementById('tCat').value;
-
-  if(!name||!ticker||!desc){showToast('Fill in all fields','err');return;}
-  if(!walletAddress){showToast('Connect your wallet first','err');return;}
-
-  const btn=document.querySelector('.btn-launch');
-  btn.textContent='DEPLOYING...';btn.disabled=true;
-
-  await new Promise(r=>setTimeout(r,2000));
-
-  // Add to demo list
-  const emojis=['🔥','⭐','🎯','💫','🌟','🎮','🚀'];
-  const colors=['#f0ff44','#00e5ff','#ff3d71','#00e676','#a78bfa'];
-  DEMO_TOKENS.unshift({
-    id:Date.now(),name,ticker,cat,
-    emoji:emojis[Math.floor(Math.random()*emojis.length)],
-    color:colors[Math.floor(Math.random()*colors.length)],
-    progress:0,price:'0.000001',
-    supply:document.getElementById('tSupply').value,
-    mcap:'0.1K',vol:'0',buyers:1,badge:'new'
-  });
-
-  renderTokens();
-  document.getElementById('tokens').scrollIntoView({behavior:'smooth'});
-  showToast(`🚀 $${ticker} launched on Beam!`,'ok');
-  btn.textContent='LAUNCH TOKEN →';btn.disabled=false;
-
-  // Clear form
-  ['tName','tTicker','tDesc'].forEach(id=>document.getElementById(id).value='');
+async function doLaunch(){
+  const name=document.getElementById('fName').value.trim();
+  const tick=document.getElementById('fTick').value.trim();
+  const desc=document.getElementById('fDesc').value.trim();
+  const cat=document.getElementById('fCat').value;
+  if(!name||!tick||!desc){toast('Fill in all fields','err');return;}
+  if(!wallet){toast('Connect your wallet first','err');return;}
+  const btn=document.querySelector('.btn-do');
+  btn.textContent='DEPLOYING ON BEAM...';btn.disabled=true;
+  await new Promise(r=>setTimeout(r,2200));
+  const cols=[{c1:'#f0ff44',c2:'#8a9400'},{c1:'#00e5ff',c2:'#006b80'},{c1:'#a78bfa',c2:'#4c1d95'},{c1:'#00e676',c2:'#005c2e'}];
+  const c=cols[Math.floor(Math.random()*cols.length)];
+  TOKENS.unshift({id:TOKENS.length,name,sym:tick,cat,...c,progress:0,price:'0.000001',mcap:'0.1K',vol:'0',buyers:1,badge:'new'});
+  renderTokens();scroll2('tokens');
+  toast(`$${tick} deployed on Beam Network`,'ok');
+  btn.textContent='DEPLOY TOKEN ON BEAM →';btn.disabled=false;
+  ['fName','fTick','fDesc'].forEach(id=>document.getElementById(id).value='');
 }
 
-// ─── WALLET ───────────────────────────────────────────────
 async function connectWallet(){
-  if(!window.ethereum){showToast('Install MetaMask mobile','err');return;}
+  if(!window.ethereum){toast('Install MetaMask','err');return;}
   try{
     provider=new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts",[]);
     signer=provider.getSigner();
-    walletAddress=await signer.getAddress();
-
-    // Add Beam network
+    wallet=await signer.getAddress();
     try{
-      await window.ethereum.request({
-        method:'wallet_switchEthereumChain',
-        params:[{chainId:'0x10E9'}]
-      });
+      await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x3429'}]});
     }catch(e){
-      if(e.code===4902){
-        await window.ethereum.request({
-          method:'wallet_addEthereumChain',
-          params:[{
-            chainId:'0x10E9',
-            chainName:'Beam Network',
-            nativeCurrency:{name:'BEAM',symbol:'BEAM',decimals:18},
-            rpcUrls:['https://build.onbeam.com/rpc'],
-            blockExplorerUrls:['https://4337.routescan.io']
-          }]
-        });
-      }
+      if(e.code===4902)await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:'0x3429',chainName:'Beam Testnet',nativeCurrency:{name:'BEAM',symbol:'BEAM',decimals:18},rpcUrls:['https://build.onbeam.com/rpc/testnet'],blockExplorerUrls:['https://subnets-test.avax.network/beam']}]});
     }
-
     const btn=document.getElementById('walletBtn');
-    btn.textContent=walletAddress.slice(0,6)+'...'+walletAddress.slice(-4);
+    btn.textContent=wallet.slice(0,6)+'...'+wallet.slice(-4);
     btn.classList.add('connected');
-    showToast('✅ Connected to Beam Network','ok');
-  }catch(e){
-    showToast('Failed: '+e.message,'err');
-  }
+    toast('Connected to Beam Testnet','ok');
+  }catch(e){toast('Failed: '+e.message,'err');}
 }
 
-// ─── TOAST ────────────────────────────────────────────────
-function showToast(msg,type='ok'){
+function scroll2(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+function toast(msg,type='ok'){
   const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast '+type+' show';
+  t.textContent=(type==='ok'?'✓ ':'')+msg;
+  t.className='toast '+type+' show';
   setTimeout(()=>t.classList.remove('show'),4000);
 }
 
-// ─── INIT ─────────────────────────────────────────────────
 window.addEventListener('load',()=>{
-  buildTicker();
-  renderTokens();
-  // Run stats when scrolled into view
-  const obs=new IntersectionObserver(entries=>{
-    if(entries[0].isIntersecting){runStats();obs.disconnect();}
-  },{threshold:0.3});
+  buildTicker();renderTokens();
+  const obs=new IntersectionObserver(e=>{if(e[0].isIntersecting){runStats();obs.disconnect();}},{threshold:0.4});
   obs.observe(document.querySelector('.stats'));
 });
 </script>
