@@ -1,10 +1,5 @@
 {
   "build": {
-    "builder": "NIXPACKS",
-    "buildCommand": "npm install -g serve"
-  },
-  "deploy": {
-    "startCommand": "serve . --listen 0.0.0.0:$PORT",
-    "restartPolicyType": "ON_FAILURE"
+    "builder": "DOCKERFILE"
   }
 }
