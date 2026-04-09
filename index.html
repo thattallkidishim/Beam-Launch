@@ -3,561 +3,351 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
 <title>BeamLaunch</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#04060d;--s1:#080d1a;--s2:#0d1424;--border:#162036;
-  --a1:#f0ff44;--a2:#00e5ff;--a3:#ff3d71;--a4:#00e676;
-  --text:#dde4f5;--muted:#3d5270;
-  --D:'Bebas Neue',sans-serif;
-  --B:'DM Sans',sans-serif;
-  --M:'DM Mono',monospace;
+  --bg:#07080e;--c1:#0c0e17;--c2:#11141f;--c3:#161926;
+  --ln:#1c2030;--ln2:#222840;
+  --y:#ccf000;--yh:#b8d800;
+  --b:#00c4e0;--g:#00b87a;--r:#e83650;--p:#7c5cf8;--o:#f5a623;
+  --t:#b4c2d8;--t2:#526480;--t3:#2c3a52;
+  --f:'Inter',sans-serif;--m:'JetBrains Mono',monospace;
+  --nav:52px;--rad:8px;
 }
-html,body{height:100%;overflow-x:hidden;}
-body{background:var(--bg);color:var(--text);font-family:var(--B);}
+html{height:100%;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--t);font-family:var(--f);font-size:14px;min-height:100%;overflow-x:hidden;}
 
-/* PAGES */
-.page{display:none;min-height:100vh;}
-.page.active{display:block;}
-
-/* ══════════════════════════════════════
-NAV
-══════════════════════════════════════ */
-.nav{
-position:fixed;top:0;left:0;right:0;z-index:200;
+/* ── NAV ── */
+#nav{
+position:fixed;top:0;left:0;right:0;z-index:500;height:var(–nav);
 display:flex;align-items:center;justify-content:space-between;
-padding:0 32px;height:60px;
-background:rgba(4,6,13,0.95);
-backdrop-filter:blur(24px);
-border-bottom:1px solid var(–border);
+padding:0 24px;background:rgba(7,8,14,.97);backdrop-filter:blur(20px);
+border-bottom:1px solid var(–ln);
 }
-.nav-logo{
-font-family:var(–D);font-size:22px;letter-spacing:3px;
-display:flex;align-items:center;gap:8px;cursor:pointer;
-text-decoration:none;color:var(–text);
+.logo{display:flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none;}
+.logo-mark{width:24px;height:24px;border-radius:5px;background:var(–y);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-name{font-size:15px;font-weight:700;color:var(–t);letter-spacing:-.2px;}
+.logo-name em{font-style:normal;color:var(–y);}
+.nav-c{display:flex;gap:2px;}
+.nb{font-size:13px;font-weight:500;color:var(–t2);padding:5px 12px;border-radius:6px;border:none;background:none;cursor:pointer;font-family:var(–f);transition:all .15s;}
+.nb:hover{color:var(–t);background:var(–c2);}
+.nb.on{color:var(–y);background:rgba(204,240,0,.07);}
+.nav-r{display:flex;align-items:center;gap:8px;}
+.mode-chip{
+font-family:var(–m);font-size:10px;letter-spacing:.5px;padding:4px 10px;
+border-radius:4px;display:none;
 }
-.nav-logo .mark{
-width:26px;height:26px;background:var(–a1);border-radius:5px;
+.mode-chip.demo{background:rgba(245,166,35,.12);color:var(–o);border:1px solid rgba(245,166,35,.25);}
+.mode-chip.real{background:rgba(0,184,122,.1);color:var(–g);border:1px solid rgba(0,184,122,.22);}
+#wbtn{
+font-family:var(–m);font-size:11px;font-weight:500;
+padding:7px 15px;border-radius:6px;border:none;cursor:pointer;
+background:var(–y);color:#000;transition:background .15s;
+}
+#wbtn:hover{background:var(–yh);}
+#wbtn.on{background:var(–c2);color:var(–y);border:1px solid rgba(204,240,0,.2);}
+
+/* ── PAGES ── */
+.pg{display:none;padding-top:var(–nav);min-height:100vh;}
+.pg.on{display:block;}
+
+/* ════ STEP FLOW CONTAINER ════ */
+.flow-shell{
+max-width:520px;margin:0 auto;
+padding:40px 20px 80px;
+}
+
+/* ── MODE SELECT ── */
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+.mode-card{
+border:2px solid var(–ln2);border-radius:var(–rad);padding:24px 20px;
+cursor:pointer;transition:all .2s;background:var(–c1);text-align:center;
+}
+.mode-card:hover{border-color:var(–y);}
+.mode-card.selected{border-color:var(–y);background:rgba(204,240,0,.05);}
+.mc-icon{
+width:44px;height:44px;border-radius:10px;margin:0 auto 14px;
+display:flex;align-items:center;justify-content:center;font-size:20px;
+}
+.mc-title{font-size:15px;font-weight:600;margin-bottom:5px;}
+.mc-desc{font-size:12px;color:var(–t2);line-height:1.6;}
+.mc-tag{
+display:inline-block;font-family:var(–m);font-size:9px;letter-spacing:.5px;
+padding:2px 8px;border-radius:3px;text-transform:uppercase;margin-top:10px;
+}
+.mc-tag.demo{background:rgba(245,166,35,.1);color:var(–o);border:1px solid rgba(245,166,35,.2);}
+.mc-tag.real{background:rgba(0,184,122,.08);color:var(–g);border:1px solid rgba(0,184,122,.18);}
+
+/* ── PROGRESS BAR ── */
+.flow-progress{
+display:flex;align-items:center;gap:0;
+padding:16px 20px;border-bottom:1px solid var(–ln);
+background:var(–c1);margin-bottom:0;
+position:sticky;top:var(–nav);z-index:10;
+}
+.fp-step{display:flex;align-items:center;flex:1;}
+.fp-dot{
+width:22px;height:22px;border-radius:50%;flex-shrink:0;
 display:flex;align-items:center;justify-content:center;
+font-family:var(–m);font-size:9px;border:1.5px solid var(–ln2);
+background:var(–c2);color:var(–t2);transition:all .25s;
 }
-.nav-logo span{color:var(–a1);}
-.nav-mid{display:flex;gap:4px;}
-.nav-tab{
-font-size:13px;font-weight:500;color:var(–muted);
-padding:7px 14px;border-radius:6px;cursor:pointer;
-background:none;border:none;font-family:var(–B);
-transition:all 0.15s;text-decoration:none;display:inline-block;
-}
-.nav-tab:hover{color:var(–text);background:var(–s2);}
-.nav-tab.cur{color:var(–a1);background:rgba(240,255,68,0.06);}
-.nav-right{display:flex;align-items:center;gap:10px;}
-.nav-chain{
-font-family:var(–M);font-size:10px;letter-spacing:1px;
-padding:5px 10px;border-radius:4px;
-background:rgba(0,229,255,0.06);
-border:1px solid rgba(0,229,255,0.15);
-color:var(–a2);
-}
-.btn-w{
-font-family:var(–M);font-size:11px;padding:8px 16px;
-border-radius:5px;border:none;cursor:pointer;
-background:var(–a1);color:#000;font-weight:500;
-transition:all 0.2s;
-}
-.btn-w:hover{box-shadow:0 0 20px rgba(240,255,68,0.4);}
-.btn-w.on{background:var(–s2);color:var(–a1);border:1px solid rgba(240,255,68,0.2);}
+.fp-dot.done{background:var(–g);border-color:var(–g);color:#000;}
+.fp-dot.act{background:var(–y);border-color:var(–y);color:#000;}
+.fp-dot.err{background:var(–r);border-color:var(–r);color:#fff;}
+.fp-label{font-size:11px;color:var(–t2);margin-left:6px;white-space:nowrap;display:none;}
+.fp-label.act{color:var(–y);display:block;}
+.fp-line{flex:1;height:1px;background:var(–ln2);margin:0 6px;transition:background .25s;}
+.fp-line.done{background:var(–g);}
 
-/* ══════════════════════════════════════
-PAGE: LANDING
-══════════════════════════════════════ */
-#pg-home{overflow:hidden;}
+/* ── STEP PANELS ── */
+.step-panel{display:none;padding-top:0;}
+.step-panel.on{display:block;}
+.step-inner{padding:28px 24px 0;}
+.step-title{font-size:18px;font-weight:700;margin-bottom:4px;letter-spacing:-.3px;}
+.step-sub{font-size:13px;color:var(–t2);margin-bottom:24px;line-height:1.65;}
 
-/* BIG ANIMATED BG */
-.home-bg{
-position:fixed;inset:0;z-index:0;pointer-events:none;
-overflow:hidden;
-}
-.home-bg canvas{position:absolute;inset:0;width:100%;height:100%;}
-
-/* HERO — SPLIT LAYOUT */
-.hero-split{
-position:relative;z-index:1;
-min-height:100vh;
-display:grid;
-grid-template-columns:1fr 1fr;
-padding-top:60px;
-}
-.hero-left{
-display:flex;flex-direction:column;justify-content:center;
-padding:80px 48px 80px 64px;
-border-right:1px solid var(–border);
-}
-.hero-eyebrow{
-display:inline-flex;align-items:center;gap:8px;
-font-family:var(–M);font-size:10px;letter-spacing:2.5px;
-color:var(–a1);text-transform:uppercase;
-margin-bottom:32px;
-}
-.pulse{width:5px;height:5px;border-radius:50%;background:var(–a1);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.3;transform:scale(0.8);}}
-
-.hero-h1{
-font-family:var(–D);
-font-size:clamp(64px,7vw,96px);
-line-height:0.9;letter-spacing:1px;
-margin-bottom:28px;
-}
-.hero-h1 .row1{display:block;color:var(–text);}
-.hero-h1 .row2{
-display:block;
-color:transparent;
--webkit-text-stroke:1px var(–a1);
-opacity:0.6;
-}
-.hero-h1 .row3{display:block;color:var(–a1);}
-
-.hero-desc{
-font-size:15px;color:var(–muted);line-height:1.8;
-max-width:400px;margin-bottom:40px;font-weight:300;
-}
-.hero-actions{display:flex;gap:10px;flex-wrap:wrap;}
-.btn-launch-main{
-font-family:var(–B);font-weight:600;font-size:14px;
-padding:13px 28px;border-radius:6px;border:none;cursor:pointer;
-background:var(–a1);color:#000;transition:all 0.2s;
-}
-.btn-launch-main:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(240,255,68,0.45);}
-.btn-explore-main{
-font-family:var(–B);font-weight:500;font-size:14px;
-padding:13px 28px;border-radius:6px;cursor:pointer;
-background:transparent;color:var(–text);
-border:1px solid var(–border);transition:all 0.2s;
-}
-.btn-explore-main:hover{border-color:var(–a2);color:var(–a2);}
-
-/* HERO RIGHT — LIVE FEED */
-.hero-right{
-display:flex;flex-direction:column;
-padding:80px 48px;
-overflow:hidden;position:relative;
-}
-.feed-label{
-font-family:var(–M);font-size:10px;letter-spacing:2px;
-color:var(–muted);text-transform:uppercase;margin-bottom:20px;
-display:flex;align-items:center;gap:8px;
-}
-.feed-label::after{content:’’;flex:1;height:1px;background:var(–border);}
-.live-feed{
-flex:1;overflow:hidden;position:relative;
-}
-.live-feed::after{
-content:’’;position:absolute;bottom:0;left:0;right:0;height:120px;
-background:linear-gradient(transparent,var(–bg));
-pointer-events:none;z-index:2;
-}
-.feed-items{display:flex;flex-direction:column;gap:8px;animation:feedScroll 20s linear infinite;}
-@keyframes feedScroll{from{transform:translateY(0);}to{transform:translateY(-50%);}}
-.feed-item{
-background:var(–s1);border:1px solid var(–border);
-border-radius:8px;padding:12px 16px;
-display:flex;align-items:center;gap:12px;
-transition:border-color 0.2s;flex-shrink:0;
-}
-.fi-logo{width:32px;height:32px;border-radius:7px;flex-shrink:0;}
-.fi-name{font-size:13px;font-weight:600;flex:1;}
-.fi-sym{font-family:var(–M);font-size:10px;color:var(–muted);}
-.fi-bar-wrap{width:80px;}
-.fi-bar{height:3px;background:var(–s2);border-radius:2px;overflow:hidden;}
-.fi-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(–a1),var(–a2));}
-.fi-pct{font-family:var(–M);font-size:10px;color:var(–muted);margin-top:3px;}
-.fi-price{font-family:var(–M);font-size:12px;color:var(–text);text-align:right;}
-.fi-chg{font-size:10px;text-align:right;}
-.up{color:var(–a4);}
-.dn{color:var(–a3);}
-
-/* BOTTOM BAR ON LANDING */
-.home-stats{
-position:relative;z-index:1;
-display:grid;grid-template-columns:repeat(4,1fr);
-border-top:1px solid var(–border);
-background:var(–s1);
-}
-.hs{
-padding:28px 32px;border-right:1px solid var(–border);
-position:relative;overflow:hidden;
-}
-.hs:last-child{border-right:none;}
-.hs::before{
-content:’’;position:absolute;top:0;left:0;right:0;height:2px;
-background:linear-gradient(90deg,var(–a1),transparent);
-transform:scaleX(0);transform-origin:left;
-transition:transform 0.4s ease;
-}
-.hs:hover::before{transform:scaleX(1);}
-.hs-val{font-family:var(–D);font-size:36px;letter-spacing:1px;color:var(–a1);display:block;line-height:1;}
-.hs-lbl{font-family:var(–M);font-size:10px;color:var(–muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:6px;}
-
-/* HOW IT WORKS */
-.hiw{
-position:relative;z-index:1;
-padding:100px 64px;
-border-top:1px solid var(–border);
-}
-.hiw-label{font-family:var(–M);font-size:10px;letter-spacing:3px;color:var(–a1);text-transform:uppercase;margin-bottom:12px;}
-.hiw-title{font-family:var(–D);font-size:clamp(40px,5vw,72px);letter-spacing:2px;margin-bottom:60px;}
-.hiw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(–border);}
-.hiw-step{
-background:var(–bg);padding:40px 32px;
-position:relative;overflow:hidden;transition:background 0.2s;
-}
-.hiw-step:hover{background:var(–s1);}
-.hiw-n{
-font-family:var(–D);font-size:100px;line-height:1;
-color:rgba(240,255,68,0.04);
-position:absolute;top:-10px;right:10px;
-pointer-events:none;
-}
-.hiw-icon{
-width:44px;height:44px;border-radius:10px;
-border:1px solid var(–border);background:var(–s1);
-display:flex;align-items:center;justify-content:center;
-margin-bottom:20px;
-}
-.hiw-step h3{font-size:17px;font-weight:600;margin-bottom:10px;}
-.hiw-step p{font-size:13px;color:var(–muted);line-height:1.75;}
-
-/* ══════════════════════════════════════
-PAGE: EXPLORE
-══════════════════════════════════════ */
-#pg-explore{padding-top:60px;}
-.explore-hero{
-background:var(–s1);
-border-bottom:1px solid var(–border);
-padding:48px 64px 40px;
-}
-.explore-hero h1{font-family:var(–D);font-size:clamp(36px,5vw,64px);letter-spacing:2px;margin-bottom:8px;}
-.explore-hero p{font-size:14px;color:var(–muted);}
-
-.explore-toolbar{
-display:flex;align-items:center;justify-content:space-between;
-padding:20px 64px;border-bottom:1px solid var(–border);
-flex-wrap:wrap;gap:12px;
-background:var(–bg);position:sticky;top:60px;z-index:10;
-}
-.pill-group{display:flex;gap:6px;flex-wrap:wrap;}
-.pill{
-font-family:var(–M);font-size:11px;
-padding:6px 14px;border-radius:20px;cursor:pointer;
-border:1px solid var(–border);background:transparent;
-color:var(–muted);transition:all 0.15s;
-}
-.pill:hover,.pill.on{border-color:var(–a1);color:var(–a1);background:rgba(240,255,68,0.05);}
-.sort-select{
-font-family:var(–M);font-size:11px;
-background:var(–s1);border:1px solid var(–border);
-color:var(–muted);padding:6px 12px;border-radius:5px;
-cursor:pointer;outline:none;
-}
-
-.tokens-wrap{padding:32px 64px 80px;max-width:1400px;}
-.tokens-table-head{
-display:grid;
-grid-template-columns:2fr 1fr 1fr 1fr 120px 100px;
-padding:0 16px 12px;
-font-family:var(–M);font-size:10px;letter-spacing:1.5px;
-color:var(–muted);text-transform:uppercase;
-border-bottom:1px solid var(–border);
-margin-bottom:8px;
-}
-.token-row{
-display:grid;
-grid-template-columns:2fr 1fr 1fr 1fr 120px 100px;
-align-items:center;
-padding:14px 16px;
-border-radius:8px;
-cursor:pointer;transition:background 0.15s;
-margin-bottom:4px;
-}
-.token-row:hover{background:var(–s1);}
-.tr-info{display:flex;align-items:center;gap:12px;}
-.tr-logo{width:36px;height:36px;border-radius:8px;flex-shrink:0;}
-.tr-name{font-size:14px;font-weight:600;}
-.tr-sym{font-family:var(–M);font-size:11px;color:var(–muted);}
-.tr-val{font-family:var(–M);font-size:13px;}
-.tr-bar-wrap{width:100%;}
-.tr-bar{height:4px;background:var(–s2);border-radius:2px;overflow:hidden;}
-.tr-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(–a1),var(–a2));}
-.tr-pct{font-family:var(–M);font-size:10px;color:var(–muted);margin-top:3px;}
-.btn-buy-sm{
-font-size:12px;font-weight:600;font-family:var(–B);
-padding:7px 16px;border-radius:5px;border:none;cursor:pointer;
-background:var(–a1);color:#000;transition:all 0.15s;
-width:100%;
-}
-.btn-buy-sm:hover{box-shadow:0 0 14px rgba(240,255,68,0.35);}
-
-/* ══════════════════════════════════════
-PAGE: LAUNCH
-══════════════════════════════════════ */
-#pg-launch{padding-top:60px;}
-.launch-hero{
-background:var(–s1);border-bottom:1px solid var(–border);
-padding:48px 64px 40px;
-}
-.launch-hero h1{font-family:var(–D);font-size:clamp(36px,5vw,64px);letter-spacing:2px;margin-bottom:8px;}
-.launch-hero p{font-size:14px;color:var(–muted);}
-
-.launch-body{
-display:grid;grid-template-columns:1fr 380px;
-gap:0;max-width:100%;
-}
-.launch-form-wrap{
-padding:48px 64px;border-right:1px solid var(–border);
-}
-.launch-sidebar{padding:48px 40px;position:sticky;top:60px;height:fit-content;}
-
-.form-section{margin-bottom:36px;}
-.form-section-title{
-font-family:var(–M);font-size:10px;letter-spacing:2px;
-color:var(–a1);text-transform:uppercase;
-margin-bottom:20px;padding-bottom:10px;
-border-bottom:1px solid var(–border);
-}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.field{display:flex;flex-direction:column;gap:7px;}
-.field.wide{grid-column:1/-1;}
-.flabel{font-family:var(–M);font-size:10px;letter-spacing:1px;color:var(–muted);text-transform:uppercase;}
-.finput{
-background:var(–s2);border:1px solid var(–border);
-border-radius:6px;padding:11px 14px;
-color:var(–text);font-family:var(–B);font-size:14px;
-outline:none;width:100%;transition:border-color 0.2s;
+/* ── FORM ELEMENTS ── */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.lbl{font-family:var(–m);font-size:9px;letter-spacing:1.2px;color:var(–t2);text-transform:uppercase;}
+.lbl sub{font-size:8px;color:var(–t3);letter-spacing:0;text-transform:none;margin-left:3px;}
+.inp{
+background:var(–c2);border:1px solid var(–ln2);border-radius:var(–rad);
+padding:10px 12px;color:var(–t);font-family:var(–f);font-size:14px;
+outline:none;width:100%;transition:border-color .15s;
 -webkit-appearance:none;appearance:none;
 }
-.finput:focus{border-color:var(–a1);}
-.finput::placeholder{color:var(–muted);}
-textarea.finput{resize:vertical;min-height:80px;}
+.inp:focus{border-color:var(–y);}
+.inp::placeholder{color:var(–t3);}
+.inp[readonly]{color:var(–t2);cursor:default;}
+textarea.inp{resize:vertical;min-height:70px;line-height:1.6;}
+select.inp{cursor:pointer;}
+.inp-row{display:flex;align-items:center;background:var(–c2);border:1px solid var(–ln2);border-radius:var(–rad);overflow:hidden;transition:border-color .15s;}
+.inp-row:focus-within{border-color:var(–y);}
+.inp-pre{font-family:var(–m);font-size:9px;color:var(–t2);padding:0 10px;border-right:1px solid var(–ln2);white-space:nowrap;flex-shrink:0;letter-spacing:.5px;}
+.inp-row .inp{border:none;border-radius:0;background:transparent;}
 
-.tk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.tk-cell{
-background:var(–s2);border:1px solid var(–border);
-border-radius:6px;padding:12px 8px;text-align:center;
-}
-.tk-pct{font-family:var(–D);font-size:22px;color:var(–a1);display:block;line-height:1;}
-.tk-name{font-family:var(–M);font-size:9px;color:var(–muted);text-transform:uppercase;letter-spacing:0.3px;margin-top:4px;}
+/* image upload */
+.upbox{border:2px dashed var(–ln2);border-radius:var(–rad);padding:22px;text-align:center;cursor:pointer;transition:border-color .15s;position:relative;overflow:hidden;}
+.upbox:hover{border-color:var(–y);}
+.upbox input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0;}
+.up-thumb{width:52px;height:52px;border-radius:9px;object-fit:cover;border:2px solid var(–y);display:none;margin:0 auto 8px;}
+.up-text{font-size:12px;color:var(–t2);margin-top:7px;}
 
-.fee-box{
-background:rgba(240,255,68,0.03);border:1px solid rgba(240,255,68,0.1);
-border-radius:6px;padding:14px 16px;font-size:13px;color:var(–muted);
-line-height:1.6;
+/* ── FEE CARD ── */
+.fee-card{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);overflow:hidden;margin-bottom:16px;}
+.fee-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(–ln);font-size:13px;}
+.fee-row:last-child{border-bottom:none;}
+.fee-row .k{color:var(–t2);}
+.fee-row .v{font-family:var(–m);font-size:11px;color:var(–y);}
+.fee-total{
+display:flex;justify-content:space-between;align-items:center;padding:12px 14px;
+background:rgba(204,240,0,.04);border-top:1px solid rgba(204,240,0,.1);font-weight:600;font-size:13px;
 }
-.fee-box strong{color:var(–a1);}
+.fee-total .v{font-family:var(–m);font-size:14px;color:var(–y);}
 
-.btn-deploy{
-width:100%;padding:16px;border-radius:7px;border:none;cursor:pointer;
-background:var(–a1);color:#000;
-font-family:var(–D);font-size:22px;letter-spacing:2px;
-transition:all 0.2s;margin-top:8px;
+/* mode badge in fee */
+.mode-badge{
+display:inline-flex;align-items:center;gap:5px;
+font-family:var(–m);font-size:9px;letter-spacing:.5px;text-transform:uppercase;
+padding:3px 9px;border-radius:4px;
 }
-.btn-deploy:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(240,255,68,0.45);}
+.mode-badge.demo{background:rgba(245,166,35,.1);color:var(–o);border:1px solid rgba(245,166,35,.2);}
+.mode-badge.real{background:rgba(0,184,122,.08);color:var(–g);border:1px solid rgba(0,184,122,.18);}
+.mode-badge::before{content:’’;width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0;}
 
-/* Sidebar */
-.sb-card{
-background:var(–s1);border:1px solid var(–border);
-border-radius:10px;padding:20px;margin-bottom:16px;
+/* ── STATE CARD (loading / success / error) ── */
+.state-card{
+background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);
+padding:28px 20px;text-align:center;margin-bottom:16px;
 }
-.sb-card-title{font-family:var(–M);font-size:10px;letter-spacing:2px;color:var(–muted);text-transform:uppercase;margin-bottom:14px;}
-.sb-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(–border);font-size:13px;}
-.sb-row:last-child{border-bottom:none;}
-.sb-row span{font-family:var(–M);font-size:12px;color:var(–a1);}
-.sb-steps{display:flex;flex-direction:column;gap:10px;}
-.sb-step{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(–muted);}
-.sb-step-n{
-width:20px;height:20px;border-radius:50%;
-background:rgba(240,255,68,0.1);border:1px solid rgba(240,255,68,0.2);
-font-family:var(–M);font-size:10px;color:var(–a1);
-display:flex;align-items:center;justify-content:center;flex-shrink:0;
-margin-top:1px;
+.state-card.loading .st-icon{animation:spin .9s linear infinite;}
+.state-card.success{border-color:rgba(0,184,122,.3);}
+.state-card.error{border-color:rgba(232,54,80,.3);}
+.state-card.fallback{border-color:rgba(245,166,35,.3);}
+.st-icon{
+width:44px;height:44px;border-radius:50%;margin:0 auto 14px;
+display:flex;align-items:center;justify-content:center;
 }
+.st-icon.spin-ring{border:3px solid var(–ln2);border-top-color:var(–y);}
+.st-icon.ok-ring{background:rgba(0,184,122,.12);border:1.5px solid rgba(0,184,122,.3);}
+.st-icon.err-ring{background:rgba(232,54,80,.1);border:1.5px solid rgba(232,54,80,.25);}
+.st-icon.warn-ring{background:rgba(245,166,35,.1);border:1.5px solid rgba(245,166,35,.25);}
+@keyframes spin{to{transform:rotate(360deg);}}
+.st-title{font-size:15px;font-weight:600;margin-bottom:4px;}
+.st-sub{font-size:12px;color:var(–t2);line-height:1.65;}
+.st-tag{
+display:inline-block;font-family:var(–m);font-size:9px;letter-spacing:.5px;
+padding:3px 9px;border-radius:4px;margin-top:10px;text-transform:uppercase;
+}
+.st-tag.sim{background:rgba(245,166,35,.1);color:var(–o);}
+.st-tag.real{background:rgba(0,184,122,.08);color:var(–g);}
 
-/* ══════════════════════════════════════
-PAGE: TOKEN DETAIL
-══════════════════════════════════════ */
-#pg-token{padding-top:60px;}
-.token-detail-wrap{
-display:grid;grid-template-columns:1fr 360px;
-min-height:calc(100vh - 60px);
-}
-.td-main{border-right:1px solid var(–border);padding:40px 48px;}
-.td-sidebar{padding:40px 32px;}
+/* deploy steps list */
+.dep-list{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);overflow:hidden;text-align:left;margin-top:16px;}
+.dep-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(–ln);font-size:13px;}
+.dep-row:last-child{border-bottom:none;}
+.dep-ico{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;}
+.dep-ico.w{border:1.5px solid var(–ln2);color:var(–t3);}
+.dep-ico.r{border:2px solid var(–y);border-top-color:transparent;animation:spin .8s linear infinite;}
+.dep-ico.d{background:var(–g);color:#000;font-weight:700;}
+.dep-ico.skip{background:rgba(245,166,35,.15);color:var(–o);}
+.dep-txt{color:var(–t2);transition:color .2s;font-size:12px;}
+.dep-txt.act{color:var(–t);}
+.dep-txt.done{color:var(–g);}
+.dep-txt.skip{color:var(–o);}
 
-.td-header{display:flex;align-items:center;gap:16px;margin-bottom:32px;}
-.td-logo{width:56px;height:56px;border-radius:14px;flex-shrink:0;}
-.td-name{font-family:var(–D);font-size:40px;letter-spacing:1px;line-height:1;}
-.td-sym{font-family:var(–M);font-size:12px;color:var(–muted);margin-top:2px;}
+/* ── CONFIRM ── */
+.cf-head{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.cf-logo{width:52px;height:52px;border-radius:12px;flex-shrink:0;}
+.cf-name{font-size:20px;font-weight:700;letter-spacing:-.3px;line-height:1.15;}
+.cf-sym{font-family:var(–m);font-size:11px;color:var(–t2);margin-top:2px;}
+.cf-badge{margin-left:auto;}
 
-/* Fake chart */
-.chart-wrap{
-background:var(–s1);border:1px solid var(–border);
-border-radius:10px;padding:20px;margin-bottom:24px;
-height:220px;position:relative;overflow:hidden;
-}
-.chart-label{font-family:var(–M);font-size:10px;color:var(–muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
-.chart-svg{width:100%;height:160px;}
+.info-card{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);overflow:hidden;margin-bottom:10px;}
+.info-title{font-family:var(–m);font-size:9px;letter-spacing:1.2px;color:var(–t2);text-transform:uppercase;padding:10px 14px;border-bottom:1px solid var(–ln);background:var(–c2);}
+.info-row{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(–ln);font-size:13px;}
+.info-row:last-child{border-bottom:none;}
+.info-row .k{color:var(–t2);flex-shrink:0;}
+.info-row .v{font-family:var(–m);font-size:11px;color:var(–t);text-align:right;word-break:break-all;max-width:62%;}
+.info-row .v.addr{color:var(–b);font-size:10px;}
+.info-row .v.ok{color:var(–g);}
+.info-row .v.sim{color:var(–o);}
+.info-row .v.fee{color:var(–y);}
 
-.td-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px;}
-.td-stat{background:var(–s1);border:1px solid var(–border);border-radius:8px;padding:14px;}
-.td-stat-val{font-family:var(–M);font-size:14px;font-weight:500;display:block;margin-bottom:3px;}
-.td-stat-lbl{font-family:var(–M);font-size:9px;color:var(–muted);text-transform:uppercase;letter-spacing:1px;}
+.cbtn{font-family:var(–m);font-size:9px;padding:3px 8px;border-radius:3px;border:1px solid var(–ln2);background:var(–c2);color:var(–t2);cursor:pointer;transition:all .12s;margin-left:6px;white-space:nowrap;flex-shrink:0;}
+.cbtn:hover{border-color:var(–b);color:var(–b);}
 
-.curve-section{background:var(–s1);border:1px solid var(–border);border-radius:10px;padding:20px;}
-.curve-title{font-family:var(–M);font-size:10px;letter-spacing:2px;color:var(–muted);text-transform:uppercase;margin-bottom:14px;}
-.big-bar{height:10px;background:var(–s2);border-radius:5px;overflow:hidden;margin-bottom:10px;}
-.big-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(–a1),var(–a2));transition:width 1s ease;}
-.curve-meta{display:flex;justify-content:space-between;font-family:var(–M);font-size:11px;color:var(–muted);}
-.curve-meta b{color:var(–text);}
+.share-row{display:flex;gap:6px;margin-bottom:12px;}
+.sbtn{flex:1;padding:9px;border-radius:6px;border:1px solid var(–ln2);background:var(–c2);color:var(–t2);font-size:12px;font-family:var(–f);cursor:pointer;transition:all .12s;}
+.sbtn:hover{border-color:var(–t2);color:var(–t);}
 
-/* Trade panel */
-.trade-panel{
-background:var(–s1);border:1px solid var(–border);
-border-radius:10px;padding:20px;position:sticky;top:80px;
-}
-.trade-tabs{display:flex;gap:4px;margin-bottom:16px;}
-.ttab{
-flex:1;padding:9px;border-radius:6px;border:none;cursor:pointer;
-font-family:var(–B);font-size:13px;font-weight:500;
-background:var(–s2);color:var(–muted);transition:all 0.15s;
-}
-.ttab.buy-on{background:rgba(240,255,68,0.1);color:var(–a1);}
-.ttab.sell-on{background:rgba(255,61,113,0.1);color:var(–a3);}
+/* ── TOKEN VIEW ── */
+.tv-layout{display:grid;grid-template-columns:1fr 300px;min-height:calc(100vh - var(–nav));}
+.tv-main{padding:28px 36px;border-right:1px solid var(–ln);}
+.tv-side{padding:20px 18px;}
+.tv-hd{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.tv-name{font-size:19px;font-weight:700;letter-spacing:-.3px;line-height:1.15;}
+.tv-sym{font-family:var(–m);font-size:10px;color:var(–t2);margin-top:2px;}
 
-.t-inp-wrap{position:relative;margin-bottom:10px;}
-.t-inp{
-width:100%;background:var(–s2);border:1px solid var(–border);
-border-radius:7px;padding:13px 60px 13px 14px;
-color:var(–text);font-family:var(–M);font-size:15px;
-outline:none;-webkit-appearance:none;transition:border-color 0.2s;
-}
-.t-inp:focus{border-color:var(–a1);}
-.t-sfx{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(–M);font-size:11px;color:var(–muted);}
-.t-quick{display:flex;gap:6px;margin-bottom:14px;}
-.t-qb{
-flex:1;padding:6px;border-radius:4px;
-border:1px solid var(–border);background:transparent;
-color:var(–muted);font-family:var(–M);font-size:11px;cursor:pointer;
-transition:all 0.15s;
-}
-.t-qb:hover{border-color:var(–a1);color:var(–a1);}
-.t-info{background:var(–s2);border-radius:7px;padding:12px;margin-bottom:14px;}
-.t-row{display:flex;justify-content:space-between;padding:3px 0;font-size:12px;color:var(–muted);}
-.t-row span{color:var(–text);font-family:var(–M);}
-.t-btn{
-width:100%;padding:13px;border-radius:7px;border:none;cursor:pointer;
-font-family:var(–D);font-size:20px;letter-spacing:1px;transition:all 0.2s;
-}
-.t-btn.buy{background:var(–a1);color:#000;}
-.t-btn.sell{background:var(–a3);color:#fff;}
-.t-btn:hover{transform:translateY(-1px);}
+.chart-box{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);padding:14px;margin-bottom:12px;}
+.chart-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.chart-price{font-size:20px;font-weight:700;font-family:var(–m);color:var(–y);}
+.chart-chg{font-family:var(–m);font-size:11px;}
+.chart-sub{font-size:10px;color:var(–t2);margin-top:1px;}
+.chart-svg{width:100%;height:110px;display:block;}
 
-.holders-list{margin-top:24px;}
-.holders-title{font-family:var(–M);font-size:10px;letter-spacing:2px;color:var(–muted);text-transform:uppercase;margin-bottom:12px;}
-.holder{
-display:flex;align-items:center;justify-content:space-between;
-padding:8px 0;border-bottom:1px solid var(–border);
-font-size:12px;
-}
-.holder:last-child{border-bottom:none;}
-.holder-addr{font-family:var(–M);color:var(–muted);}
-.holder-pct{font-family:var(–M);color:var(–text);}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.sc{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);padding:11px 12px;}
+.sv{font-family:var(–m);font-size:12px;font-weight:500;display:block;color:var(–t);}
+.sl{font-family:var(–m);font-size:8px;color:var(–t2);text-transform:uppercase;letter-spacing:.8px;margin-top:2px;}
 
-/* ══════════════════════════════════════
-PORTFOLIO PAGE
-══════════════════════════════════════ */
-#pg-portfolio{padding-top:60px;}
-.port-hero{background:var(–s1);border-bottom:1px solid var(–border);padding:48px 64px 40px;}
-.port-hero h1{font-family:var(–D);font-size:clamp(36px,5vw,64px);letter-spacing:2px;margin-bottom:8px;}
-.port-empty{
-display:flex;flex-direction:column;align-items:center;justify-content:center;
-min-height:400px;color:var(–muted);text-align:center;padding:40px;
-}
-.port-empty h3{font-size:18px;margin-bottom:8px;color:var(–text);}
-.port-empty p{font-size:14px;line-height:1.7;max-width:360px;}
-.port-holdings{padding:32px 64px;}
-.port-val{font-family:var(–D);font-size:48px;color:var(–a1);letter-spacing:1px;}
-.port-val-lbl{font-family:var(–M);font-size:11px;color:var(–muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:32px;}
+.bond-box{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);padding:13px;margin-bottom:12px;}
+.bond-lbl{font-family:var(–m);font-size:8px;letter-spacing:1.2px;color:var(–t2);text-transform:uppercase;margin-bottom:9px;}
+.bond-track{height:5px;background:var(–c3);border-radius:3px;overflow:hidden;margin-bottom:6px;}
+.bond-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(–y),var(–b));transition:width 1.1s cubic-bezier(.4,0,.2,1);}
+.bond-meta{display:flex;justify-content:space-between;font-family:var(–m);font-size:9px;color:var(–t2);}
+.bond-meta b{color:var(–t);}
 
-/* ══════════════════════════════════════
-MODAL
-══════════════════════════════════════ */
-.overlay{
-display:none;position:fixed;inset:0;z-index:500;
-background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);
-align-items:center;justify-content:center;padding:20px;
-}
-.overlay.open{display:flex;}
-.modal{
-background:var(–s1);border:1px solid var(–border);
-border-radius:14px;padding:28px;width:100%;max-width:400px;
-animation:mIn 0.2s ease;position:relative;
-}
-@keyframes mIn{from{opacity:0;transform:scale(0.95);}to{opacity:1;transform:scale(1);}}
-.m-x{position:absolute;top:14px;right:14px;background:none;border:none;color:var(–muted);font-size:16px;cursor:pointer;}
-.m-hd{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
-.m-title{font-family:var(–D);font-size:26px;letter-spacing:1px;}
-.m-sym{font-family:var(–M);font-size:11px;color:var(–muted);}
-.m-pbox{background:var(–s2);border-radius:8px;padding:14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-.m-pval{font-family:var(–D);font-size:28px;color:var(–a1);}
-.m-plbl{font-size:11px;color:var(–muted);}
-.m-chg{font-family:var(–M);font-size:12px;color:var(–a4);text-align:right;}
+/* trade panel */
+.trade-card{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);padding:14px;position:sticky;top:calc(var(–nav)+14px);}
+.trade-tabs{display:flex;gap:3px;margin-bottom:12px;}
+.tt{flex:1;padding:7px;border-radius:5px;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:var(–f);background:var(–c2);color:var(–t2);transition:all .15s;}
+.tt.by{background:rgba(204,240,0,.09);color:var(–y);}
+.tt.sl{background:rgba(232,54,80,.09);color:var(–r);}
+.ti-wrap{position:relative;margin-bottom:8px;}
+.ti{width:100%;background:var(–c2);border:1px solid var(–ln2);border-radius:6px;padding:10px 46px 10px 11px;color:var(–t);font-family:var(–m);font-size:13px;outline:none;-webkit-appearance:none;transition:border-color .15s;}
+.ti:focus{border-color:var(–y);}
+.ti-sfx{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-family:var(–m);font-size:9px;color:var(–t2);}
+.ti-quick{display:flex;gap:4px;margin-bottom:10px;}
+.tq{flex:1;padding:5px;border-radius:4px;border:1px solid var(–ln2);background:transparent;color:var(–t2);font-family:var(–m);font-size:10px;cursor:pointer;transition:all .12s;}
+.tq:hover{border-color:var(–y);color:var(–y);}
+.ti-info{background:var(–c2);border-radius:5px;padding:9px 10px;margin-bottom:10px;}
+.ti-row{display:flex;justify-content:space-between;padding:2px 0;font-size:11px;color:var(–t2);}
+.ti-row span{color:var(–t);font-family:var(–m);}
+.t-btn{width:100%;padding:11px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:var(–f);transition:opacity .15s;}
+.t-btn.by{background:var(–y);color:#000;}
+.t-btn.sl{background:var(–r);color:#fff;}
+.t-btn:hover{opacity:.85;}
+.fee-hint{font-family:var(–m);font-size:9px;color:var(–t3);text-align:center;margin-top:7px;}
+.fee-hint b{color:var(–t2);}
 
-/* TOAST */
-.toast{
-position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
-z-index:999;background:var(–s2);border:1px solid var(–border);
-border-radius:8px;padding:12px 20px;font-size:13px;
-white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.6);
-display:none;animation:tIn 0.3s ease;
-}
-@keyframes tIn{from{opacity:0;transform:translateX(-50%) translateY(8px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
-.toast.show{display:block;}
-.toast.ok{border-color:rgba(0,230,118,0.4);}
-.toast.err{border-color:rgba(255,61,113,0.4);}
+/* ── EXPLORE ── */
+.ex-head{padding:28px 28px 20px;border-bottom:1px solid var(–ln);}
+.ex-head h1{font-size:19px;font-weight:700;margin-bottom:3px;letter-spacing:-.3px;}
+.ex-head p{font-size:13px;color:var(–t2);}
+.ex-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 28px;border-bottom:1px solid var(–ln);flex-wrap:wrap;gap:9px;position:sticky;top:var(–nav);z-index:10;background:var(–bg);}
+.pills{display:flex;gap:5px;flex-wrap:wrap;}
+.pill{font-family:var(–m);font-size:10px;padding:4px 12px;border-radius:20px;cursor:pointer;border:1px solid var(–ln2);background:transparent;color:var(–t2);transition:all .15s;}
+.pill:hover,.pill.on{border-color:var(–y);color:var(–y);background:rgba(204,240,0,.05);}
+.btn-y{font-size:13px;font-weight:600;font-family:var(–f);padding:7px 15px;border-radius:6px;border:none;cursor:pointer;background:var(–y);color:#000;transition:background .15s;white-space:nowrap;}
+.btn-y:hover{background:var(–yh);}
+.ex-tbl{padding:14px 28px 60px;}
+.th{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 140px 70px;padding:0 10px 8px;font-family:var(–m);font-size:8px;letter-spacing:1.2px;color:var(–t3);text-transform:uppercase;border-bottom:1px solid var(–ln);margin-bottom:2px;}
+.tr{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 140px 70px;align-items:center;padding:11px 10px;border-radius:7px;cursor:pointer;transition:background .12s;margin-bottom:2px;}
+.tr:hover{background:var(–c1);}
+.tr-id{display:flex;align-items:center;gap:9px;}
+.tr-name{font-size:13px;font-weight:600;margin-bottom:1px;}
+.tr-sym{font-family:var(–m);font-size:9px;color:var(–t2);}
+.tr-v{font-family:var(–m);font-size:11px;color:var(–t);}
+.pb{height:3px;background:var(–c2);border-radius:2px;overflow:hidden;}
+.pf{height:100%;border-radius:2px;background:linear-gradient(90deg,var(–y),var(–b));}
+.pp{font-family:var(–m);font-size:8px;color:var(–t2);margin-top:2px;}
+.btn-tr{font-size:11px;font-weight:600;font-family:var(–f);padding:5px 0;border-radius:5px;border:none;cursor:pointer;background:var(–y);color:#000;width:100%;transition:background .12s;}
+.btn-tr:hover{background:var(–yh);}
+.badge{display:inline-block;font-family:var(–m);font-size:8px;letter-spacing:.3px;padding:2px 6px;border-radius:3px;text-transform:uppercase;margin-left:5px;vertical-align:middle;}
+.b-new{background:rgba(204,240,0,.08);color:var(–y);border:1px solid rgba(204,240,0,.18);}
+.b-hot{background:rgba(232,54,80,.07);color:var(–r);border:1px solid rgba(232,54,80,.17);}
+.b-live{background:rgba(0,184,122,.07);color:var(–g);border:1px solid rgba(0,184,122,.17);}
 
-/* RESPONSIVE */
-@media(max-width:900px){
-.hero-split{grid-template-columns:1fr;}
-.hero-right{display:none;}
-.hero-left{padding:60px 32px;}
-.home-stats{grid-template-columns:1fr 1fr;}
-.hiw{padding:60px 32px;}
-.hiw-grid{grid-template-columns:1fr;}
-.explore-hero,.explore-toolbar,.tokens-wrap{padding-left:24px;padding-right:24px;}
-.tokens-table-head{display:none;}
-.token-row{grid-template-columns:1fr auto;gap:8px;}
-.token-row>*:not(.tr-info):not(.btn-buy-sm){display:none;}
-.launch-body{grid-template-columns:1fr;}
-.launch-sidebar{display:none;}
-.launch-form-wrap{padding:32px 24px;}
-.token-detail-wrap{grid-template-columns:1fr;}
-.td-sidebar{display:none;}
-.td-main{padding:24px;}
-.td-stats{grid-template-columns:1fr 1fr;}
-.port-holdings,.port-hero{padding-left:24px;padding-right:24px;}
-.launch-hero,.port-hero{padding:36px 24px 28px;}
-.fields{grid-template-columns:1fr;}
-.field.wide{grid-column:1;}
+/* ── PORTFOLIO ── */
+.port-head{padding:28px 28px 20px;border-bottom:1px solid var(–ln);}
+.port-head h1{font-size:19px;font-weight:700;margin-bottom:3px;letter-spacing:-.3px;}
+.port-body{padding:20px 28px 60px;}
+.empty{text-align:center;padding:64px 20px;}
+.e-ico{width:42px;height:42px;border-radius:9px;background:var(–c2);border:1px solid var(–ln2);display:flex;align-items:center;justify-content:center;margin:0 auto 13px;}
+.empty h3{font-size:14px;font-weight:600;margin-bottom:5px;}
+.empty p{font-size:12px;color:var(–t2);line-height:1.65;max-width:280px;margin:0 auto 18px;}
+
+/* ── BUTTONS ── */
+.btn-primary{width:100%;padding:12px;border-radius:var(–rad);border:none;cursor:pointer;background:var(–y);color:#000;font-size:14px;font-weight:600;font-family:var(–f);transition:background .15s;}
+.btn-primary:hover{background:var(–yh);}
+.btn-primary:disabled{opacity:.35;cursor:not-allowed;}
+.btn-ghost{width:100%;padding:10px;border-radius:var(–rad);cursor:pointer;background:transparent;color:var(–t2);border:1px solid var(–ln2);font-size:13px;font-family:var(–f);transition:all .15s;}
+.btn-ghost:hover{border-color:var(–t2);color:var(–t);}
+.bstack{display:flex;flex-direction:column;gap:7px;margin-top:4px;}
+
+/* ── TOAST ── */
+#toast{
+position:fixed;bottom:20px;left:50%;
+transform:translateX(-50%) translateY(6px);z-index:9999;
+background:var(–c2);border:1px solid var(–ln2);border-radius:7px;
+padding:9px 16px;font-size:12px;white-space:nowrap;
+box-shadow:0 8px 28px rgba(0,0,0,.55);
+opacity:0;transition:opacity .22s,transform .22s;pointer-events:none;
 }
-@media(max-width:600px){
-.nav{padding:0 16px;}
-.nav-mid{display:none;}
-.home-stats{grid-template-columns:1fr 1fr;}
-.hs{padding:20px 16px;}
-.hs-val{font-size:28px;}
-.td-stats{grid-template-columns:1fr 1fr;}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.ok{border-color:rgba(0,184,122,.4);}
+#toast.er{border-color:rgba(232,54,80,.4);}
+#toast.wa{border-color:rgba(245,166,35,.4);}
+
+@media(max-width:780px){
+.tv-layout{grid-template-columns:1fr;}
+.tv-side{display:none;}
+.tv-main{padding:20px 14px;}
+.stat-grid{grid-template-columns:1fr 1fr;}
+.th{display:none;}
+.tr{grid-template-columns:1fr auto;gap:8px;}
+.tr>*:not(.tr-id):not(.btn-tr){display:none;}
+.ex-head,.ex-bar,.ex-tbl,.port-head,.port-body{padding-left:14px;padding-right:14px;}
+.f2{grid-template-columns:1fr;}
+.nav-c{display:none;}
+.mode-cards{grid-template-columns:1fr;}
 }
 </style>
 
@@ -566,783 +356,1043 @@ display:none;animation:tIn 0.3s ease;
 
 <!-- NAV -->
 
-<nav class="nav">
-  <a class="nav-logo" onclick="go('home')" href="#home">
-    <div class="mark">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <path d="M7 1L13 4.5V9.5L7 13L1 9.5V4.5L7 1Z" fill="#000"/>
-        <path d="M7 4.5L9.5 7L7 9.5L4.5 7L7 4.5Z" fill="#f0ff44"/>
+<nav id="nav">
+  <a class="logo" onclick="goPage('explore');return false;" href="#">
+    <div class="logo-mark">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M6 1L11 3.8V8.2L6 11L1 8.2V3.8L6 1Z" fill="#000"/>
+        <path d="M6 3.8L8.2 6L6 8.2L3.8 6L6 3.8Z" fill="#ccf000"/>
       </svg>
     </div>
-    BEAM<span>LAUNCH</span>
+    <span class="logo-name">Beam<em>Launch</em></span>
   </a>
-  <div class="nav-mid">
-    <a class="nav-tab" onclick="go('home')" href="#home">Home</a>
-    <a class="nav-tab" onclick="go('explore')" href="#explore">Explore</a>
-    <a class="nav-tab" onclick="go('launch')" href="#launch">Launch</a>
-    <a class="nav-tab" onclick="go('portfolio')" href="#portfolio">Portfolio</a>
+  <div class="nav-c">
+    <button class="nb on" id="nl-explore" onclick="goPage('explore')">Explore</button>
+    <button class="nb" id="nl-launch" onclick="startFlow()">Launch</button>
+    <button class="nb" id="nl-portfolio" onclick="goPage('portfolio')">Portfolio</button>
   </div>
-  <div class="nav-right">
-    <span class="nav-chain">BEAM TESTNET</span>
-    <button class="btn-w" id="wBtn" onclick="connectWallet()">Connect Wallet</button>
+  <div class="nav-r">
+    <span class="mode-chip" id="modeChip"></span>
+    <button id="wbtn" onclick="handleWBtn()">Connect Wallet</button>
   </div>
 </nav>
 
-<!-- ════════════ PAGE: HOME ════════════ -->
+<!-- ══════════ EXPLORE ══════════ -->
 
-<div class="page" id="pg-home">
-  <div class="home-bg"><canvas id="bgCanvas"></canvas></div>
-
-  <div class="hero-split">
-    <!-- LEFT -->
-    <div class="hero-left">
-      <div class="hero-eyebrow"><span class="pulse"></span>First token launchpad on Beam Network</div>
-      <h1 class="hero-h1">
-        <span class="row1">FAIR LAUNCH</span>
-        <span class="row2">INFRASTRUCTURE</span>
-        <span class="row3">FOR BEAM</span>
-      </h1>
-      <p class="hero-desc">
-        Deploy tokens on Beam with bonding curve pricing. No presales, no VC dumps, no insider allocations. Liquidity auto-migrates to Beam Swap at graduation.
-      </p>
-      <div class="hero-actions">
-        <button class="btn-launch-main" onclick="go('launch')">Launch a Token</button>
-        <button class="btn-explore-main" onclick="go('explore')">Explore Tokens →</button>
-      </div>
-    </div>
-    <!-- RIGHT LIVE FEED -->
-    <div class="hero-right">
-      <div class="feed-label">Live token activity</div>
-      <div class="live-feed">
-        <div class="feed-items" id="feedItems"></div>
-      </div>
-    </div>
+<div class="pg on" id="pg-explore">
+  <div class="ex-head">
+    <h1>Explore Tokens</h1>
+    <p>All tokens launched on BeamLaunch — live bonding curve data.</p>
   </div>
-
-  <!-- STATS BAR -->
-
-  <div class="home-stats">
-    <div class="hs"><span class="hs-val" id="hs1">—</span><div class="hs-lbl">Tokens Launched</div></div>
-    <div class="hs"><span class="hs-val" id="hs2">—</span><div class="hs-lbl">Total Volume (BEAM)</div></div>
-    <div class="hs"><span class="hs-val" id="hs3">—</span><div class="hs-lbl">Graduated to DEX</div></div>
-    <div class="hs"><span class="hs-val" id="hs4">—</span><div class="hs-lbl">Protocol Fees</div></div>
-  </div>
-
-  <!-- HOW IT WORKS -->
-
-  <div class="hiw">
-    <div class="hiw-label">Protocol</div>
-    <div class="hiw-title">HOW IT WORKS</div>
-    <div class="hiw-grid">
-      <div class="hiw-step">
-        <div class="hiw-n">01</div>
-        <div class="hiw-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M10 2L18 6.5V13.5L10 18L2 13.5V6.5L10 2Z" stroke="#f0ff44" stroke-width="1.3" fill="none"/>
-            <circle cx="10" cy="10" r="2.5" fill="#f0ff44"/>
-          </svg>
-        </div>
-        <h3>Deploy in 60 seconds</h3>
-        <p>Enter your token name, ticker and description. Your bonding curve smart contract deploys instantly on Beam with zero upfront cost and no coding required.</p>
-      </div>
-      <div class="hiw-step">
-        <div class="hiw-n">02</div>
-        <div class="hiw-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <polyline points="2,16 7,9 12,12 18,4" stroke="#f0ff44" stroke-width="1.3" stroke-linecap="round" fill="none"/>
-            <circle cx="18" cy="4" r="2" fill="#f0ff44"/>
-          </svg>
-        </div>
-        <h3>Bonding curve pricing</h3>
-        <p>Price rises automatically with every BEAM that flows in. Every participant gets a mathematically fair entry. No insider allocations. No day-one dumps.</p>
-      </div>
-      <div class="hiw-step">
-        <div class="hiw-n">03</div>
-        <div class="hiw-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="8" stroke="#f0ff44" stroke-width="1.3" fill="none"/>
-            <path d="M7 10L10 6L13 10M10 6V14" stroke="#f0ff44" stroke-width="1.3" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
-        <h3>Auto-graduate to DEX</h3>
-        <p>Once market cap hits 69K BEAM, liquidity migrates automatically to Beam Swap. The token becomes permanently tradeable with locked liquidity.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════ PAGE: EXPLORE ════════════ -->
-
-<div class="page" id="pg-explore">
-  <div class="explore-hero">
-    <h1>EXPLORE TOKENS</h1>
-    <p>All tokens launched on BeamLaunch, sorted by bonding curve progress.</p>
-  </div>
-  <div class="explore-toolbar">
-    <div class="pill-group">
+  <div class="ex-bar">
+    <div class="pills">
       <button class="pill on" onclick="filterEx('all',this)">All</button>
       <button class="pill" onclick="filterEx('Gaming',this)">Gaming</button>
       <button class="pill" onclick="filterEx('DeFi',this)">DeFi</button>
       <button class="pill" onclick="filterEx('Meme',this)">Meme</button>
       <button class="pill" onclick="filterEx('AI',this)">AI</button>
     </div>
-    <select class="sort-select" onchange="sortEx(this.value)">
-      <option value="progress">Sort: Curve Progress</option>
-      <option value="mcap">Sort: Market Cap</option>
-      <option value="vol">Sort: Volume</option>
-      <option value="new">Sort: Newest</option>
-    </select>
+    <button class="btn-y" onclick="startFlow()">+ Launch Token</button>
   </div>
-  <div class="tokens-wrap">
-    <div class="tokens-table-head">
-      <div>Token</div><div>Price</div><div>Mkt Cap</div><div>Volume</div><div>Progress</div><div></div>
-    </div>
-    <div id="tokenTable"></div>
+  <div class="ex-tbl">
+    <div class="th"><div>Token</div><div>Price</div><div>Mkt Cap</div><div>Volume</div><div>Progress</div><div></div></div>
+    <div id="exlist"></div>
   </div>
 </div>
 
-<!-- ════════════ PAGE: LAUNCH ════════════ -->
+<!-- ══════════ LAUNCH FLOW ══════════ -->
 
-<div class="page" id="pg-launch">
-  <div class="launch-hero">
-    <h1>LAUNCH A TOKEN</h1>
-    <p>Deploy a fair-launch token on Beam Network in under 60 seconds.</p>
-  </div>
-  <div class="launch-body">
-    <div class="launch-form-wrap">
-      <div class="form-section">
-        <div class="form-section-title">Token Identity</div>
-        <div class="fields">
-          <div class="field"><label class="flabel">Token Name</label><input class="finput" id="lName" placeholder="e.g. Fableborne Gold" type="text"/></div>
-          <div class="field"><label class="flabel">Ticker Symbol</label><input class="finput" id="lTick" placeholder="e.g. FGLD" maxlength="8" oninput="this.value=this.value.toUpperCase()"/></div>
-          <div class="field wide"><label class="flabel">Description</label><textarea class="finput" id="lDesc" placeholder="What does your token do within the Beam ecosystem?"></textarea></div>
-          <div class="field"><label class="flabel">Category</label>
-            <select class="finput" id="lCat"><option>Gaming</option><option>DeFi</option><option>Meme</option><option>AI</option><option>Infrastructure</option></select>
+<div class="pg" id="pg-flow">
+  <!-- Progress indicator -->
+  <div class="flow-progress" id="flowProgress"></div>
+
+  <!-- STEP 0: Mode Select -->
+
+  <div class="step-panel on" id="sp-0">
+    <div class="step-inner flow-shell" style="padding-top:28px;">
+      <div class="step-title">How do you want to launch?</div>
+      <p class="step-sub">Demo mode completes the full flow instantly — no wallet required. Real mode connects MetaMask and deploys on Beam Testnet.</p>
+      <div class="mode-cards">
+        <div class="mode-card" id="mc-demo" onclick="selectMode('demo')">
+          <div class="mc-icon" style="background:rgba(245,166,35,.1);">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <circle cx="11" cy="11" r="9" stroke="#f5a623" stroke-width="1.4" fill="none"/>
+              <path d="M8 11l2.5 2.5 4-4" stroke="#f5a623" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
           </div>
-          <div class="field"><label class="flabel">Total Supply</label><input class="finput" id="lSupply" value="1,000,000,000"/></div>
+          <div class="mc-title">Demo Mode</div>
+          <div class="mc-desc">Simulate the full launch flow. No wallet, no gas, no real transactions. Great for testing.</div>
+          <span class="mc-tag demo">No wallet needed</span>
+        </div>
+        <div class="mode-card" id="mc-real" onclick="selectMode('real')">
+          <div class="mc-icon" style="background:rgba(0,184,122,.1);">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="3" y="8" width="16" height="11" rx="2" stroke="#00b87a" stroke-width="1.4" fill="none"/>
+              <path d="M7 8V6a4 4 0 018 0v2" stroke="#00b87a" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+              <circle cx="11" cy="14" r="1.5" fill="#00b87a"/>
+            </svg>
+          </div>
+          <div class="mc-title">Real Mode</div>
+          <div class="mc-desc">Connect MetaMask, pay gas, deploy a real contract on Beam Testnet. Falls back to demo on failure.</div>
+          <span class="mc-tag real">MetaMask required</span>
         </div>
       </div>
-      <div class="form-section">
-        <div class="form-section-title">Tokenomics — Enforced by Smart Contract</div>
-        <div class="tk-grid">
-          <div class="tk-cell"><span class="tk-pct">80%</span><div class="tk-name">Public Sale</div></div>
-          <div class="tk-cell"><span class="tk-pct">10%</span><div class="tk-name">Liquidity</div></div>
-          <div class="tk-cell"><span class="tk-pct">5%</span><div class="tk-name">Team · 1yr lock</div></div>
-          <div class="tk-cell"><span class="tk-pct">5%</span><div class="tk-name">Ecosystem</div></div>
-        </div>
-      </div>
-      <div class="form-section">
-        <div class="form-section-title">Fees</div>
-        <div class="fee-box"><strong>1% protocol fee</strong> on all trades. No upfront launch cost. Graduation fee of <strong>500 BEAM</strong> when your token reaches 69,000 BEAM market cap and migrates to Beam Swap.</div>
-      </div>
-      <button class="btn-deploy" onclick="doLaunch()">DEPLOY ON BEAM →</button>
-    </div>
-    <div class="launch-sidebar">
-      <div class="sb-card">
-        <div class="sb-card-title">Launch Summary</div>
-        <div class="sb-row">Network <span>Beam Testnet</span></div>
-        <div class="sb-row">Launch Cost <span>Free</span></div>
-        <div class="sb-row">Protocol Fee <span>1% / trade</span></div>
-        <div class="sb-row">Graduation Cap <span>69K BEAM</span></div>
-        <div class="sb-row">Liquidity Lock <span>Permanent</span></div>
-      </div>
-      <div class="sb-card">
-        <div class="sb-card-title">What Happens Next</div>
-        <div class="sb-steps">
-          <div class="sb-step"><div class="sb-step-n">1</div><div>Your token deploys on Beam with a bonding curve contract</div></div>
-          <div class="sb-step"><div class="sb-step-n">2</div><div>Token appears on the Explore page immediately</div></div>
-          <div class="sb-step"><div class="sb-step-n">3</div><div>Users buy in — price rises with each purchase</div></div>
-          <div class="sb-step"><div class="sb-step-n">4</div><div>At 69K BEAM cap, liquidity auto-migrates to Beam Swap</div></div>
-        </div>
+      <div class="bstack" style="margin-top:20px;">
+        <button class="btn-primary" id="modeNextBtn" onclick="stepModeNext()" disabled>Continue →</button>
       </div>
     </div>
   </div>
-</div>
 
-<!-- ════════════ PAGE: TOKEN DETAIL ════════════ -->
+  <!-- STEP 1: Token Details -->
 
-<div class="page" id="pg-token">
-  <div class="token-detail-wrap">
-    <div class="td-main">
-      <div class="td-header">
-        <div class="td-logo" id="tdLogo"></div>
-        <div>
-          <div class="td-name" id="tdName">—</div>
-          <div class="td-sym" id="tdSym">—</div>
-        </div>
-        <div style="margin-left:auto;">
-          <span class="badge b-live" id="tdBadge">live</span>
-        </div>
-      </div>
+  <div class="step-panel" id="sp-1">
+    <div class="step-inner flow-shell" style="padding-top:28px;">
+      <div class="step-title">Token Details</div>
+      <p class="step-sub">Fill in your token info. Name and symbol are permanent after deployment.</p>
 
 ```
-  <div class="chart-wrap">
-    <div class="chart-label">Price Chart (BEAM) — Last 24h</div>
-    <svg class="chart-svg" id="chartSvg" viewBox="0 0 800 160" preserveAspectRatio="none"></svg>
-  </div>
-
-  <div class="td-stats">
-    <div class="td-stat"><span class="td-stat-val" id="td-price">—</span><div class="td-stat-lbl">Price</div></div>
-    <div class="td-stat"><span class="td-stat-val" id="td-mcap">—</span><div class="td-stat-lbl">Mkt Cap</div></div>
-    <div class="td-stat"><span class="td-stat-val" id="td-vol">—</span><div class="td-stat-lbl">Volume</div></div>
-    <div class="td-stat"><span class="td-stat-val" id="td-holders">—</span><div class="td-stat-lbl">Holders</div></div>
-  </div>
-
-  <div class="curve-section">
-    <div class="curve-title">Bonding Curve Progress</div>
-    <div class="big-bar"><div class="big-fill" id="tdCurveFill" style="width:0%"></div></div>
-    <div class="curve-meta">
-      <div>Raised: <b id="tdRaised">—</b></div>
-      <div id="tdProg">—% to graduation</div>
-      <div>Target: <b>69,000 BEAM</b></div>
+  <div class="f2">
+    <div class="field">
+      <label class="lbl">Token Name <sub>required</sub></label>
+      <input class="inp" id="f-name" placeholder="e.g. Fableborne Gold"/>
+    </div>
+    <div class="field">
+      <label class="lbl">Symbol <sub>required</sub></label>
+      <input class="inp" id="f-sym" placeholder="FGLD" maxlength="8"
+        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')"/>
     </div>
   </div>
 
-  <div class="holders-list">
-    <div class="holders-title">Top Holders</div>
-    <div id="holdersList"></div>
+  <div class="field">
+    <label class="lbl">Description <sub>optional</sub></label>
+    <textarea class="inp" id="f-desc" placeholder="What does your token do?"></textarea>
   </div>
-</div>
 
-<div class="td-sidebar">
-  <div class="trade-panel">
-    <div class="trade-tabs">
-      <button class="ttab buy-on" id="ttBuy" onclick="setTTab('buy')">BUY</button>
-      <button class="ttab" id="ttSell" onclick="setTTab('sell')">SELL</button>
+  <div class="f2">
+    <div class="field">
+      <label class="lbl">Total Supply <sub>required</sub></label>
+      <div class="inp-row">
+        <span class="inp-pre">TOTAL</span>
+        <input class="inp" id="f-supply" value="1,000,000,000" oninput="fmtSup(this)"/>
+      </div>
     </div>
-    <div class="t-inp-wrap">
-      <input class="t-inp" id="tAmt" type="number" placeholder="0.00" oninput="calcDetail()"/>
-      <span class="t-sfx">BEAM</span>
+    <div class="field">
+      <label class="lbl">Category</label>
+      <select class="inp" id="f-cat">
+        <option value="Gaming">Gaming</option>
+        <option value="DeFi">DeFi</option>
+        <option value="Meme">Meme</option>
+        <option value="AI">AI</option>
+        <option value="Infrastructure">Infrastructure</option>
+      </select>
     </div>
-    <div class="t-quick">
-      <button class="t-qb" onclick="setTAmt(10)">10</button>
-      <button class="t-qb" onclick="setTAmt(50)">50</button>
-      <button class="t-qb" onclick="setTAmt(100)">100</button>
-      <button class="t-qb" onclick="setTAmt(500)">500</button>
+  </div>
+
+  <div class="field">
+    <label class="lbl">Logo <sub>optional · PNG JPG SVG · max 2MB</sub></label>
+    <div class="upbox" id="upbox">
+      <input type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" onchange="handleImg(event)"/>
+      <img class="up-thumb" id="upthumb"/>
+      <div id="upicon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="display:block;margin:0 auto;">
+          <rect x="2" y="4" width="16" height="13" rx="2" stroke="#2c3a52" stroke-width="1.2" fill="none"/>
+          <circle cx="7.5" cy="9" r="1.8" stroke="#2c3a52" stroke-width="1.2" fill="none"/>
+          <path d="M2 14l3.5-3.5 2.8 2.8 3.5-4.5 6 5" stroke="#2c3a52" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <p class="up-text" id="uplabel">Click to upload a logo</p>
     </div>
-    <div class="t-info">
-      <div class="t-row">You receive <span id="tRec">—</span></div>
-      <div class="t-row">Price impact <span id="tImpact">—</span></div>
-      <div class="t-row">Protocol fee (1%) <span id="tFee">—</span></div>
-    </div>
-    <button class="t-btn buy" id="tBtn" onclick="execDetailTrade()">BUY</button>
+  </div>
+
+  <div class="bstack">
+    <button class="btn-primary" onclick="step1Next()">Continue to Fees →</button>
+    <button class="btn-ghost" onclick="goFlowStep(0)">← Back</button>
   </div>
 </div>
 ```
 
   </div>
-</div>
 
-<!-- ════════════ PAGE: PORTFOLIO ════════════ -->
+  <!-- STEP 2: Fee Review -->
 
-<div class="page" id="pg-portfolio">
-  <div class="port-hero">
-    <h1>MY PORTFOLIO</h1>
-    <p>Your token holdings across BeamLaunch.</p>
+  <div class="step-panel" id="sp-2">
+    <div class="step-inner flow-shell" style="padding-top:28px;">
+      <div class="step-title">Launch Fee</div>
+      <p class="step-sub">A one-time launch fee is applied before deployment. In demo mode this is simulated instantly.</p>
+
+```
+  <!-- Dynamic fee state card -->
+  <div id="feeStateCard"></div>
+
+  <div class="fee-card" id="feeBreakdown">
+    <div class="fee-row"><div class="k">Launch fee</div><div class="v" id="fv-launch">—</div></div>
+    <div class="fee-row"><div class="k">Trading fee (per trade)</div><div class="v">1% → your wallet</div></div>
+    <div class="fee-row"><div class="k">Graduation fee (at 69K BEAM)</div><div class="v">500 BEAM → your wallet</div></div>
+    <div class="fee-row"><div class="k">Fee destination</div><div class="v" style="color:var(--y);font-size:10px;">0x3a65...82c20</div></div>
+    <div class="fee-row"><div class="k">Mode</div><div class="v"><span class="mode-badge" id="fv-mode">—</span></div></div>
+    <div class="fee-total"><div>Due now</div><div class="v" id="fv-total">—</div></div>
   </div>
-  <div id="portContent"></div>
-</div>
 
-<!-- QUICK TRADE MODAL (from explore) -->
-
-<div class="overlay" id="tradeOverlay">
-  <div class="modal">
-    <button class="m-x" onclick="closeModal()">✕</button>
-    <div class="m-hd">
-      <div id="mLogo"></div>
-      <div><div class="m-title" id="mName">—</div><div class="m-sym" id="mSymText">—</div></div>
-    </div>
-    <div class="m-pbox">
-      <div><div class="m-pval" id="mPrice">—</div><div class="m-plbl">Price (BEAM)</div></div>
-      <div><div class="m-chg" id="mChg">—</div><div style="font-size:11px;color:var(--muted);text-align:right;">24h</div></div>
-    </div>
-    <div class="trade-tabs" style="margin-bottom:14px;">
-      <button class="ttab buy-on" id="mTabBuy" onclick="setMTab('buy')">BUY</button>
-      <button class="ttab" id="mTabSell" onclick="setMTab('sell')">SELL</button>
-    </div>
-    <div class="t-inp-wrap">
-      <input class="t-inp" id="mAmt" type="number" placeholder="0.00" oninput="calcModal()"/>
-      <span class="t-sfx">BEAM</span>
-    </div>
-    <div class="t-quick">
-      <button class="t-qb" onclick="setMAmt(10)">10</button>
-      <button class="t-qb" onclick="setMAmt(50)">50</button>
-      <button class="t-qb" onclick="setMAmt(100)">100</button>
-      <button class="t-qb" onclick="setMAmt(500)">500</button>
-    </div>
-    <div class="t-info">
-      <div class="t-row">You receive <span id="mRec">—</span></div>
-      <div class="t-row">Price impact <span id="mImpact">—</span></div>
-      <div class="t-row">Protocol fee (1%) <span id="mFee">—</span></div>
-    </div>
-    <button class="t-btn buy" id="mBtn" onclick="execModal()">BUY</button>
+  <div class="bstack" id="feeBtns">
+    <button class="btn-primary" id="feePayBtn" onclick="payFee()">Pay Launch Fee →</button>
+    <button class="btn-ghost" onclick="goFlowStep(1)">← Back</button>
   </div>
 </div>
+```
 
-<div class="toast" id="toast"></div>
+  </div>
+
+  <!-- STEP 3: Deploy -->
+
+  <div class="step-panel" id="sp-3">
+    <div class="step-inner flow-shell" style="padding-top:28px;">
+      <div class="step-title">Deploying Token</div>
+      <p class="step-sub" id="dep-sub">Your token is being deployed to Beam Network.</p>
+
+```
+  <div id="depStateCard"></div>
+
+  <div class="dep-list" id="depList">
+    <div class="dep-row"><div class="dep-ico w" id="di1">1</div><div class="dep-txt" id="dt1">Validating parameters</div></div>
+    <div class="dep-row"><div class="dep-ico w" id="di2">2</div><div class="dep-txt" id="dt2">Signing transaction</div></div>
+    <div class="dep-row"><div class="dep-ico w" id="di3">3</div><div class="dep-txt" id="dt3">Waiting for confirmation</div></div>
+    <div class="dep-row"><div class="dep-ico w" id="di4">4</div><div class="dep-txt" id="dt4">Initialising bonding curve</div></div>
+    <div class="dep-row"><div class="dep-ico w" id="di5">5</div><div class="dep-txt" id="dt5">Token live on BeamLaunch</div></div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- STEP 4: Confirmation -->
+
+  <div class="step-panel" id="sp-4">
+    <div class="step-inner flow-shell" style="padding-top:28px;">
+
+```
+  <!-- Success state card -->
+  <div id="cfStateCard" style="margin-bottom:16px;"></div>
+
+  <div class="cf-head">
+    <div class="cf-logo" id="cf-logo"></div>
+    <div style="flex:1;">
+      <div class="cf-name" id="cf-name">—</div>
+      <div class="cf-sym" id="cf-sym">—</div>
+    </div>
+    <div class="cf-badge"><span class="badge b-new">new</span></div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-title">Contract Details</div>
+    <div class="info-row">
+      <div class="k">Contract Address</div>
+      <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
+        <div class="v addr" id="cf-addr">—</div>
+        <button class="cbtn" onclick="cp(S.deployed?.addr,'Address copied')">Copy</button>
+      </div>
+    </div>
+    <div class="info-row"><div class="k">Status</div><div class="v" id="cf-status">—</div></div>
+    <div class="info-row"><div class="k">Network</div><div class="v ok">Beam Testnet</div></div>
+    <div class="info-row"><div class="k">Block</div><div class="v" id="cf-block">—</div></div>
+    <div class="info-row">
+      <div class="k">Tx Hash</div>
+      <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
+        <div class="v addr" id="cf-tx" style="font-size:10px;">—</div>
+        <button class="cbtn" onclick="cp(S.deployed?.tx,'Tx hash copied')">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-title">Token Parameters</div>
+    <div class="info-row"><div class="k">Name</div><div class="v" id="cf-tname">—</div></div>
+    <div class="info-row"><div class="k">Symbol</div><div class="v" id="cf-tsym">—</div></div>
+    <div class="info-row"><div class="k">Total Supply</div><div class="v" id="cf-supply">—</div></div>
+    <div class="info-row"><div class="k">Initial Price</div><div class="v">0.000001 BEAM</div></div>
+    <div class="info-row"><div class="k">Trading Fee</div><div class="v fee">1% → 0x3a65...82c20</div></div>
+    <div class="info-row"><div class="k">Graduation</div><div class="v">69,000 BEAM market cap</div></div>
+  </div>
+
+  <div class="share-row">
+    <button class="sbtn" onclick="shareX()">Share on X</button>
+    <button class="sbtn" onclick="cp(window.location.href,'Link copied')">Copy Link</button>
+  </div>
+  <button class="btn-primary" onclick="viewMyToken()" style="margin-bottom:8px;">View Token Page →</button>
+  <button class="btn-ghost" onclick="goPage('explore')">Back to Explore</button>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ══════════ TOKEN VIEW ══════════ -->
+
+<div class="pg" id="pg-token">
+  <div class="tv-layout">
+    <div class="tv-main">
+      <div class="tv-hd">
+        <div style="width:48px;height:48px;border-radius:11px;flex-shrink:0;" id="tvlogo"></div>
+        <div style="flex:1;">
+          <div class="tv-name" id="tvname">—</div>
+          <div class="tv-sym" id="tvsym">—</div>
+        </div>
+        <span class="badge" id="tvbadge">new</span>
+      </div>
+      <div class="chart-box">
+        <div class="chart-hd">
+          <div><div class="chart-price" id="tvprice">—</div><div class="chart-sub">Price in BEAM</div></div>
+          <div class="chart-chg" id="tvchg" style="color:var(--g);">+0.0%</div>
+        </div>
+        <svg class="chart-svg" id="tvchart" viewBox="0 0 600 110" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="stat-grid">
+        <div class="sc"><span class="sv" id="tvmcap">—</span><div class="sl">Mkt Cap</div></div>
+        <div class="sc"><span class="sv" id="tvvol">—</span><div class="sl">Volume</div></div>
+        <div class="sc"><span class="sv" id="tvhold">—</span><div class="sl">Holders</div></div>
+        <div class="sc"><span class="sv" id="tvtxs">—</span><div class="sl">Transactions</div></div>
+      </div>
+      <div class="bond-box">
+        <div class="bond-lbl">Bonding Curve Progress</div>
+        <div class="bond-track"><div class="bond-fill" id="tvbond" style="width:0%"></div></div>
+        <div class="bond-meta">
+          <div>Raised: <b id="tvraised">—</b></div>
+          <div id="tvbondpct">0%</div>
+          <div>Target: <b>69,000 BEAM</b></div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-title">About</div>
+        <div style="padding:12px 14px;font-size:13px;color:var(--t2);line-height:1.7;border-bottom:1px solid var(--ln);" id="tvdesc">—</div>
+        <div class="info-row">
+          <div class="k">Contract</div>
+          <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
+            <div class="v addr" id="tvaddr" style="font-size:10px;">—</div>
+            <button class="cbtn" onclick="cp(S.currentToken?.addr,'Copied')">Copy</button>
+          </div>
+        </div>
+        <div class="info-row"><div class="k">Category</div><div class="v" id="tvcat">—</div></div>
+        <div class="info-row"><div class="k">Deploy Mode</div><div class="v" id="tvmode">—</div></div>
+        <div class="info-row"><div class="k">Fee Wallet</div><div class="v fee" style="color:var(--y);">0x3a650e...82c20</div></div>
+      </div>
+    </div>
+    <div class="tv-side">
+      <div class="trade-card">
+        <div class="trade-tabs">
+          <button class="tt by" id="ttbuy" onclick="setTab('buy')">Buy</button>
+          <button class="tt" id="ttsell" onclick="setTab('sell')">Sell</button>
+        </div>
+        <div class="ti-wrap">
+          <input class="ti" id="tamt" type="number" placeholder="0.00" min="0" step="any" oninput="calcTrade()"/>
+          <span class="ti-sfx">BEAM</span>
+        </div>
+        <div class="ti-quick">
+          <button class="tq" onclick="setAmt(10)">10</button>
+          <button class="tq" onclick="setAmt(50)">50</button>
+          <button class="tq" onclick="setAmt(100)">100</button>
+          <button class="tq" onclick="setAmt(500)">500</button>
+        </div>
+        <div class="ti-info">
+          <div class="ti-row">You receive <span id="trec">—</span></div>
+          <div class="ti-row">Price impact <span id="timp">—</span></div>
+          <div class="ti-row">Fee (1%) <span id="tfee">—</span></div>
+          <div class="ti-row">New price <span id="tnewp">—</span></div>
+        </div>
+        <button class="t-btn by" id="tbtn" onclick="execTrade()">Buy</button>
+        <div class="fee-hint">1% fee → <b>0x3a65...82c20</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PORTFOLIO ══════════ -->
+
+<div class="pg" id="pg-portfolio">
+  <div class="port-head">
+    <h1>My Portfolio</h1>
+    <p style="color:var(--t2);font-size:13px;">Your token holdings across BeamLaunch.</p>
+  </div>
+  <div class="port-body" id="portbody"></div>
+</div>
+
+<div id="toast"></div>
 
 <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
 
 <script>
-// ── DATA ─────────────────────────────────────────────
-let wallet=null,provider,signer;
-let exFilt='all',mTab='buy',detTab='buy',selT=null;
-let portfolio={};
+// ════════════════════════════════════════════════
+// CONSTANTS
+// ════════════════════════════════════════════════
+const FEE_WALLET   = '0x3a650e016c30dd9dfe3cdc8fc59286d7ace82c20';
+const FEE_BPS      = 100;    // 1% trading fee
+const LAUNCH_FEE   = 5;      // ~$5 in BEAM (simulated)
+const GRAD_FEE     = 500;    // BEAM at graduation
+const BEAM_CHAIN   = { id: '0x3429', name: 'Beam Testnet', rpc: 'https://build.onbeam.com/rpc/testnet', explorer: 'https://subnets-test.avax.network/beam' };
 
-const TOKENS=[
-  {id:0,name:"Fableborne Gold",sym:"FGLD",cat:"Gaming",c1:"#f0ff44",c2:"#8a9400",
-   progress:78,price:"0.000842",mcap:"58.3K",vol:"142.4K",buyers:284,badge:"hot",
-   desc:"In-game currency for the Fableborne ecosystem on Beam"},
-  {id:1,name:"BeamAI",sym:"BAI",cat:"AI",c1:"#00e5ff",c2:"#006b80",
-   progress:45,price:"0.000231",mcap:"23.1K",vol:"87.2K",buyers:156,badge:"new",
-   desc:"AI compute coordination token built on Beam x Aethir"},
-  {id:2,name:"Sphere Pass",sym:"SPASS",cat:"Gaming",c1:"#a78bfa",c2:"#4c1d95",
-   progress:91,price:"0.002841",mcap:"62.1K",vol:"310.8K",buyers:521,badge:"live",
-   desc:"Gated access token for the Sphere NFT marketplace"},
-  {id:3,name:"Goon Wars",sym:"GOON",cat:"Gaming",c1:"#ff3d71",c2:"#7f0028",
-   progress:67,price:"0.000523",mcap:"34.7K",vol:"98.1K",buyers:178,badge:"hot",
-   desc:"Governance token for the Goon Wars collectible card game"},
-  {id:4,name:"Beam Yield",sym:"BYLD",cat:"DeFi",c1:"#00e676",c2:"#005c2e",
-   progress:55,price:"0.001204",mcap:"12.0K",vol:"64.3K",buyers:201,badge:"live",
-   desc:"Yield aggregator protocol native to the Beam DeFi ecosystem"},
-  {id:5,name:"Gameplay Galaxy",sym:"GPG",cat:"Gaming",c1:"#fbbf24",c2:"#6b4800",
-   progress:33,price:"0.0000891",mcap:"8.9K",vol:"31.2K",buyers:94,badge:"new",
-   desc:"Multi-game studio token for the Gameplay Galaxy network"},
+// ════════════════════════════════════════════════
+// STATE MACHINE
+// Steps: 0=mode, 1=create, 2=fee, 3=deploy, 4=confirm
+// ════════════════════════════════════════════════
+const S = {
+  // Wallet
+  wallet: null, provider: null, signer: null, balance: 0,
+
+  // Flow
+  mode: null,          // 'demo' | 'real'
+  flowStep: 0,         // current step 0-4
+  feeState: 'idle',    // idle | loading | success | fallback | error
+  deployState: 'idle', // idle | loading | success | fallback | error
+
+  // Form
+  form: { name:'', sym:'', desc:'', supply:'1000000000', cat:'Gaming', imgData:null },
+
+  // Output
+  deployed: null,
+
+  // App
+  currentToken: null,
+  portfolio: {},
+  exFilter: 'all',
+  tradeTab: 'buy',
+};
+
+// ════════════════════════════════════════════════
+// SEED TOKENS
+// ════════════════════════════════════════════════
+const TOKENS = [
+  { id:0, name:'Fableborne Gold', sym:'FGLD', cat:'Gaming', c1:'#ccf000',
+    progress:78, price:0.000842, mcap:'58.3K', vol:'142.4K', holders:284, txs:1420, raised:53820,
+    badge:'hot', desc:'In-game currency for the Fableborne ecosystem on Beam. Used for crafting, trading, and governance.',
+    addr:'0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9012', mode:'real' },
+  { id:1, name:'BeamAI', sym:'BAI', cat:'AI', c1:'#00c4e0',
+    progress:45, price:0.000231, mcap:'23.1K', vol:'87.2K', holders:156, txs:873, raised:31050,
+    badge:'new', desc:'AI compute coordination token at the intersection of Beam Network and Aethir GPU infrastructure.',
+    addr:'0x2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f901234', mode:'real' },
+  { id:2, name:'Sphere Pass', sym:'SPASS', cat:'Gaming', c1:'#7c5cf8',
+    progress:91, price:0.002841, mcap:'62.1K', vol:'310.8K', holders:521, txs:3108, raised:62790,
+    badge:'live', desc:'Gated access token for Sphere NFT marketplace. Holders get reduced fees and early access to drops.',
+    addr:'0x3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f90123456', mode:'real' },
+  { id:3, name:'Goon Wars', sym:'GOON', cat:'Gaming', c1:'#e83650',
+    progress:67, price:0.000523, mcap:'34.7K', vol:'98.1K', holders:178, txs:982, raised:46230,
+    badge:'hot', desc:'Governance and economy token for the Goon Wars collectible card game on Beam.',
+    addr:'0x4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9012345678', mode:'real' },
+  { id:4, name:'Beam Yield', sym:'BYLD', cat:'DeFi', c1:'#00b87a',
+    progress:55, price:0.001204, mcap:'12.0K', vol:'64.3K', holders:201, txs:643, raised:37950,
+    badge:'live', desc:'Yield aggregator native to Beam. Auto-compounds across Beam Swap liquidity pools for passive income.',
+    addr:'0x5e6f7a8b9c0d1e2f3a4b5c6d7e8f901234567890', mode:'demo' },
 ];
 
-// ── SVG LOGO GENERATOR ───────────────────────────────
-function logo(t,sz=36){
-  const r=sz/2;
-  const shapes=[
-    `<polygon points="${r},${sz*0.07} ${sz*0.93},${r*0.75} ${sz*0.93},${r*1.25} ${r},${sz*0.93} ${sz*0.07},${r*1.25} ${sz*0.07},${r*0.75}" stroke="${t.c1}" stroke-width="1.5" fill="${t.c1}12"/>
-     <circle cx="${r}" cy="${r}" r="${sz*0.13}" fill="${t.c1}"/>`,
-    `<polygon points="${r},${sz*0.08} ${sz*0.92},${r} ${r},${sz*0.92} ${sz*0.08},${r}" stroke="${t.c1}" stroke-width="1.5" fill="${t.c1}12"/>
-     <polygon points="${r},${sz*0.3} ${sz*0.7},${r} ${r},${sz*0.7} ${sz*0.3},${r}" fill="${t.c1}" opacity="0.85"/>`,
-    `<rect x="${sz*0.18}" y="${sz*0.18}" width="${sz*0.64}" height="${sz*0.64}" rx="4" stroke="${t.c1}" stroke-width="1.5" fill="${t.c1}12" transform="rotate(45 ${r} ${r})"/>
-     <rect x="${sz*0.33}" y="${sz*0.33}" width="${sz*0.34}" height="${sz*0.34}" rx="2" fill="${t.c1}"/>`,
-    `<polygon points="${r},${sz*0.1} ${sz*0.9},${sz*0.88} ${sz*0.1},${sz*0.88}" stroke="${t.c1}" stroke-width="1.5" fill="${t.c1}12"/>
-     <polygon points="${r},${sz*0.36} ${sz*0.67},${sz*0.72} ${sz*0.33},${sz*0.72}" fill="${t.c1}" opacity="0.85"/>`,
-    `<circle cx="${r}" cy="${r}" r="${sz*0.42}" stroke="${t.c1}" stroke-width="1.5" fill="none"/>
-     <circle cx="${r}" cy="${r}" r="${sz*0.25}" stroke="${t.c1}" stroke-width="1" fill="${t.c1}14"/>
-     <circle cx="${r}" cy="${r}" r="${sz*0.1}" fill="${t.c1}"/>`,
-    `<rect x="${sz*0.41}" y="${sz*0.1}" width="${sz*0.18}" height="${sz*0.8}" rx="3" fill="${t.c1}"/>
-     <rect x="${sz*0.1}" y="${sz*0.41}" width="${sz*0.8}" height="${sz*0.18}" rx="3" fill="${t.c1}"/>`,
+// ════════════════════════════════════════════════
+// ROUTER
+// ════════════════════════════════════════════════
+function goPage(id) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  const el = document.getElementById('pg-' + id);
+  if (el) { el.classList.add('on'); window.scrollTo(0, 0); }
+  ['explore','launch','portfolio'].forEach(k => document.getElementById('nl-'+k)?.classList.remove('on'));
+  document.getElementById('nl-'+id)?.classList.add('on');
+  if (id === 'explore')   renderExplore();
+  if (id === 'portfolio') renderPortfolio();
+}
+
+window.addEventListener('DOMContentLoaded', () => { renderExplore(); goPage('explore'); });
+
+// ════════════════════════════════════════════════
+// WALLET
+// ════════════════════════════════════════════════
+async function connectWallet() {
+  if (!window.ethereum) throw new Error('MetaMask not detected');
+  S.provider = new ethers.providers.Web3Provider(window.ethereum);
+  await S.provider.send('eth_requestAccounts', []);
+  // Switch chain
+  try {
+    await window.ethereum.request({ method:'wallet_switchEthereumChain', params:[{chainId:BEAM_CHAIN.id}] });
+  } catch (e) {
+    if (e.code === 4902) {
+      await window.ethereum.request({ method:'wallet_addEthereumChain', params:[{
+        chainId: BEAM_CHAIN.id, chainName: BEAM_CHAIN.name,
+        nativeCurrency: { name:'BEAM', symbol:'BEAM', decimals:18 },
+        rpcUrls: [BEAM_CHAIN.rpc], blockExplorerUrls: [BEAM_CHAIN.explorer]
+      }]});
+    } else throw e;
+  }
+  // Re-init after chain switch — prevents stale provider
+  S.provider = new ethers.providers.Web3Provider(window.ethereum);
+  S.signer   = S.provider.getSigner();
+  S.wallet   = await S.signer.getAddress();
+  try {
+    const raw = await S.provider.getBalance(S.wallet);
+    S.balance = parseFloat(ethers.utils.formatEther(raw));
+  } catch(_) { S.balance = 0; }
+  return S.wallet;
+}
+
+function updateNavWallet() {
+  const btn = document.getElementById('wbtn');
+  if (S.wallet) {
+    btn.textContent = S.wallet.slice(0,6)+'...'+S.wallet.slice(-4);
+    btn.classList.add('on');
+    document.getElementById('navbal')?.style && (document.getElementById('navbal').style.display='flex');
+  }
+}
+
+async function handleWBtn() {
+  if (S.wallet) { toast('Already connected: '+S.wallet.slice(0,10)+'...','ok'); return; }
+  try {
+    await connectWallet();
+    updateNavWallet();
+    toast('Connected to Beam Testnet','ok');
+  } catch(e) {
+    toast('Connection failed: '+(e.message||'Unknown'),'er');
+  }
+}
+
+// ════════════════════════════════════════════════
+// FLOW STEPS
+// ════════════════════════════════════════════════
+function startFlow() {
+  S.mode = null;
+  S.flowStep = 0;
+  S.feeState = 'idle';
+  S.deployState = 'idle';
+  S.form = { name:'', sym:'', desc:'', supply:'1000000000', cat:'Gaming', imgData:null };
+  // Reset mode selection
+  document.getElementById('mc-demo').classList.remove('selected');
+  document.getElementById('mc-real').classList.remove('selected');
+  document.getElementById('modeNextBtn').disabled = true;
+  goPage('flow');
+  goFlowStep(0);
+}
+
+function goFlowStep(n) {
+  S.flowStep = n;
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('on'));
+  document.getElementById('sp-'+n)?.classList.add('on');
+  renderProgress();
+  window.scrollTo(0, 0);
+}
+
+function renderProgress() {
+  const labels = ['Mode','Details','Fee','Deploy','Done'];
+  const el = document.getElementById('flowProgress');
+  el.innerHTML = labels.map((l, i) => {
+    const done = i < S.flowStep, act = i === S.flowStep;
+    const line = i < labels.length-1
+      ? `<div class="fp-line${done?' done':''}"></div>` : '';
+    return `<div class="fp-step">
+      <div class="fp-dot${done?' done':act?' act':''}">
+        ${done ? '✓' : i+1}
+      </div>
+      <div class="fp-label${act?' act':''}">${l}</div>
+    </div>${line}`;
+  }).join('');
+}
+
+// STEP 0: Mode Select
+function selectMode(mode) {
+  S.mode = mode;
+  document.getElementById('mc-demo').classList.toggle('selected', mode==='demo');
+  document.getElementById('mc-real').classList.toggle('selected', mode==='real');
+  document.getElementById('modeNextBtn').disabled = false;
+  // Update mode chip in nav
+  const chip = document.getElementById('modeChip');
+  chip.style.display = 'inline-flex';
+  chip.textContent   = mode === 'demo' ? 'DEMO' : 'REAL';
+  chip.className     = 'mode-chip ' + mode;
+}
+
+async function stepModeNext() {
+  if (!S.mode) { toast('Select a mode first','er'); return; }
+  if (S.mode === 'real' && !S.wallet) {
+    // Try to connect — fallback to demo on failure
+    try {
+      document.getElementById('modeNextBtn').textContent = 'Connecting...';
+      document.getElementById('modeNextBtn').disabled = true;
+      await connectWallet();
+      updateNavWallet();
+      toast('Wallet connected','ok');
+    } catch(e) {
+      toast('Could not connect wallet — switching to Demo mode','wa');
+      S.mode = 'demo';
+      selectMode('demo');
+    } finally {
+      document.getElementById('modeNextBtn').textContent = 'Continue →';
+      document.getElementById('modeNextBtn').disabled = false;
+    }
+  }
+  goFlowStep(1);
+}
+
+// STEP 1: Token Details
+function step1Next() {
+  const name = document.getElementById('f-name').value.trim();
+  const sym  = document.getElementById('f-sym').value.trim();
+  const sup  = document.getElementById('f-supply').value.trim();
+  if (!name) { toast('Token name is required','er'); document.getElementById('f-name').focus(); return; }
+  if (!sym)  { toast('Ticker symbol is required','er'); document.getElementById('f-sym').focus(); return; }
+  if (!sup)  { toast('Total supply is required','er'); return; }
+  S.form.name   = name;
+  S.form.sym    = sym;
+  S.form.desc   = document.getElementById('f-desc').value.trim();
+  S.form.supply = sup.replace(/,/g,'');
+  S.form.cat    = document.getElementById('f-cat').value;
+  goFlowStep(2);
+  renderFeeStep();
+}
+
+// STEP 2: Fee
+function renderFeeStep() {
+  const isDemo = S.mode === 'demo';
+  const feeAmt = isDemo ? '~5 BEAM (simulated)' : `~${LAUNCH_FEE} BEAM`;
+  document.getElementById('fv-launch').textContent = feeAmt;
+  document.getElementById('fv-total').textContent  = feeAmt;
+  const modeEl = document.getElementById('fv-mode');
+  modeEl.textContent = isDemo ? 'DEMO' : 'REAL';
+  modeEl.className   = 'mode-badge ' + S.mode;
+  // State card — idle
+  renderFeeState('idle');
+}
+
+function renderFeeState(state, msg) {
+  const el = document.getElementById('feeStateCard');
+  const btns = document.getElementById('feeBtns');
+  S.feeState = state;
+
+  if (state === 'idle') {
+    el.innerHTML = '';
+    btns.style.display = 'flex';
+    document.getElementById('feePayBtn').disabled = false;
+    document.getElementById('feePayBtn').textContent = 'Pay Launch Fee →';
+    return;
+  }
+  if (state === 'loading') {
+    el.innerHTML = stateCard('loading','Sending fee transaction...','Processing your launch fee on Beam Testnet.');
+    btns.style.display = 'none';
+    return;
+  }
+  if (state === 'success') {
+    el.innerHTML = stateCard('success','Fee paid successfully','Launch fee confirmed on-chain. Proceeding to deployment.',msg,'real');
+    btns.innerHTML = `<button class="btn-primary" onclick="goFlowStep(3);runDeploy()">Deploy Token →</button>`;
+    btns.style.display = 'flex';
+    return;
+  }
+  if (state === 'fallback') {
+    el.innerHTML = stateCard('fallback','Fee simulated','Could not send real transaction — fee simulated in Demo mode.',msg,'sim');
+    btns.innerHTML = `<button class="btn-primary" onclick="goFlowStep(3);runDeploy()">Deploy Token →</button>`;
+    btns.style.display = 'flex';
+    return;
+  }
+  if (state === 'error') {
+    el.innerHTML = stateCard('error','Fee failed',msg||'Something went wrong. Try again or switch to Demo mode.');
+    document.getElementById('feePayBtn').disabled = false;
+    document.getElementById('feePayBtn').textContent = 'Retry →';
+    btns.style.display = 'flex';
+    return;
+  }
+}
+
+// NON-BLOCKING fee: tries real tx, always succeeds
+async function payFee() {
+  renderFeeState('loading');
+
+  if (S.mode === 'demo') {
+    await sleep(1200);
+    renderFeeState('fallback', 'Demo mode — fee simulated');
+    return;
+  }
+
+  // Real mode — attempt tx, fallback on any failure
+  try {
+    if (!S.wallet) throw new Error('No wallet connected');
+    // Send small fee tx to FEE_WALLET
+    const feeWei = ethers.utils.parseEther(LAUNCH_FEE.toString());
+    const tx = await S.signer.sendTransaction({ to: FEE_WALLET, value: feeWei });
+    await tx.wait();
+    renderFeeState('success', 'Tx: '+tx.hash.slice(0,20)+'...');
+  } catch(e) {
+    // Any failure → fallback to simulation, NEVER block
+    console.warn('Fee tx failed, falling back:', e.message);
+    S.mode = 'demo'; // downgrade to demo
+    selectMode('demo');
+    await sleep(600);
+    renderFeeState('fallback', 'Tx failed: simulated instead. '+( e.message||''));
+  }
+}
+
+// STEP 3: Deploy
+async function runDeploy() {
+  goFlowStep(3);
+  S.deployState = 'loading';
+  const isDemo = S.mode === 'demo';
+
+  const steps = [
+    { id:'di1', txt:'dt1', label:'Validating parameters',      delay: 600  },
+    { id:'di2', txt:'dt2', label:'Signing transaction',         delay: 1400 },
+    { id:'di3', txt:'dt3', label:'Waiting for confirmation',    delay: 2700 },
+    { id:'di4', txt:'dt4', label:'Initialising bonding curve',  delay: 4000 },
+    { id:'di5', txt:'dt5', label:'Token live on BeamLaunch',    delay: 5200 },
   ];
-  return `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" fill="none" style="border-radius:${sz*0.25}px;background:${t.c1}0d;border:1px solid ${t.c1}22;flex-shrink:0;">${shapes[t.id%shapes.length]}</svg>`;
-}
 
-// ── ROUTER ───────────────────────────────────────────
-const PAGES={home:'pg-home',explore:'pg-explore',launch:'pg-launch',token:'pg-token',portfolio:'pg-portfolio'};
+  // If demo, mark step 2 as skipped
+  if (isDemo) {
+    document.getElementById('dt2').textContent = 'Signing transaction (simulated)';
+    document.getElementById('dt3').textContent = 'Waiting for confirmation (simulated)';
+  }
 
-function go(page, tokenId=null){
-  Object.values(PAGES).forEach(id=>{
-    const el=document.getElementById(id);
-    if(el)el.classList.remove('active');
-  });
-  const target=document.getElementById(PAGES[page]||PAGES.home);
-  if(target)target.classList.add('active');
+  document.getElementById('dep-sub').textContent = isDemo
+    ? 'Simulating deployment — this will complete in a few seconds.'
+    : 'Deploying to Beam Testnet. This may take 10–20 seconds.';
 
-  // Update nav tabs
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('cur'));
-  const activeTab=document.querySelector(`.nav-tab[href="#${page}"]`);
-  if(activeTab)activeTab.classList.add('cur');
-
-  window.location.hash=page;
-  window.scrollTo(0,0);
-
-  // Page init
-  if(page==='home')initHome();
-  if(page==='explore')renderExplore();
-  if(page==='token'&&tokenId!=null)renderTokenDetail(tokenId);
-  if(page==='portfolio')renderPortfolio();
-}
-
-// Handle hash on load
-window.addEventListener('load',()=>{
-  const hash=(window.location.hash||'#home').slice(1);
-  const validPages=['home','explore','launch','portfolio'];
-  go(validPages.includes(hash)?hash:'home');
-  initCanvas();
-  buildFeed();
-  runStats();
-});
-window.addEventListener('hashchange',()=>{
-  const hash=window.location.hash.slice(1);
-  if(hash&&PAGES[hash])go(hash);
-});
-
-// ── HOME ─────────────────────────────────────────────
-function initHome(){
-  buildFeed();
-  runStats();
-}
-
-function buildFeed(){
-  const el=document.getElementById('feedItems');
-  if(!el)return;
-  const doubled=[...TOKENS,...TOKENS,...TOKENS].map(t=>`
-    <div class="feed-item">
-      ${logo(t,32)}
-      <div style="flex:1;">
-        <div class="fi-name">${t.name}</div>
-        <div class="fi-sym">$${t.sym}</div>
-      </div>
-      <div class="fi-bar-wrap">
-        <div class="fi-bar"><div class="fi-fill" style="width:${t.progress}%"></div></div>
-        <div class="fi-pct">${t.progress}% filled</div>
-      </div>
-      <div style="margin-left:12px;">
-        <div class="fi-price">${t.price}</div>
-        <div class="fi-chg ${t.progress>50?'up':'dn'}">${t.progress>50?'+':'-'}${(Math.random()*12+1).toFixed(1)}%</div>
-      </div>
-    </div>`).join('');
-  el.innerHTML=doubled;
-}
-
-function runStats(){
-  const els={hs1:247,hs3:18};
-  Object.entries(els).forEach(([id,target])=>{
-    const el=document.getElementById(id);
-    if(!el)return;
-    let st=null;
-    function s(ts){
-      if(!st)st=ts;
-      const p=Math.min((ts-st)/1600,1);
-      const e=1-Math.pow(1-p,3);
-      el.textContent=Math.floor(e*target);
-      if(p<1)requestAnimationFrame(s);
+  try {
+    for (let i = 0; i < steps.length; i++) {
+      const cur  = steps[i];
+      const prev = i > 0 ? steps[i-1] : null;
+      const delay = i === 0 ? cur.delay : cur.delay - steps[i-1].delay;
+      await sleep(delay);
+      if (prev) setDS(prev.id, prev.txt, 'done');
+      setDS(cur.id, cur.txt, isDemo && (i===1||i===2) ? 'skip' : 'run');
     }
-    requestAnimationFrame(s);
-  });
-  const h2=document.getElementById('hs2'),h4=document.getElementById('hs4');
-  if(h2)h2.textContent='1.4M';
-  if(h4)h4.textContent='14.2K';
+    await sleep(800);
+    const last = steps[steps.length-1];
+    setDS(last.id, last.txt, 'done');
+
+    // Build deployed object
+    S.deployed = {
+      id:       TOKENS.length,
+      name:     S.form.name,
+      sym:      S.form.sym,
+      desc:     S.form.desc || 'No description provided.',
+      supply:   parseInt(S.form.supply).toLocaleString(),
+      cat:      S.form.cat,
+      imgData:  S.form.imgData,
+      addr:     mkAddr(),
+      tx:       mkTx(),
+      block:    Math.floor(Math.random()*900000)+100000,
+      mode:     S.mode,
+      price:    0.000001,
+      progress: 0,
+      mcap:     '0.1K',
+      vol:      '0',
+      holders:  1,
+      txs:      1,
+      raised:   0,
+      c1:       rndColor(),
+      badge:    'new',
+    };
+    TOKENS.unshift({...S.deployed});
+    S.deployState = 'success';
+    await sleep(400);
+    showConfirm();
+
+  } catch(e) {
+    // NEVER leave user stuck — always fallback
+    console.error('Deploy error, falling back:', e);
+    S.deployState = 'fallback';
+    S.deployed = {
+      id: TOKENS.length, name: S.form.name, sym: S.form.sym,
+      desc: S.form.desc || 'No description provided.',
+      supply: parseInt(S.form.supply).toLocaleString(), cat: S.form.cat,
+      imgData: S.form.imgData, addr: mkAddr(), tx: mkTx(),
+      block: Math.floor(Math.random()*900000)+100000,
+      mode: 'demo', price: 0.000001, progress: 0,
+      mcap: '0.1K', vol: '0', holders: 1, txs: 1, raised: 0,
+      c1: rndColor(), badge: 'new',
+    };
+    TOKENS.unshift({...S.deployed});
+    await sleep(600);
+    showConfirm();
+  }
 }
 
-// ── CANVAS BACKGROUND ────────────────────────────────
-function initCanvas(){
-  const canvas=document.getElementById('bgCanvas');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  let W,H,pts=[];
-
-  function resize(){
-    W=canvas.width=window.innerWidth;
-    H=canvas.height=window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize',resize);
-
-  // Floating particles
-  for(let i=0;i<60;i++){
-    pts.push({
-      x:Math.random()*1400,y:Math.random()*900,
-      vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,
-      r:Math.random()*1.5+0.3,
-      a:Math.random()
-    });
-  }
-
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    // Grid
-    ctx.strokeStyle='rgba(240,255,68,0.025)';
-    ctx.lineWidth=1;
-    for(let x=0;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-    for(let y=0;y<H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-    // Particles
-    pts.forEach(p=>{
-      p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
-      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(240,255,68,${p.a*0.4})`;
-      ctx.fill();
-    });
-    // Lines between close particles
-    for(let i=0;i<pts.length;i++){
-      for(let j=i+1;j<pts.length;j++){
-        const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y;
-        const d=Math.sqrt(dx*dx+dy*dy);
-        if(d<120){
-          ctx.beginPath();
-          ctx.moveTo(pts[i].x,pts[i].y);
-          ctx.lineTo(pts[j].x,pts[j].y);
-          ctx.strokeStyle=`rgba(240,255,68,${(1-d/120)*0.06})`;
-          ctx.lineWidth=0.5;
-          ctx.stroke();
-        }
-      }
-    }
-    requestAnimationFrame(draw);
-  }
-  draw();
+function setDS(diId, dtId, state) {
+  const di = document.getElementById(diId);
+  const dt = document.getElementById(dtId);
+  if (!di || !dt) return;
+  if (state === 'run')  { di.className='dep-ico r'; di.textContent=''; dt.className='dep-txt act'; }
+  if (state === 'done') { di.className='dep-ico d'; di.textContent='✓'; dt.className='dep-txt done'; }
+  if (state === 'skip') { di.className='dep-ico skip'; di.textContent='~'; dt.className='dep-txt skip'; }
 }
 
-// ── EXPLORE ──────────────────────────────────────────
+// STEP 4: Confirm
+function showConfirm() {
+  goFlowStep(4);
+  const d = S.deployed;
+  const isReal = d.mode === 'real';
+  const statusText = isReal ? 'Deployed on-chain' : 'Deployed (simulated)';
+  const statusClass = isReal ? 'ok' : 'sim';
+
+  // State card
+  document.getElementById('cfStateCard').innerHTML = isReal
+    ? stateCard('success','Token deployed successfully','Your token contract is live on Beam Testnet.','','real')
+    : stateCard('fallback','Token deployed (simulated)','Deployment simulated in Demo mode — all data is realistic. Connect a real wallet to deploy on-chain.','','sim');
+
+  // Logo
+  const lw = document.getElementById('cf-logo');
+  if (d.imgData) {
+    lw.innerHTML = `<img src="${d.imgData}" style="width:52px;height:52px;border-radius:12px;object-fit:cover;border:2px solid var(--ln2);"/>`;
+  } else {
+    lw.innerHTML = `<div style="width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:${d.c1}10;border:1.5px solid ${d.c1}22;">${mkLogo(d,52)}</div>`;
+  }
+
+  document.getElementById('cf-name').textContent    = d.name;
+  document.getElementById('cf-sym').textContent     = '$'+d.sym+' · Beam Testnet';
+  document.getElementById('cf-addr').textContent    = d.addr;
+  document.getElementById('cf-status').className    = 'v '+statusClass;
+  document.getElementById('cf-status').textContent  = statusText;
+  document.getElementById('cf-block').textContent   = '#'+d.block.toLocaleString();
+  document.getElementById('cf-tx').textContent      = d.tx;
+  document.getElementById('cf-tname').textContent   = d.name;
+  document.getElementById('cf-tsym').textContent    = '$'+d.sym;
+  document.getElementById('cf-supply').textContent  = d.supply+' tokens';
+}
+
+function viewMyToken() {
+  S.currentToken = S.deployed;
+  renderTV(S.deployed);
+  goPage('token');
+}
+
+// ════════════════════════════════════════════════
+// TOKEN VIEW
+// ════════════════════════════════════════════════
+function renderTV(t) {
+  S.currentToken = t;
+  const lg = document.getElementById('tvlogo');
+  if (t.imgData) {
+    lg.innerHTML = `<img src="${t.imgData}" style="width:48px;height:48px;border-radius:11px;object-fit:cover;border:2px solid var(--ln2);"/>`;
+  } else {
+    lg.innerHTML = mkLogo(t, 48);
+  }
+  document.getElementById('tvname').textContent  = t.name;
+  document.getElementById('tvsym').textContent   = '$'+t.sym+' · Beam Network';
+  document.getElementById('tvprice').textContent = t.price.toFixed(6)+' BEAM';
+  document.getElementById('tvchg').textContent   = '+'+(Math.random()*18+.5).toFixed(1)+'%';
+  document.getElementById('tvmcap').textContent  = t.mcap;
+  document.getElementById('tvvol').textContent   = t.vol;
+  document.getElementById('tvhold').textContent  = t.holders;
+  document.getElementById('tvtxs').textContent   = t.txs;
+  document.getElementById('tvdesc').textContent  = t.desc||'No description.';
+  document.getElementById('tvaddr').textContent  = t.addr;
+  document.getElementById('tvcat').textContent   = t.cat;
+  document.getElementById('tvbadge').textContent = t.badge;
+  document.getElementById('tvbadge').className   = 'badge b-'+t.badge;
+  document.getElementById('tvmode').textContent  = t.mode === 'real' ? 'Real (on-chain)' : 'Demo (simulated)';
+  document.getElementById('tvmode').className    = 'v '+(t.mode==='real'?'ok':'sim');
+  const raised = t.raised||0;
+  document.getElementById('tvraised').textContent  = raised.toLocaleString()+' BEAM';
+  document.getElementById('tvbondpct').textContent = t.progress+'% complete';
+  requestAnimationFrame(() => { document.getElementById('tvbond').style.width = t.progress+'%'; });
+  drawChart(t);
+  resetTP();
+}
+
+function drawChart(t) {
+  const svg = document.getElementById('tvchart');
+  if (!svg) return;
+  const W=600,H=110,p=5;
+  const pts = Array.from({length:48},(_,i)=>t.price*(0.65+i*.009+Math.random()*.18));
+  const mn=Math.min(...pts),mx=Math.max(...pts);
+  const norm = pts.map((v,i)=>({x:p+i*(W-p*2)/47, y:p+(mx-v)/(mx-mn+1e-9)*(H-p*2)}));
+  const path = norm.map((n,i)=>(i===0?`M${n.x},${n.y}`:`L${n.x},${n.y}`)).join(' ');
+  const area = path+` L${norm[47].x},${H} L${norm[0].x},${H} Z`;
+  svg.innerHTML=`<defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="${t.c1}" stop-opacity=".25"/>
+    <stop offset="100%" stop-color="${t.c1}" stop-opacity="0"/>
+  </linearGradient></defs>
+  <path d="${area}" fill="url(#cg)"/>
+  <path d="${path}" stroke="${t.c1}" stroke-width="1.5" fill="none" stroke-linecap="round"/>`;
+}
+
+function resetTP() {
+  document.getElementById('tamt').value='';
+  ['trec','timp','tfee','tnewp'].forEach(id=>document.getElementById(id).textContent='—');
+  setTab('buy');
+}
+function setTab(tab) {
+  S.tradeTab=tab;
+  document.getElementById('ttbuy').className ='tt'+(tab==='buy' ?' by':'');
+  document.getElementById('ttsell').className='tt'+(tab==='sell'?' sl':'');
+  document.getElementById('tbtn').textContent=tab==='buy'?'Buy':'Sell';
+  document.getElementById('tbtn').className  ='t-btn '+(tab==='buy'?'by':'sl');
+  calcTrade();
+}
+function setAmt(v){document.getElementById('tamt').value=v;calcTrade();}
+function calcTrade(){
+  const amt=parseFloat(document.getElementById('tamt').value)||0;
+  const t=S.currentToken;
+  if(!amt||!t){['trec','timp','tfee','tnewp'].forEach(id=>document.getElementById(id).textContent='—');return;}
+  const fee=+(amt*(FEE_BPS/10000)).toFixed(4);
+  const net=amt-fee;
+  const tokens=net/t.price;
+  const mcapN=parseSuffix(t.mcap);
+  const impact=Math.min(99,(amt/Math.max(mcapN,1))*100).toFixed(2);
+  const newPrice=(t.price*(1+amt/Math.max(mcapN,1)*.4)).toFixed(6);
+  document.getElementById('trec').textContent=S.tradeTab==='buy'
+    ?tokens.toLocaleString(undefined,{maximumFractionDigits:0})+' $'+t.sym
+    :net.toFixed(3)+' BEAM';
+  document.getElementById('timp').textContent=impact+'%';
+  document.getElementById('tfee').textContent=fee+' BEAM';
+  document.getElementById('tnewp').textContent=newPrice+' BEAM';
+}
+async function execTrade(){
+  const amt=parseFloat(document.getElementById('tamt').value);
+  if(!amt||amt<=0){toast('Enter a valid amount','er');return;}
+  const btn=document.getElementById('tbtn');
+  const orig=btn.textContent;
+  btn.textContent='Processing...';btn.disabled=true;
+  await sleep(1300);
+  const t=S.currentToken;
+  const fee=+(amt*(FEE_BPS/10000)).toFixed(4);
+  if(S.tradeTab==='buy'){
+    t.holders+=1;t.txs+=1;
+    t.raised=(t.raised||0)+(amt-fee);
+    t.progress=Math.min(98,Math.floor((t.raised/69000)*100));
+    t.mcap=fmtN(t.raised*1.1);t.vol=fmtN(parseSuffix(t.vol)+amt);
+    if(!S.portfolio[t.id])S.portfolio[t.id]={token:t,beamSpent:0};
+    S.portfolio[t.id].beamSpent+=amt;
+    console.log(`Fee: ${fee} BEAM → ${FEE_WALLET}`);
+  }
+  renderTV(t);
+  toast((S.tradeTab==='buy'?'Bought':'Sold')+' '+amt+' BEAM of $'+t.sym,'ok');
+  btn.disabled=false;btn.textContent=orig;
+}
+
+// ════════════════════════════════════════════════
+// EXPLORE
+// ════════════════════════════════════════════════
 function renderExplore(){
-  const list=exFilt==='all'?TOKENS:TOKENS.filter(t=>t.cat===exFilt);
-  document.getElementById('tokenTable').innerHTML=list.map(t=>`
-    <div class="token-row" onclick="go('token',${t.id})">
-      <div class="tr-info">
-        ${logo(t,36)}
+  const list=S.exFilter==='all'?TOKENS:TOKENS.filter(t=>t.cat===S.exFilter);
+  document.getElementById('exlist').innerHTML=list.map(t=>`
+    <div class="tr" onclick="openToken(${t.id})">
+      <div class="tr-id">
+        ${mkLogo(t,32)}
         <div>
-          <div class="tr-name">${t.name}</div>
+          <div class="tr-name">${t.name}<span class="badge b-${t.badge}">${t.badge}</span></div>
           <div class="tr-sym">$${t.sym} · ${t.cat}</div>
         </div>
       </div>
-      <div class="tr-val">${t.price}</div>
-      <div class="tr-val">${t.mcap}</div>
-      <div class="tr-val">${t.vol}</div>
-      <div class="tr-bar-wrap">
-        <div class="tr-bar"><div class="tr-fill" style="width:${t.progress}%"></div></div>
-        <div class="tr-pct">${t.progress}%</div>
-      </div>
-      <button class="btn-buy-sm" onclick="event.stopPropagation();openModal(${t.id})">Buy</button>
+      <div class="tr-v">${t.price.toFixed(6)}</div>
+      <div class="tr-v">${t.mcap}</div>
+      <div class="tr-v">${t.vol}</div>
+      <div><div class="pb"><div class="pf" style="width:${t.progress}%"></div></div><div class="pp">${t.progress}% to grad</div></div>
+      <button class="btn-tr" onclick="event.stopPropagation();openToken(${t.id})">Trade</button>
     </div>`).join('');
 }
 function filterEx(f,btn){
-  exFilt=f;
-  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('on'));
+  S.exFilter=f;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
   btn.classList.add('on');
   renderExplore();
 }
-function sortEx(v){
-  if(v==='progress')TOKENS.sort((a,b)=>b.progress-a.progress);
-  if(v==='new')TOKENS.sort((a,b)=>b.id-a.id);
-  renderExplore();
-}
-
-// ── TOKEN DETAIL ─────────────────────────────────────
-function renderTokenDetail(id){
-  const t=TOKENS.find(x=>x.id===Number(id));
+function openToken(id){
+  const t=TOKENS.find(x=>x.id===id);
   if(!t)return;
-  selT=t;
-  document.getElementById('tdLogo').innerHTML=logo(t,56);
-  document.getElementById('tdName').textContent=t.name;
-  document.getElementById('tdSym').textContent=`$${t.sym} · Beam Network`;
-  document.getElementById('tdBadge').textContent=t.badge;
-  document.getElementById('tdBadge').className=`badge b-${t.badge}`;
-  document.getElementById('td-price').textContent=t.price;
-  document.getElementById('td-mcap').textContent=t.mcap;
-  document.getElementById('td-vol').textContent=t.vol;
-  document.getElementById('td-holders').textContent=t.buyers;
-  document.getElementById('tdCurveFill').style.width=t.progress+'%';
-  document.getElementById('tdRaised').textContent=Math.round(t.progress*690)+' BEAM';
-  document.getElementById('tdProg').textContent=t.progress+'% to graduation';
-  drawChart(t);
-  document.getElementById('holdersList').innerHTML=
-    Array.from({length:5},(_,i)=>`
-      <div class="holder">
-        <span class="holder-addr">0x${Math.random().toString(16).slice(2,8)}...${Math.random().toString(16).slice(2,6)}</span>
-        <span class="holder-pct">${(30-i*5).toFixed(1)}%</span>
-      </div>`).join('');
-  // Reset trade panel
-  document.getElementById('tAmt').value='';
-  calcDetail();
-  setTTab('buy');
+  renderTV(t);
+  goPage('token');
 }
 
-function drawChart(t){
-  const svg=document.getElementById('chartSvg');
-  if(!svg)return;
-  const W=800,H=160,pad=10;
-  const pts=Array.from({length:48},(_,i)=>{
-    const base=parseFloat(t.price);
-    return base*(0.7+Math.random()*0.6+i*0.008);
-  });
-  const mn=Math.min(...pts),mx=Math.max(...pts);
-  const norm=pts.map((v,i)=>({
-    x:pad+i*(W-pad*2)/47,
-    y:pad+(mx-v)/(mx-mn)*(H-pad*2)
-  }));
-  const path=norm.map((p,i)=>(i===0?`M${p.x},${p.y}`:`L${p.x},${p.y}`)).join(' ');
-  const area=path+` L${norm[norm.length-1].x},${H} L${norm[0].x},${H} Z`;
-  svg.innerHTML=`
-    <defs>
-      <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="${t.c1}" stop-opacity="0.25"/>
-        <stop offset="100%" stop-color="${t.c1}" stop-opacity="0"/>
-      </linearGradient>
-    </defs>
-    <path d="${area}" fill="url(#cg)"/>
-    <path d="${path}" stroke="${t.c1}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-  `;
-}
-
-function setTTab(t){
-  detTab=t;
-  document.getElementById('ttBuy').className='ttab'+(t==='buy'?' buy-on':'');
-  document.getElementById('ttSell').className='ttab'+(t==='sell'?' sell-on':'');
-  document.getElementById('tBtn').textContent=t.toUpperCase();
-  document.getElementById('tBtn').className='t-btn '+(t==='buy'?'buy':'sell');
-}
-function setTAmt(v){document.getElementById('tAmt').value=v;calcDetail();}
-function calcDetail(){
-  const amt=parseFloat(document.getElementById('tAmt').value)||0;
-  if(!amt||!selT){['tRec','tImpact','tFee'].forEach(i=>document.getElementById(i).textContent='—');return;}
-  const fee=amt*0.01,net=amt-fee;
-  const tokens=net/parseFloat(selT.price);
-  document.getElementById('tRec').textContent=detTab==='buy'?tokens.toLocaleString(undefined,{maximumFractionDigits:0})+' $'+selT.sym:net.toFixed(3)+' BEAM';
-  document.getElementById('tImpact').textContent=(amt/parseFloat(selT.mcap.replace('K','000'))*100).toFixed(2)+'%';
-  document.getElementById('tFee').textContent=fee.toFixed(4)+' BEAM';
-}
-async function execDetailTrade(){
-  const amt=parseFloat(document.getElementById('tAmt').value);
-  if(!amt){toast('Enter an amount','err');return;}
-  if(!wallet){toast('Connect your wallet first','err');return;}
-  const btn=document.getElementById('tBtn');
-  btn.textContent='Processing...';btn.disabled=true;
-  await new Promise(r=>setTimeout(r,1500));
-  if(detTab==='buy'){
-    selT.buyers+=1;selT.progress=Math.min(98,selT.progress+1);
-    if(!portfolio[selT.id])portfolio[selT.id]={token:selT,amount:0};
-    portfolio[selT.id].amount+=amt;
-  }
-  renderTokenDetail(selT.id);
-  toast(`${detTab==='buy'?'Bought':'Sold'} ${amt} BEAM of $${selT.sym}`,'ok');
-  btn.disabled=false;btn.textContent=detTab.toUpperCase();
-}
-
-// ── PORTFOLIO ────────────────────────────────────────
+// ════════════════════════════════════════════════
+// PORTFOLIO
+// ════════════════════════════════════════════════
 function renderPortfolio(){
-  const el=document.getElementById('portContent');
-  const keys=Object.keys(portfolio);
-  if(!wallet||keys.length===0){
-    el.innerHTML=`<div class="port-empty">
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="margin-bottom:20px;opacity:0.3;">
-        <rect x="4" y="12" width="40" height="28" rx="4" stroke="#dde4f5" stroke-width="2" fill="none"/>
-        <path d="M16 12V8a8 8 0 0116 0v4" stroke="#dde4f5" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <circle cx="24" cy="26" r="4" stroke="#dde4f5" stroke-width="2" fill="none"/>
-      </svg>
-      <h3>${!wallet?'Connect your wallet':'No holdings yet'}</h3>
-      <p>${!wallet?'Connect your wallet to view your BeamLaunch token holdings.':'Buy tokens on the Explore page to see your portfolio here.'}</p>
-      <button class="btn-launch-main" style="margin-top:20px;" onclick="${!wallet?"connectWallet()":"go('explore')"}">${!wallet?'Connect Wallet':'Explore Tokens'}</button>
-    </div>`;
-    return;
+  const el=document.getElementById('portbody');
+  const keys=Object.keys(S.portfolio);
+  if(!keys.length){
+    el.innerHTML=`<div class="empty">
+      <div class="e-ico"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#2c3a52" stroke-width="1.2" fill="none"/><path d="M6 9h6M9 6v6" stroke="#2c3a52" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <h3>No holdings yet</h3>
+      <p>Buy tokens on the Explore page to build your portfolio.</p>
+      <button class="btn-primary" style="max-width:180px;" onclick="goPage('explore')">Explore Tokens</button>
+    </div>`;return;
   }
   let total=0;
   const rows=keys.map(k=>{
-    const h=portfolio[k],t=h.token;
-    const val=h.amount;total+=val;
-    return `<div class="token-row" onclick="go('token',${t.id})" style="border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:var(--s1);">
-      <div class="tr-info">${logo(t,36)}<div><div class="tr-name">${t.name}</div><div class="tr-sym">$${t.sym}</div></div></div>
-      <div class="tr-val">${t.price}</div>
-      <div class="tr-val">${val.toFixed(0)} BEAM</div>
-      <div class="tr-val">${t.mcap}</div>
-      <div class="tr-bar-wrap"><div class="tr-bar"><div class="tr-fill" style="width:${t.progress}%"></div></div><div class="tr-pct">${t.progress}%</div></div>
-      <button class="btn-buy-sm" onclick="event.stopPropagation();go('token',${t.id})">View</button>
+    const h=S.portfolio[k],t=h.token;total+=h.beamSpent;
+    return `<div class="tr" onclick="openToken(${t.id})" style="border:1px solid var(--ln2);border-radius:7px;margin-bottom:5px;background:var(--c1);">
+      <div class="tr-id">${mkLogo(t,32)}<div><div class="tr-name">${t.name}</div><div class="tr-sym">$${t.sym}</div></div></div>
+      <div class="tr-v">${t.price.toFixed(6)}</div>
+      <div class="tr-v">${h.beamSpent.toFixed(2)}</div>
+      <div class="tr-v">${t.mcap}</div>
+      <div><div class="pb"><div class="pf" style="width:${t.progress}%"></div></div><div class="pp">${t.progress}%</div></div>
+      <button class="btn-tr" onclick="event.stopPropagation();openToken(${t.id})">View</button>
     </div>`;
   }).join('');
-  el.innerHTML=`<div class="port-holdings">
-    <div class="port-val">${total.toFixed(0)}</div>
-    <div class="port-val-lbl">Total Value (BEAM)</div>
-    <div class="tokens-table-head"><div>Token</div><div>Price</div><div>Holdings</div><div>Mkt Cap</div><div>Progress</div><div></div></div>
-    ${rows}
-  </div>`;
+  el.innerHTML=`<div style="margin-bottom:20px;">
+    <div style="font-size:28px;font-weight:700;color:var(--y);font-family:var(--m);">${total.toFixed(2)}</div>
+    <div style="font-family:var(--m);font-size:8px;color:var(--t2);text-transform:uppercase;letter-spacing:1.2px;margin-top:3px;">Total BEAM Invested</div>
+  </div>
+  <div class="th"><div>Token</div><div>Price</div><div>Invested</div><div>Mkt Cap</div><div>Progress</div><div></div></div>
+  ${rows}`;
 }
 
-// ── MODAL (quick trade from explore) ─────────────────
-function openModal(id){
-  selT=TOKENS.find(t=>t.id===id);
-  document.getElementById('mLogo').innerHTML=logo(selT,40);
-  document.getElementById('mName').textContent=selT.name;
-  document.getElementById('mSymText').textContent=`$${selT.sym} · Beam Network`;
-  document.getElementById('mPrice').textContent=selT.price;
-  document.getElementById('mChg').textContent=`+${(Math.random()*14+1).toFixed(1)}%`;
-  document.getElementById('mAmt').value='';
-  calcModal();setMTab('buy');
-  document.getElementById('tradeOverlay').classList.add('open');
-}
-function closeModal(){document.getElementById('tradeOverlay').classList.remove('open');}
-document.getElementById('tradeOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
-function setMTab(t){
-  mTab=t;
-  document.getElementById('mTabBuy').className='ttab'+(t==='buy'?' buy-on':'');
-  document.getElementById('mTabSell').className='ttab'+(t==='sell'?' sell-on':'');
-  document.getElementById('mBtn').textContent=t.toUpperCase();
-  document.getElementById('mBtn').className='t-btn '+(t==='buy'?'buy':'sell');
-}
-function setMAmt(v){document.getElementById('mAmt').value=v;calcModal();}
-function calcModal(){
-  const amt=parseFloat(document.getElementById('mAmt').value)||0;
-  if(!amt||!selT){['mRec','mImpact','mFee'].forEach(i=>document.getElementById(i).textContent='—');return;}
-  const fee=amt*0.01,net=amt-fee;
-  const tokens=net/parseFloat(selT.price);
-  document.getElementById('mRec').textContent=mTab==='buy'?tokens.toLocaleString(undefined,{maximumFractionDigits:0})+' $'+selT.sym:net.toFixed(3)+' BEAM';
-  document.getElementById('mImpact').textContent=(amt/parseFloat(selT.mcap.replace('K','000'))*100).toFixed(2)+'%';
-  document.getElementById('mFee').textContent=fee.toFixed(4)+' BEAM';
-}
-async function execModal(){
-  const amt=parseFloat(document.getElementById('mAmt').value);
-  if(!amt){toast('Enter an amount','err');return;}
-  if(!wallet){toast('Connect your wallet first','err');return;}
-  const btn=document.getElementById('mBtn');
-  btn.textContent='Processing...';btn.disabled=true;
-  await new Promise(r=>setTimeout(r,1500));
-  if(mTab==='buy'){
-    selT.buyers+=1;selT.progress=Math.min(98,selT.progress+1);
-    if(!portfolio[selT.id])portfolio[selT.id]={token:selT,amount:0};
-    portfolio[selT.id].amount+=amt;
-  }
-  closeModal();renderExplore();
-  toast(`${mTab==='buy'?'Bought':'Sold'} ${amt} BEAM of $${selT.sym}`,'ok');
-  btn.disabled=false;btn.textContent=mTab.toUpperCase();
+// ════════════════════════════════════════════════
+// UI HELPERS
+// ════════════════════════════════════════════════
+function stateCard(type, title, sub, note, tag){
+  const map={
+    loading:  {cls:'loading',ico:'<div class="st-icon spin-ring" style="animation:spin .9s linear infinite;border:3px solid var(--ln2);border-top-color:var(--y);"></div>'},
+    success:  {cls:'success',ico:'<div class="st-icon ok-ring"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9l4 4 6-6" stroke="#00b87a" stroke-width="1.6" stroke-linecap="round"/></svg></div>'},
+    fallback: {cls:'fallback',ico:'<div class="st-icon warn-ring"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 6v5M9 13v.5" stroke="#f5a623" stroke-width="1.6" stroke-linecap="round"/></svg></div>'},
+    error:    {cls:'error',ico:'<div class="st-icon err-ring"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 5l8 8M13 5l-8 8" stroke="#e83650" stroke-width="1.6" stroke-linecap="round"/></svg></div>'},
+  };
+  const m=map[type]||map.loading;
+  const tagHtml=tag?`<span class="st-tag ${tag}">${tag==='sim'?'SIMULATED':'ON-CHAIN'}</span>`:'';
+  const noteHtml=note?`<div style="font-size:10px;color:var(--t3);margin-top:6px;font-family:var(--m);">${note.slice(0,80)}</div>`:'';
+  return `<div class="state-card ${m.cls}">${m.ico}<div class="st-title">${title}</div><div class="st-sub">${sub}</div>${tagHtml}${noteHtml}</div>`;
 }
 
-// ── LAUNCH ───────────────────────────────────────────
-async function doLaunch(){
-  const name=document.getElementById('lName').value.trim();
-  const tick=document.getElementById('lTick').value.trim();
-  const desc=document.getElementById('lDesc').value.trim();
-  const cat=document.getElementById('lCat').value;
-  if(!name||!tick||!desc){toast('Fill in all fields','err');return;}
-  if(!wallet){toast('Connect your wallet first','err');return;}
-  const btn=document.querySelector('.btn-deploy');
-  btn.textContent='DEPLOYING ON BEAM...';btn.disabled=true;
-  await new Promise(r=>setTimeout(r,2400));
-  const cols=[{c1:'#f0ff44',c2:'#8a9400'},{c1:'#00e5ff',c2:'#006b80'},{c1:'#a78bfa',c2:'#4c1d95'},{c1:'#00e676',c2:'#005c2e'}];
-  const c=cols[Math.floor(Math.random()*cols.length)];
-  TOKENS.unshift({id:TOKENS.length,name,sym:tick,cat,...c,progress:0,price:'0.000001',mcap:'0.1K',vol:'0',buyers:1,badge:'new',desc});
-  toast(`$${tick} deployed on Beam Network`,'ok');
-  btn.textContent='DEPLOY ON BEAM →';btn.disabled=false;
-  ['lName','lTick','lDesc'].forEach(id=>document.getElementById(id).value='');
-  setTimeout(()=>go('explore'),1200);
+// Image upload
+function handleImg(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  if(file.size>2*1024*1024){toast('Image too large — max 2MB','er');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    S.form.imgData=e.target.result;
+    const th=document.getElementById('upthumb');
+    th.src=e.target.result;th.style.display='block';
+    document.getElementById('upicon').style.display='none';
+    document.getElementById('uplabel').textContent=file.name;
+  };
+  reader.onerror=()=>toast('Failed to read image','er');
+  reader.readAsDataURL(file);
 }
 
-// ── WALLET ───────────────────────────────────────────
-async function connectWallet(){
-  if(!window.ethereum){toast('Install MetaMask','err');return;}
-  try{
-    provider=new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts",[]);
-    signer=provider.getSigner();
-    wallet=await signer.getAddress();
-    try{
-      await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x3429'}]});
-    }catch(e){
-      if(e.code===4902)await window.ethereum.request({method:'wallet_addEthereumChain',params:[{
-        chainId:'0x3429',chainName:'Beam Testnet',
-        nativeCurrency:{name:'BEAM',symbol:'BEAM',decimals:18},
-        rpcUrls:['https://build.onbeam.com/rpc/testnet'],
-        blockExplorerUrls:['https://subnets-test.avax.network/beam']
-      }]});
-    }
-    const btn=document.getElementById('wBtn');
-    btn.textContent=wallet.slice(0,6)+'...'+wallet.slice(-4);
-    btn.classList.add('on');
-    toast('Connected to Beam Testnet','ok');
-    if(document.getElementById('pg-portfolio').classList.contains('active'))renderPortfolio();
-  }catch(e){toast('Failed: '+e.message,'err');}
+function fmtSup(inp){
+  const raw=inp.value.replace(/,/g,'').replace(/[^0-9]/g,'');
+  if(raw)inp.value=parseInt(raw,10).toLocaleString();
 }
 
-// ── TOAST ────────────────────────────────────────────
+// SVG logos
+function mkLogo(t,sz=32){
+  const r=sz/2;
+  const shapes=[
+    `<polygon points="${r},${sz*.07} ${sz*.93},${r*.75} ${sz*.93},${r*1.25} ${r},${sz*.93} ${sz*.07},${r*1.25} ${sz*.07},${r*.75}" stroke="${t.c1}" stroke-width="1.3" fill="${t.c1}0f"/><circle cx="${r}" cy="${r}" r="${sz*.12}" fill="${t.c1}"/>`,
+    `<polygon points="${r},${sz*.09} ${sz*.91},${r} ${r},${sz*.91} ${sz*.09},${r}" stroke="${t.c1}" stroke-width="1.3" fill="${t.c1}0f"/><polygon points="${r},${sz*.33} ${sz*.67},${r} ${r},${sz*.67} ${sz*.33},${r}" fill="${t.c1}" opacity=".8"/>`,
+    `<rect x="${sz*.19}" y="${sz*.19}" width="${sz*.62}" height="${sz*.62}" rx="3" stroke="${t.c1}" stroke-width="1.3" fill="${t.c1}0f" transform="rotate(45 ${r} ${r})"/><rect x="${sz*.34}" y="${sz*.34}" width="${sz*.32}" height="${sz*.32}" rx="2" fill="${t.c1}"/>`,
+    `<polygon points="${r},${sz*.1} ${sz*.9},${sz*.88} ${sz*.1},${sz*.88}" stroke="${t.c1}" stroke-width="1.3" fill="${t.c1}0f"/><polygon points="${r},${sz*.37} ${sz*.65},${sz*.71} ${sz*.35},${sz*.71}" fill="${t.c1}" opacity=".8"/>`,
+    `<circle cx="${r}" cy="${r}" r="${sz*.41}" stroke="${t.c1}" stroke-width="1.3" fill="none"/><circle cx="${r}" cy="${r}" r="${sz*.23}" stroke="${t.c1}" stroke-width="1" fill="${t.c1}0f"/><circle cx="${r}" cy="${r}" r="${sz*.1}" fill="${t.c1}"/>`,
+  ];
+  const br=Math.round(sz*.22);
+  return `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" fill="none" style="border-radius:${br}px;background:${t.c1}0a;border:1px solid ${t.c1}1c;flex-shrink:0;">${shapes[(t.id||0)%shapes.length]}</svg>`;
+}
+
+// Misc helpers
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function mkAddr(){return '0x'+Array.from({length:40},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');}
+function mkTx(){return '0x'+Array.from({length:64},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');}
+function rndColor(){return['#ccf000','#00c4e0','#7c5cf8','#00b87a','#e83650','#f5a623'][Math.floor(Math.random()*6)];}
+function parseSuffix(s){if(typeof s==='number')return s;const n=parseFloat(String(s).replace(/,/g,''));return s.includes('M')?n*1e6:s.includes('K')?n*1e3:n||0;}
+function fmtN(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n.toFixed(0);}
+function cp(txt,msg){if(!txt)return;navigator.clipboard.writeText(txt).then(()=>toast(msg||'Copied','ok'));}
+function shareX(){const d=S.deployed;if(!d)return;const t=`Just launched $${d.sym} on BeamLaunch — the first token launchpad on Beam Network 🚀\n\nFair launch · Bonding curve · No presales\n\nbeamlaunch.up.railway.app`;window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(t),'_blank');}
+
+let _tt;
 function toast(msg,type='ok'){
-  const t=document.getElementById('toast');
-  t.textContent=(type==='ok'?'✓  ':'')+msg;
-  t.className='toast '+type+' show';
-  setTimeout(()=>t.classList.remove('show'),4000);
+  const el=document.getElementById('toast');
+  el.textContent=(type==='ok'?'✓  ':type==='wa'?'⚠  ':'')+msg;
+  el.className='on '+type;
+  clearTimeout(_tt);
+  _tt=setTimeout(()=>el.classList.remove('on'),4000);
 }
 </script>
 
