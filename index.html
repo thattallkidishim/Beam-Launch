@@ -1,1400 +1,1721 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-<title>BeamLaunch</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>BeamLaunch — Token Launchpad on Beam</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
+/* ─── RESET ─── */
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#07080e;--c1:#0c0e17;--c2:#11141f;--c3:#161926;
-  --ln:#1c2030;--ln2:#222840;
-  --y:#ccf000;--yh:#b8d800;
-  --b:#00c4e0;--g:#00b87a;--r:#e83650;--p:#7c5cf8;--o:#f5a623;
-  --t:#b4c2d8;--t2:#526480;--t3:#2c3a52;
-  --f:'Inter',sans-serif;--m:'JetBrains Mono',monospace;
-  --nav:52px;--rad:8px;
+  --ink:#f0f0f4;
+  --ink2:#9090a0;
+  --ink3:#505060;
+  --ink4:#2a2a38;
+  --bg:#06060a;
+  --surface:#0e0e14;
+  --surface2:#14141c;
+  --surface3:#1a1a24;
+  --border:#22222e;
+  --border2:#2c2c3c;
+  --lime:#b4ff00;
+  --lime2:#90cc00;
+  --green:#00d484;
+  --red:#ff3a5c;
+  --blue:#4d8eff;
+  --amber:#f5a623;
+  --F:'Outfit',sans-serif;
+  --M:'Space Mono',monospace;
+  --nav:54px;
+  --r:6px;
 }
-html{height:100%;-webkit-tap-highlight-color:transparent;}
-body{background:var(--bg);color:var(--t);font-family:var(--f);font-size:14px;min-height:100%;overflow-x:hidden;}
+html{height:100%;scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--F);font-size:14px;
+  line-height:1.55;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+*:focus-visible{outline:2px solid var(--lime);outline-offset:2px;}
 
-/* ── NAV ── */
+/* ─── NAV ─── */
 #nav{
-position:fixed;top:0;left:0;right:0;z-index:500;height:var(–nav);
-display:flex;align-items:center;justify-content:space-between;
-padding:0 24px;background:rgba(7,8,14,.97);backdrop-filter:blur(20px);
-border-bottom:1px solid var(–ln);
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  height:var(--nav);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;
+  background:rgba(6,6,10,.95);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
 }
-.logo{display:flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none;}
-.logo-mark{width:24px;height:24px;border-radius:5px;background:var(–y);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.logo-name{font-size:15px;font-weight:700;color:var(–t);letter-spacing:-.2px;}
-.logo-name em{font-style:normal;color:var(–y);}
-.nav-c{display:flex;gap:2px;}
-.nb{font-size:13px;font-weight:500;color:var(–t2);padding:5px 12px;border-radius:6px;border:none;background:none;cursor:pointer;font-family:var(–f);transition:all .15s;}
-.nb:hover{color:var(–t);background:var(–c2);}
-.nb.on{color:var(–y);background:rgba(204,240,0,.07);}
-.nav-r{display:flex;align-items:center;gap:8px;}
-.mode-chip{
-font-family:var(–m);font-size:10px;letter-spacing:.5px;padding:4px 10px;
-border-radius:4px;display:none;
+.nav-left{display:flex;align-items:center;gap:0;}
+.logo{
+  display:flex;align-items:center;gap:9px;cursor:pointer;
+  padding-right:24px;border-right:1px solid var(--border);
 }
-.mode-chip.demo{background:rgba(245,166,35,.12);color:var(–o);border:1px solid rgba(245,166,35,.25);}
-.mode-chip.real{background:rgba(0,184,122,.1);color:var(–g);border:1px solid rgba(0,184,122,.22);}
+.logo-mark{
+  width:26px;height:26px;border-radius:5px;
+  background:var(--lime);display:grid;place-items:center;flex-shrink:0;
+}
+.logo-text{font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-.2px;}
+.logo-text em{font-style:normal;color:var(--lime);}
+.nav-links{display:flex;}
+.nlink{
+  height:var(--nav);padding:0 18px;
+  display:flex;align-items:center;
+  font-size:13px;font-weight:500;color:var(--ink3);
+  border:none;background:none;cursor:pointer;
+  font-family:var(--F);transition:color .15s;
+  position:relative;border-right:1px solid var(--border);
+}
+.nlink:hover{color:var(--ink);}
+.nlink.on{color:var(--ink);}
+.nlink.on::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--lime);
+}
+.nav-right{display:flex;align-items:center;gap:0;}
+.nav-balance{
+  display:none;align-items:center;gap:7px;
+  font-family:var(--M);font-size:10px;color:var(--ink3);
+  padding:0 16px;border-right:1px solid var(--border);
+  height:var(--nav);
+}
+.bal-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;}
 #wbtn{
-font-family:var(–m);font-size:11px;font-weight:500;
-padding:7px 15px;border-radius:6px;border:none;cursor:pointer;
-background:var(–y);color:#000;transition:background .15s;
+  height:var(--nav);padding:0 22px;
+  font-family:var(--M);font-size:11px;font-weight:700;
+  letter-spacing:.8px;text-transform:uppercase;
+  background:var(--lime);color:#000;border:none;cursor:pointer;
+  transition:background .15s;border-left:1px solid transparent;
 }
-#wbtn:hover{background:var(–yh);}
-#wbtn.on{background:var(–c2);color:var(–y);border:1px solid rgba(204,240,0,.2);}
-
-/* ── PAGES ── */
-.pg{display:none;padding-top:var(–nav);min-height:100vh;}
-.pg.on{display:block;}
-
-/* ════ STEP FLOW CONTAINER ════ */
-.flow-shell{
-max-width:520px;margin:0 auto;
-padding:40px 20px 80px;
+#wbtn:hover{background:var(--lime2);}
+#wbtn.on{
+  background:transparent;color:var(--lime);
+  border-left:1px solid var(--border);
+  font-size:10px;letter-spacing:.3px;text-transform:none;
 }
 
-/* ── MODE SELECT ── */
-.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
-.mode-card{
-border:2px solid var(–ln2);border-radius:var(–rad);padding:24px 20px;
-cursor:pointer;transition:all .2s;background:var(–c1);text-align:center;
+/* ─── WALLET MODAL ─── */
+.wmodal-bg{
+  display:none;position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;padding:20px;
 }
-.mode-card:hover{border-color:var(–y);}
-.mode-card.selected{border-color:var(–y);background:rgba(204,240,0,.05);}
-.mc-icon{
-width:44px;height:44px;border-radius:10px;margin:0 auto 14px;
-display:flex;align-items:center;justify-content:center;font-size:20px;
+.wmodal-bg.open{display:flex;}
+.wmodal{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:12px;padding:24px;width:100%;max-width:380px;
+  animation:slideUp .2s ease;
 }
-.mc-title{font-size:15px;font-weight:600;margin-bottom:5px;}
-.mc-desc{font-size:12px;color:var(–t2);line-height:1.6;}
-.mc-tag{
-display:inline-block;font-family:var(–m);font-size:9px;letter-spacing:.5px;
-padding:2px 8px;border-radius:3px;text-transform:uppercase;margin-top:10px;
+@keyframes slideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.wmodal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.wmodal-title{font-size:16px;font-weight:700;letter-spacing:-.2px;}
+.wmodal-close{
+  width:28px;height:28px;border-radius:5px;border:1px solid var(--border2);
+  background:transparent;color:var(--ink3);cursor:pointer;
+  display:grid;place-items:center;font-size:16px;line-height:1;transition:all .12s;
 }
-.mc-tag.demo{background:rgba(245,166,35,.1);color:var(–o);border:1px solid rgba(245,166,35,.2);}
-.mc-tag.real{background:rgba(0,184,122,.08);color:var(–g);border:1px solid rgba(0,184,122,.18);}
+.wmodal-close:hover{border-color:var(--ink3);color:var(--ink);}
+.wmodal-desc{font-size:13px;color:var(--ink3);margin-bottom:18px;line-height:1.6;}
+.wallet-option{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 14px;border-radius:8px;border:1px solid var(--border);
+  background:var(--surface2);cursor:pointer;
+  transition:all .15s;margin-bottom:8px;
+}
+.wallet-option:hover{border-color:var(--lime);background:var(--surface3);}
+.wallet-option:last-child{margin-bottom:0;}
+.wo-icon{
+  width:36px;height:36px;border-radius:8px;flex-shrink:0;
+  display:grid;place-items:center;font-size:20px;
+}
+.wo-name{font-size:14px;font-weight:600;margin-bottom:1px;}
+.wo-desc{font-size:11px;color:var(--ink3);}
+.wo-arrow{margin-left:auto;color:var(--ink4);font-size:16px;transition:transform .15s;}
+.wallet-option:hover .wo-arrow{transform:translateX(3px);color:var(--ink3);}
+.wmodal-note{
+  margin-top:14px;font-family:var(--M);font-size:9px;
+  color:var(--ink4);text-align:center;letter-spacing:.3px;
+  line-height:1.6;
+}
 
-/* ── PROGRESS BAR ── */
-.flow-progress{
-display:flex;align-items:center;gap:0;
-padding:16px 20px;border-bottom:1px solid var(–ln);
-background:var(–c1);margin-bottom:0;
-position:sticky;top:var(–nav);z-index:10;
-}
-.fp-step{display:flex;align-items:center;flex:1;}
-.fp-dot{
-width:22px;height:22px;border-radius:50%;flex-shrink:0;
-display:flex;align-items:center;justify-content:center;
-font-family:var(–m);font-size:9px;border:1.5px solid var(–ln2);
-background:var(–c2);color:var(–t2);transition:all .25s;
-}
-.fp-dot.done{background:var(–g);border-color:var(–g);color:#000;}
-.fp-dot.act{background:var(–y);border-color:var(–y);color:#000;}
-.fp-dot.err{background:var(–r);border-color:var(–r);color:#fff;}
-.fp-label{font-size:11px;color:var(–t2);margin-left:6px;white-space:nowrap;display:none;}
-.fp-label.act{color:var(–y);display:block;}
-.fp-line{flex:1;height:1px;background:var(–ln2);margin:0 6px;transition:background .25s;}
-.fp-line.done{background:var(–g);}
+/* ─── PAGES ─── */
+.page{display:none;padding-top:var(--nav);}
+.page.on{display:block;}
 
-/* ── STEP PANELS ── */
-.step-panel{display:none;padding-top:0;}
-.step-panel.on{display:block;}
-.step-inner{padding:28px 24px 0;}
-.step-title{font-size:18px;font-weight:700;margin-bottom:4px;letter-spacing:-.3px;}
-.step-sub{font-size:13px;color:var(–t2);margin-bottom:24px;line-height:1.65;}
+/* ─────────────────────────────────────
+   EXPLORE
+───────────────────────────────────── */
 
-/* ── FORM ELEMENTS ── */
-.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
-.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.lbl{font-family:var(–m);font-size:9px;letter-spacing:1.2px;color:var(–t2);text-transform:uppercase;}
-.lbl sub{font-size:8px;color:var(–t3);letter-spacing:0;text-transform:none;margin-left:3px;}
+/* Hero strip — gives breathing room */
+.ex-hero{
+  padding:40px 32px 32px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-end;justify-content:space-between;
+  flex-wrap:wrap;gap:24px;
+}
+.ex-hero-left h1{
+  font-size:28px;font-weight:700;letter-spacing:-.5px;
+  color:var(--ink);margin-bottom:6px;
+}
+.ex-hero-left p{font-size:14px;color:var(--ink3);max-width:420px;line-height:1.6;}
+.ex-hero-stats{display:flex;gap:32px;flex-shrink:0;}
+.hero-stat{}
+.hs-val{
+  font-family:var(--M);font-size:20px;font-weight:700;
+  color:var(--lime);display:block;letter-spacing:-.5px;
+}
+.hs-lbl{font-family:var(--M);font-size:9px;color:var(--ink4);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+
+/* Toolbar */
+.ex-toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 32px;border-bottom:1px solid var(--border);
+  gap:12px;flex-wrap:wrap;
+  position:sticky;top:var(--nav);z-index:10;
+  background:rgba(6,6,10,.97);backdrop-filter:blur(12px);
+}
+.pill-set{display:flex;gap:5px;flex-wrap:wrap;}
+.pill{
+  font-family:var(--M);font-size:9px;letter-spacing:.8px;text-transform:uppercase;
+  padding:6px 14px;border-radius:20px;cursor:pointer;
+  border:1px solid var(--border2);background:transparent;color:var(--ink3);
+  transition:all .12s;
+}
+.pill:hover{border-color:var(--ink3);color:var(--ink);}
+.pill.on{border-color:var(--lime);color:var(--lime);background:rgba(180,255,0,.06);}
+.btn-new{
+  font-family:var(--M);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  padding:9px 18px;border-radius:var(--r);border:none;cursor:pointer;
+  background:var(--lime);color:#000;transition:background .12s;flex-shrink:0;
+}
+.btn-new:hover{background:var(--lime2);}
+
+/* Two-column layout for desktop */
+.ex-body{
+  display:grid;
+  grid-template-columns:1fr 260px;
+  min-height:calc(100vh - var(--nav) - 120px);
+}
+.ex-list-wrap{border-right:1px solid var(--border);}
+
+/* Column header */
+.list-head{
+  display:grid;
+  grid-template-columns:2.2fr 90px 90px 90px 140px 76px;
+  padding:10px 24px;
+  border-bottom:1px solid var(--border);
+  background:var(--surface);
+}
+.lh{font-family:var(--M);font-size:8px;letter-spacing:1.2px;color:var(--ink4);text-transform:uppercase;}
+
+/* Token rows */
+.trow{
+  display:grid;
+  grid-template-columns:2.2fr 90px 90px 90px 140px 76px;
+  align-items:center;
+  padding:14px 24px;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;transition:background .1s;
+}
+.trow:hover{background:var(--surface);}
+.trow:last-child{border-bottom:none;}
+
+.tid{display:flex;align-items:center;gap:12px;}
+.tlogo{
+  width:36px;height:36px;border-radius:8px;flex-shrink:0;
+  display:grid;place-items:center;
+}
+.tname{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-.1px;margin-bottom:2px;}
+.tsym{font-family:var(--M);font-size:9px;color:var(--ink3);}
+.tv{font-family:var(--M);font-size:12px;color:var(--ink);}
+.tv.up{color:var(--green);}
+.tv.dn{color:var(--red);}
+
+.prog-col{}
+.pbg{height:3px;background:var(--surface3);border-radius:2px;overflow:hidden;}
+.pfill{height:100%;border-radius:2px;background:var(--lime);}
+.ppct{font-family:var(--M);font-size:8px;color:var(--ink3);margin-top:3px;}
+
+.btn-trade-row{
+  font-family:var(--M);font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  padding:7px 10px;border-radius:4px;border:1px solid var(--border2);
+  background:transparent;color:var(--ink3);cursor:pointer;width:100%;
+  transition:all .12s;
+}
+.btn-trade-row:hover{background:var(--lime);color:#000;border-color:var(--lime);}
+
+/* Badges */
+.badge{
+  display:inline-block;font-family:var(--M);font-size:8px;
+  letter-spacing:.5px;padding:2px 6px;border-radius:3px;
+  text-transform:uppercase;margin-left:5px;vertical-align:middle;
+}
+.hot{background:rgba(255,58,92,.09);color:var(--red);border:1px solid rgba(255,58,92,.2);}
+.new{background:rgba(180,255,0,.07);color:var(--lime);border:1px solid rgba(180,255,0,.18);}
+.live{background:rgba(0,212,132,.07);color:var(--green);border:1px solid rgba(0,212,132,.18);}
+
+/* Right sidebar */
+.ex-side{padding:24px;overflow-y:auto;}
+.side-title{font-family:var(--M);font-size:8px;letter-spacing:1.5px;color:var(--ink4);text-transform:uppercase;margin-bottom:14px;}
+
+.stat-rows{display:flex;flex-direction:column;gap:0;margin-bottom:20px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.srow{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);}
+.srow:last-child{border-bottom:none;}
+.sk{font-size:12px;color:var(--ink3);}
+.sv{font-family:var(--M);font-size:11px;color:var(--ink);}
+.sv.lime{color:var(--lime);}
+
+.launch-cta{
+  display:block;width:100%;padding:12px;text-align:center;
+  background:var(--lime);color:#000;border:none;cursor:pointer;border-radius:var(--r);
+  font-family:var(--M);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  transition:background .12s;margin-bottom:20px;
+}
+.launch-cta:hover{background:var(--lime2);}
+
+.feed-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.feed-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
+.feed-row:last-child{border-bottom:none;}
+.feed-row:hover{background:var(--surface2);}
+.flogo{width:28px;height:28px;border-radius:6px;flex-shrink:0;display:grid;place-items:center;}
+.fname{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:1px;}
+.ftime{font-family:var(--M);font-size:9px;color:var(--ink4);}
+.fprice{font-family:var(--M);font-size:10px;color:var(--lime);margin-left:auto;flex-shrink:0;}
+
+/* ─────────────────────────────────────
+   LAUNCH FLOW
+───────────────────────────────────── */
+.flow-grid{
+  display:grid;grid-template-columns:1fr 280px;
+  min-height:calc(100vh - var(--nav));
+}
+.flow-main{overflow:hidden;}
+
+/* Step bar */
+.stepbar{
+  display:flex;align-items:center;border-bottom:1px solid var(--border);
+  background:var(--surface);height:44px;
+}
+.sbstep{
+  display:flex;align-items:center;gap:8px;
+  height:100%;padding:0 20px;
+  font-family:var(--M);font-size:9px;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--ink4);border-right:1px solid var(--border);cursor:pointer;
+  transition:color .15s;position:relative;
+}
+.sbstep:hover{color:var(--ink3);}
+.sbstep.on{color:var(--ink);}
+.sbstep.on::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--lime);}
+.sbstep.done{color:var(--green);}
+.sbn{
+  width:16px;height:16px;border-radius:50%;border:1px solid currentColor;
+  display:grid;place-items:center;font-size:8px;flex-shrink:0;
+}
+.sbstep.done .sbn{background:var(--green);border-color:var(--green);color:#000;}
+.sbstep.on .sbn{background:var(--lime);border-color:var(--lime);color:#000;}
+
+/* Panel content */
+.panel-inner{padding:36px 40px 80px;max-width:540px;}
+.panel-title{font-size:22px;font-weight:700;letter-spacing:-.4px;color:var(--ink);margin-bottom:5px;}
+.panel-sub{font-size:13px;color:var(--ink3);margin-bottom:32px;line-height:1.65;}
+
+/* Mode row */
+.mode-row{display:flex;gap:6px;margin-bottom:6px;}
+.mode-pill{
+  flex:1;height:38px;border-radius:5px;border:1px solid var(--border2);
+  background:transparent;font-family:var(--M);font-size:9px;font-weight:700;
+  letter-spacing:.8px;text-transform:uppercase;color:var(--ink3);cursor:pointer;
+  transition:all .15s;
+}
+.mode-pill:hover{border-color:var(--ink3);color:var(--ink);}
+.mode-pill.sel-demo{border-color:rgba(245,166,35,.5);color:var(--amber);background:rgba(245,166,35,.06);}
+.mode-pill.sel-real{border-color:rgba(0,212,132,.4);color:var(--green);background:rgba(0,212,132,.05);}
+.mode-note{font-family:var(--M);font-size:9px;color:var(--ink4);letter-spacing:.2px;margin-bottom:26px;}
+
+/* Fields */
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:18px;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.flabel{font-family:var(--M);font-size:8px;letter-spacing:1.5px;color:var(--ink3);text-transform:uppercase;}
+.flabel .opt{color:var(--ink4);font-size:7px;letter-spacing:0;text-transform:none;margin-left:4px;}
+
 .inp{
-background:var(–c2);border:1px solid var(–ln2);border-radius:var(–rad);
-padding:10px 12px;color:var(–t);font-family:var(–f);font-size:14px;
-outline:none;width:100%;transition:border-color .15s;
--webkit-appearance:none;appearance:none;
+  height:42px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);
+  padding:0 14px;color:var(--ink);font-family:var(--F);font-size:14px;font-weight:500;
+  outline:none;width:100%;transition:border-color .15s;
+  -webkit-appearance:none;appearance:none;
 }
-.inp:focus{border-color:var(–y);}
-.inp::placeholder{color:var(–t3);}
-.inp[readonly]{color:var(–t2);cursor:default;}
-textarea.inp{resize:vertical;min-height:70px;line-height:1.6;}
+.inp:focus{border-color:var(--lime);}
+.inp::placeholder{color:var(--ink4);font-weight:400;}
+.inp[readonly]{color:var(--ink3);cursor:default;}
+textarea.inp{height:82px;padding:12px 14px;resize:vertical;line-height:1.6;font-size:13px;}
 select.inp{cursor:pointer;}
-.inp-row{display:flex;align-items:center;background:var(–c2);border:1px solid var(–ln2);border-radius:var(–rad);overflow:hidden;transition:border-color .15s;}
-.inp-row:focus-within{border-color:var(–y);}
-.inp-pre{font-family:var(–m);font-size:9px;color:var(–t2);padding:0 10px;border-right:1px solid var(–ln2);white-space:nowrap;flex-shrink:0;letter-spacing:.5px;}
-.inp-row .inp{border:none;border-radius:0;background:transparent;}
 
-/* image upload */
-.upbox{border:2px dashed var(–ln2);border-radius:var(–rad);padding:22px;text-align:center;cursor:pointer;transition:border-color .15s;position:relative;overflow:hidden;}
-.upbox:hover{border-color:var(–y);}
-.upbox input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0;}
-.up-thumb{width:52px;height:52px;border-radius:9px;object-fit:cover;border:2px solid var(–y);display:none;margin:0 auto 8px;}
-.up-text{font-size:12px;color:var(–t2);margin-top:7px;}
+.irow{
+  display:flex;height:42px;
+  background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);
+  overflow:hidden;transition:border-color .15s;
+}
+.irow:focus-within{border-color:var(--lime);}
+.ipre{
+  display:flex;align-items:center;padding:0 12px;
+  background:var(--surface3);border-right:1px solid var(--border2);
+  font-family:var(--M);font-size:8px;letter-spacing:.8px;color:var(--ink3);
+  text-transform:uppercase;white-space:nowrap;flex-shrink:0;
+}
+.irow .inp{border:none;border-radius:0;background:transparent;height:100%;}
 
-/* ── FEE CARD ── */
-.fee-card{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);overflow:hidden;margin-bottom:16px;}
-.fee-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(–ln);font-size:13px;}
-.fee-row:last-child{border-bottom:none;}
-.fee-row .k{color:var(–t2);}
-.fee-row .v{font-family:var(–m);font-size:11px;color:var(–y);}
-.fee-total{
-display:flex;justify-content:space-between;align-items:center;padding:12px 14px;
-background:rgba(204,240,0,.04);border-top:1px solid rgba(204,240,0,.1);font-weight:600;font-size:13px;
+/* Upload */
+.upzone{
+  border:1px dashed var(--border2);border-radius:var(--r);
+  padding:24px;text-align:center;cursor:pointer;
+  transition:border-color .15s;position:relative;overflow:hidden;
 }
-.fee-total .v{font-family:var(–m);font-size:14px;color:var(–y);}
+.upzone:hover{border-color:var(--ink3);}
+.upzone input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0;}
+.up-preview{width:52px;height:52px;border-radius:9px;object-fit:cover;display:none;margin:0 auto 8px;border:1px solid var(--border2);}
+.up-icon svg{display:block;margin:0 auto 8px;}
+.up-text{font-family:var(--M);font-size:9px;color:var(--ink3);letter-spacing:.3px;}
+.up-text b{color:var(--ink2);}
 
-/* mode badge in fee */
-.mode-badge{
-display:inline-flex;align-items:center;gap:5px;
-font-family:var(–m);font-size:9px;letter-spacing:.5px;text-transform:uppercase;
-padding:3px 9px;border-radius:4px;
-}
-.mode-badge.demo{background:rgba(245,166,35,.1);color:var(–o);border:1px solid rgba(245,166,35,.2);}
-.mode-badge.real{background:rgba(0,184,122,.08);color:var(–g);border:1px solid rgba(0,184,122,.18);}
-.mode-badge::before{content:’’;width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0;}
+/* Tokenomics */
+.tok-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.tokcell{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:13px 8px;text-align:center;}
+.tokpct{font-family:var(--M);font-size:17px;font-weight:700;color:var(--lime);display:block;}
+.tokname{font-size:11px;font-weight:500;color:var(--ink2);margin-top:4px;}
+.toknote{font-family:var(--M);font-size:8px;color:var(--ink4);margin-top:2px;}
 
-/* ── STATE CARD (loading / success / error) ── */
-.state-card{
-background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);
-padding:28px 20px;text-align:center;margin-bottom:16px;
+/* Vesting */
+.vest-list{border:1px solid var(--border2);border-radius:var(--r);overflow:hidden;}
+.vest-row{display:flex;align-items:flex-start;gap:11px;padding:12px 14px;border-bottom:1px solid var(--border);}
+.vest-row:last-child{border-bottom:none;}
+.vd{width:7px;height:7px;border-radius:50%;margin-top:3px;flex-shrink:0;}
+.vb{flex:1;}
+.vtitle{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:1px;}
+.vdetail{font-family:var(--M);font-size:9px;color:var(--ink3);letter-spacing:.1px;}
+.vpct{font-family:var(--M);font-size:13px;font-weight:700;color:var(--lime);flex-shrink:0;}
+
+/* Buttons */
+.btn-primary{
+  display:block;width:100%;height:44px;border:none;cursor:pointer;
+  background:var(--lime);color:#000;border-radius:var(--r);
+  font-family:var(--M);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  transition:background .15s;
 }
-.state-card.loading .st-icon{animation:spin .9s linear infinite;}
-.state-card.success{border-color:rgba(0,184,122,.3);}
-.state-card.error{border-color:rgba(232,54,80,.3);}
-.state-card.fallback{border-color:rgba(245,166,35,.3);}
-.st-icon{
-width:44px;height:44px;border-radius:50%;margin:0 auto 14px;
-display:flex;align-items:center;justify-content:center;
+.btn-primary:hover{background:var(--lime2);}
+.btn-primary:disabled{opacity:.3;cursor:not-allowed;}
+.btn-ghost{
+  display:block;width:100%;height:40px;border:1px solid var(--border2);cursor:pointer;
+  background:transparent;color:var(--ink3);border-radius:var(--r);
+  font-family:var(--M);font-size:9px;letter-spacing:.8px;text-transform:uppercase;
+  transition:all .15s;
 }
-.st-icon.spin-ring{border:3px solid var(–ln2);border-top-color:var(–y);}
-.st-icon.ok-ring{background:rgba(0,184,122,.12);border:1.5px solid rgba(0,184,122,.3);}
-.st-icon.err-ring{background:rgba(232,54,80,.1);border:1.5px solid rgba(232,54,80,.25);}
-.st-icon.warn-ring{background:rgba(245,166,35,.1);border:1.5px solid rgba(245,166,35,.25);}
+.btn-ghost:hover{border-color:var(--ink3);color:var(--ink);}
+.bstack{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+
+/* ─── DEPLOY ─── */
+.deploy-scene{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 40px;min-height:calc(100vh - var(--nav) - 44px);
+}
+.spin-ring{
+  width:52px;height:52px;border-radius:50%;
+  border:2px solid var(--border2);border-top-color:var(--lime);
+  animation:spin .85s linear infinite;margin-bottom:22px;
+}
 @keyframes spin{to{transform:rotate(360deg);}}
-.st-title{font-size:15px;font-weight:600;margin-bottom:4px;}
-.st-sub{font-size:12px;color:var(–t2);line-height:1.65;}
-.st-tag{
-display:inline-block;font-family:var(–m);font-size:9px;letter-spacing:.5px;
-padding:3px 9px;border-radius:4px;margin-top:10px;text-transform:uppercase;
+.deploy-h{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:5px;letter-spacing:-.3px;}
+.deploy-s{font-family:var(--M);font-size:10px;color:var(--ink4);letter-spacing:.3px;margin-bottom:28px;}
+.dep-list{
+  width:100%;max-width:380px;
+  border:1px solid var(--border2);border-radius:var(--r);overflow:hidden;
 }
-.st-tag.sim{background:rgba(245,166,35,.1);color:var(–o);}
-.st-tag.real{background:rgba(0,184,122,.08);color:var(–g);}
+.deprow{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);font-size:12px;}
+.deprow:last-child{border-bottom:none;}
+.depico{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-size:9px;}
+.depico.w{border:1px solid var(--border2);color:var(--ink4);}
+.depico.r{border:2px solid var(--lime);border-top-color:transparent;animation:spin .75s linear infinite;}
+.depico.d{background:var(--green);color:#000;font-weight:700;}
+.depico.s{background:rgba(245,166,35,.12);color:var(--amber);}
+.dept{color:var(--ink3);transition:color .2s;font-size:12px;}
+.dept.on{color:var(--ink);}
+.dept.done{color:var(--green);}
+.dept.sim{color:var(--amber);}
 
-/* deploy steps list */
-.dep-list{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);overflow:hidden;text-align:left;margin-top:16px;}
-.dep-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(–ln);font-size:13px;}
-.dep-row:last-child{border-bottom:none;}
-.dep-ico{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;}
-.dep-ico.w{border:1.5px solid var(–ln2);color:var(–t3);}
-.dep-ico.r{border:2px solid var(–y);border-top-color:transparent;animation:spin .8s linear infinite;}
-.dep-ico.d{background:var(–g);color:#000;font-weight:700;}
-.dep-ico.skip{background:rgba(245,166,35,.15);color:var(–o);}
-.dep-txt{color:var(–t2);transition:color .2s;font-size:12px;}
-.dep-txt.act{color:var(–t);}
-.dep-txt.done{color:var(–g);}
-.dep-txt.skip{color:var(–o);}
+/* ─── CONFIRM ─── */
+.cf-inner{padding:36px 40px 80px;max-width:540px;}
+.cf-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--M);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;
+  padding:5px 12px;border-radius:3px;margin-bottom:20px;
+}
+.cf-pill::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;}
+.cf-pill.ok{color:var(--green);background:rgba(0,212,132,.07);border:1px solid rgba(0,212,132,.2);}
+.cf-pill.sim{color:var(--amber);background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.2);}
 
-/* ── CONFIRM ── */
-.cf-head{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
-.cf-logo{width:52px;height:52px;border-radius:12px;flex-shrink:0;}
-.cf-name{font-size:20px;font-weight:700;letter-spacing:-.3px;line-height:1.15;}
-.cf-sym{font-family:var(–m);font-size:11px;color:var(–t2);margin-top:2px;}
-.cf-badge{margin-left:auto;}
+.cf-token{display:flex;align-items:center;gap:14px;margin-bottom:24px;}
+.cf-logo-box{width:56px;height:56px;border-radius:12px;flex-shrink:0;display:grid;place-items:center;border:1px solid var(--border2);}
+.cf-tok-name{font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.3px;}
+.cf-tok-sym{font-family:var(--M);font-size:10px;color:var(--ink3);margin-top:2px;}
 
-.info-card{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);overflow:hidden;margin-bottom:10px;}
-.info-title{font-family:var(–m);font-size:9px;letter-spacing:1.2px;color:var(–t2);text-transform:uppercase;padding:10px 14px;border-bottom:1px solid var(–ln);background:var(–c2);}
-.info-row{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(–ln);font-size:13px;}
-.info-row:last-child{border-bottom:none;}
-.info-row .k{color:var(–t2);flex-shrink:0;}
-.info-row .v{font-family:var(–m);font-size:11px;color:var(–t);text-align:right;word-break:break-all;max-width:62%;}
-.info-row .v.addr{color:var(–b);font-size:10px;}
-.info-row .v.ok{color:var(–g);}
-.info-row .v.sim{color:var(–o);}
-.info-row .v.fee{color:var(–y);}
+.dtable{border:1px solid var(--border2);border-radius:var(--r);overflow:hidden;margin-bottom:10px;}
+.dtable-head{font-family:var(--M);font-size:8px;letter-spacing:1.5px;color:var(--ink3);text-transform:uppercase;padding:9px 14px;border-bottom:1px solid var(--border);background:var(--surface2);}
+.drow{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);font-size:12px;}
+.drow:last-child{border-bottom:none;}
+.dk{color:var(--ink3);}
+.dv{font-family:var(--M);font-size:10px;color:var(--ink);text-align:right;word-break:break-all;max-width:62%;}
+.dv.addr{color:var(--blue);font-size:9px;}
+.dv.ok{color:var(--green);}
+.dv.sim{color:var(--amber);}
+.dv.lime{color:var(--lime);}
+.copybtn{
+  font-family:var(--M);font-size:8px;padding:3px 7px;border-radius:3px;
+  border:1px solid var(--border2);background:var(--surface2);color:var(--ink3);
+  cursor:pointer;transition:all .12s;margin-left:6px;white-space:nowrap;flex-shrink:0;
+}
+.copybtn:hover{border-color:var(--blue);color:var(--blue);}
+.exp-btn{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  font-family:var(--M);font-size:9px;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--blue);padding:10px;border:1px solid rgba(77,142,255,.2);
+  border-radius:var(--r);background:rgba(77,142,255,.04);
+  transition:all .15s;margin-bottom:10px;text-decoration:none;
+}
+.exp-btn:hover{background:rgba(77,142,255,.08);}
+.actrow{display:flex;gap:7px;margin-bottom:9px;}
+.actbtn{
+  flex:1;height:36px;border:1px solid var(--border2);border-radius:var(--r);
+  background:var(--surface2);color:var(--ink3);
+  font-family:var(--M);font-size:9px;letter-spacing:.5px;text-transform:uppercase;
+  cursor:pointer;transition:all .12s;
+}
+.actbtn:hover{border-color:var(--ink3);color:var(--ink);}
 
-.cbtn{font-family:var(–m);font-size:9px;padding:3px 8px;border-radius:3px;border:1px solid var(–ln2);background:var(–c2);color:var(–t2);cursor:pointer;transition:all .12s;margin-left:6px;white-space:nowrap;flex-shrink:0;}
-.cbtn:hover{border-color:var(–b);color:var(–b);}
+/* ─── FLOW SIDEBAR ─── */
+.flow-side{
+  background:var(--surface);border-left:1px solid var(--border);
+  overflow-y:auto;
+}
+.fs-block{border-bottom:1px solid var(--border);padding:20px;}
+.fs-head{font-family:var(--M);font-size:8px;letter-spacing:1.5px;color:var(--ink4);text-transform:uppercase;margin-bottom:13px;}
+.fs-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);}
+.fs-row:last-child{border-bottom:none;}
+.fs-k{font-size:12px;color:var(--ink3);}
+.fs-v{font-family:var(--M);font-size:10px;color:var(--ink);}
+.fs-v.lime{color:var(--lime);}
+.fs-steps{display:flex;flex-direction:column;gap:11px;}
+.fs-step{display:flex;gap:9px;font-size:12px;color:var(--ink3);line-height:1.5;}
+.fs-num{
+  width:16px;height:16px;border-radius:50%;flex-shrink:0;margin-top:1px;
+  background:rgba(180,255,0,.07);border:1px solid rgba(180,255,0,.2);
+  font-family:var(--M);font-size:7px;color:var(--lime);display:grid;place-items:center;
+}
 
-.share-row{display:flex;gap:6px;margin-bottom:12px;}
-.sbtn{flex:1;padding:9px;border-radius:6px;border:1px solid var(–ln2);background:var(–c2);color:var(–t2);font-size:12px;font-family:var(–f);cursor:pointer;transition:all .12s;}
-.sbtn:hover{border-color:var(–t2);color:var(–t);}
+/* ─── TOKEN VIEW ─── */
+.tv-wrap{
+  display:grid;grid-template-columns:1fr 280px;
+  min-height:calc(100vh - var(--nav));
+}
+.tv-main{padding:28px 32px;border-right:1px solid var(--border);}
+.tv-trade{background:var(--surface);}
 
-/* ── TOKEN VIEW ── */
-.tv-layout{display:grid;grid-template-columns:1fr 300px;min-height:calc(100vh - var(–nav));}
-.tv-main{padding:28px 36px;border-right:1px solid var(–ln);}
-.tv-side{padding:20px 18px;}
-.tv-hd{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
-.tv-name{font-size:19px;font-weight:700;letter-spacing:-.3px;line-height:1.15;}
-.tv-sym{font-family:var(–m);font-size:10px;color:var(–t2);margin-top:2px;}
+.tv-head{display:flex;align-items:center;gap:13px;margin-bottom:22px;}
+.tv-logo{width:48px;height:48px;border-radius:10px;flex-shrink:0;display:grid;place-items:center;border:1px solid var(--border2);}
+.tv-name{font-size:21px;font-weight:700;color:var(--ink);letter-spacing:-.3px;}
+.tv-sym{font-family:var(--M);font-size:10px;color:var(--ink3);margin-top:2px;}
 
-.chart-box{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);padding:14px;margin-bottom:12px;}
-.chart-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
-.chart-price{font-size:20px;font-weight:700;font-family:var(–m);color:var(–y);}
-.chart-chg{font-family:var(–m);font-size:11px;}
-.chart-sub{font-size:10px;color:var(–t2);margin-top:1px;}
+/* Chart */
+.chart-box{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.chart-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.chart-p{font-family:var(--M);font-size:22px;font-weight:700;color:var(--lime);}
+.chart-chg{font-family:var(--M);font-size:11px;color:var(--green);}
+.chart-lbl{font-family:var(--M);font-size:8px;color:var(--ink4);margin-top:1px;letter-spacing:.5px;}
 .chart-svg{width:100%;height:110px;display:block;}
 
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
-.sc{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);padding:11px 12px;}
-.sv{font-family:var(–m);font-size:12px;font-weight:500;display:block;color:var(–t);}
-.sl{font-family:var(–m);font-size:8px;color:var(–t2);text-transform:uppercase;letter-spacing:.8px;margin-top:2px;}
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.scard{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:12px 13px;}
+.sval{font-family:var(--M);font-size:13px;font-weight:500;display:block;color:var(--ink);}
+.slbl{font-family:var(--M);font-size:8px;color:var(--ink4);text-transform:uppercase;letter-spacing:.8px;margin-top:3px;}
 
-.bond-box{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);padding:13px;margin-bottom:12px;}
-.bond-lbl{font-family:var(–m);font-size:8px;letter-spacing:1.2px;color:var(–t2);text-transform:uppercase;margin-bottom:9px;}
-.bond-track{height:5px;background:var(–c3);border-radius:3px;overflow:hidden;margin-bottom:6px;}
-.bond-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(–y),var(–b));transition:width 1.1s cubic-bezier(.4,0,.2,1);}
-.bond-meta{display:flex;justify-content:space-between;font-family:var(–m);font-size:9px;color:var(–t2);}
-.bond-meta b{color:var(–t);}
+/* Bond */
+.bond-box{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:14px;margin-bottom:12px;}
+.bond-lbl{font-family:var(--M);font-size:8px;letter-spacing:1.2px;color:var(--ink4);text-transform:uppercase;margin-bottom:9px;}
+.bond-track{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;margin-bottom:6px;}
+.bond-fill{height:100%;border-radius:2px;background:var(--lime);transition:width 1s cubic-bezier(.4,0,.2,1);}
+.bond-meta{display:flex;justify-content:space-between;font-family:var(--M);font-size:9px;color:var(--ink4);}
+.bond-meta b{color:var(--ink2);}
 
-/* trade panel */
-.trade-card{background:var(–c1);border:1px solid var(–ln2);border-radius:var(–rad);padding:14px;position:sticky;top:calc(var(–nav)+14px);}
-.trade-tabs{display:flex;gap:3px;margin-bottom:12px;}
-.tt{flex:1;padding:7px;border-radius:5px;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:var(–f);background:var(–c2);color:var(–t2);transition:all .15s;}
-.tt.by{background:rgba(204,240,0,.09);color:var(–y);}
-.tt.sl{background:rgba(232,54,80,.09);color:var(–r);}
-.ti-wrap{position:relative;margin-bottom:8px;}
-.ti{width:100%;background:var(–c2);border:1px solid var(–ln2);border-radius:6px;padding:10px 46px 10px 11px;color:var(–t);font-family:var(–m);font-size:13px;outline:none;-webkit-appearance:none;transition:border-color .15s;}
-.ti:focus{border-color:var(–y);}
-.ti-sfx{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-family:var(–m);font-size:9px;color:var(–t2);}
-.ti-quick{display:flex;gap:4px;margin-bottom:10px;}
-.tq{flex:1;padding:5px;border-radius:4px;border:1px solid var(–ln2);background:transparent;color:var(–t2);font-family:var(–m);font-size:10px;cursor:pointer;transition:all .12s;}
-.tq:hover{border-color:var(–y);color:var(–y);}
-.ti-info{background:var(–c2);border-radius:5px;padding:9px 10px;margin-bottom:10px;}
-.ti-row{display:flex;justify-content:space-between;padding:2px 0;font-size:11px;color:var(–t2);}
-.ti-row span{color:var(–t);font-family:var(–m);}
-.t-btn{width:100%;padding:11px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:var(–f);transition:opacity .15s;}
-.t-btn.by{background:var(–y);color:#000;}
-.t-btn.sl{background:var(–r);color:#fff;}
-.t-btn:hover{opacity:.85;}
-.fee-hint{font-family:var(–m);font-size:9px;color:var(–t3);text-align:center;margin-top:7px;}
-.fee-hint b{color:var(–t2);}
-
-/* ── EXPLORE ── */
-.ex-head{padding:28px 28px 20px;border-bottom:1px solid var(–ln);}
-.ex-head h1{font-size:19px;font-weight:700;margin-bottom:3px;letter-spacing:-.3px;}
-.ex-head p{font-size:13px;color:var(–t2);}
-.ex-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 28px;border-bottom:1px solid var(–ln);flex-wrap:wrap;gap:9px;position:sticky;top:var(–nav);z-index:10;background:var(–bg);}
-.pills{display:flex;gap:5px;flex-wrap:wrap;}
-.pill{font-family:var(–m);font-size:10px;padding:4px 12px;border-radius:20px;cursor:pointer;border:1px solid var(–ln2);background:transparent;color:var(–t2);transition:all .15s;}
-.pill:hover,.pill.on{border-color:var(–y);color:var(–y);background:rgba(204,240,0,.05);}
-.btn-y{font-size:13px;font-weight:600;font-family:var(–f);padding:7px 15px;border-radius:6px;border:none;cursor:pointer;background:var(–y);color:#000;transition:background .15s;white-space:nowrap;}
-.btn-y:hover{background:var(–yh);}
-.ex-tbl{padding:14px 28px 60px;}
-.th{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 140px 70px;padding:0 10px 8px;font-family:var(–m);font-size:8px;letter-spacing:1.2px;color:var(–t3);text-transform:uppercase;border-bottom:1px solid var(–ln);margin-bottom:2px;}
-.tr{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 140px 70px;align-items:center;padding:11px 10px;border-radius:7px;cursor:pointer;transition:background .12s;margin-bottom:2px;}
-.tr:hover{background:var(–c1);}
-.tr-id{display:flex;align-items:center;gap:9px;}
-.tr-name{font-size:13px;font-weight:600;margin-bottom:1px;}
-.tr-sym{font-family:var(–m);font-size:9px;color:var(–t2);}
-.tr-v{font-family:var(–m);font-size:11px;color:var(–t);}
-.pb{height:3px;background:var(–c2);border-radius:2px;overflow:hidden;}
-.pf{height:100%;border-radius:2px;background:linear-gradient(90deg,var(–y),var(–b));}
-.pp{font-family:var(–m);font-size:8px;color:var(–t2);margin-top:2px;}
-.btn-tr{font-size:11px;font-weight:600;font-family:var(–f);padding:5px 0;border-radius:5px;border:none;cursor:pointer;background:var(–y);color:#000;width:100%;transition:background .12s;}
-.btn-tr:hover{background:var(–yh);}
-.badge{display:inline-block;font-family:var(–m);font-size:8px;letter-spacing:.3px;padding:2px 6px;border-radius:3px;text-transform:uppercase;margin-left:5px;vertical-align:middle;}
-.b-new{background:rgba(204,240,0,.08);color:var(–y);border:1px solid rgba(204,240,0,.18);}
-.b-hot{background:rgba(232,54,80,.07);color:var(–r);border:1px solid rgba(232,54,80,.17);}
-.b-live{background:rgba(0,184,122,.07);color:var(–g);border:1px solid rgba(0,184,122,.17);}
-
-/* ── PORTFOLIO ── */
-.port-head{padding:28px 28px 20px;border-bottom:1px solid var(–ln);}
-.port-head h1{font-size:19px;font-weight:700;margin-bottom:3px;letter-spacing:-.3px;}
-.port-body{padding:20px 28px 60px;}
-.empty{text-align:center;padding:64px 20px;}
-.e-ico{width:42px;height:42px;border-radius:9px;background:var(–c2);border:1px solid var(–ln2);display:flex;align-items:center;justify-content:center;margin:0 auto 13px;}
-.empty h3{font-size:14px;font-weight:600;margin-bottom:5px;}
-.empty p{font-size:12px;color:var(–t2);line-height:1.65;max-width:280px;margin:0 auto 18px;}
-
-/* ── BUTTONS ── */
-.btn-primary{width:100%;padding:12px;border-radius:var(–rad);border:none;cursor:pointer;background:var(–y);color:#000;font-size:14px;font-weight:600;font-family:var(–f);transition:background .15s;}
-.btn-primary:hover{background:var(–yh);}
-.btn-primary:disabled{opacity:.35;cursor:not-allowed;}
-.btn-ghost{width:100%;padding:10px;border-radius:var(–rad);cursor:pointer;background:transparent;color:var(–t2);border:1px solid var(–ln2);font-size:13px;font-family:var(–f);transition:all .15s;}
-.btn-ghost:hover{border-color:var(–t2);color:var(–t);}
-.bstack{display:flex;flex-direction:column;gap:7px;margin-top:4px;}
-
-/* ── TOAST ── */
-#toast{
-position:fixed;bottom:20px;left:50%;
-transform:translateX(-50%) translateY(6px);z-index:9999;
-background:var(–c2);border:1px solid var(–ln2);border-radius:7px;
-padding:9px 16px;font-size:12px;white-space:nowrap;
-box-shadow:0 8px 28px rgba(0,0,0,.55);
-opacity:0;transition:opacity .22s,transform .22s;pointer-events:none;
+/* Trade panel */
+.trade-panel{display:flex;flex-direction:column;height:100%;}
+.trade-header{
+  height:44px;display:flex;align-items:center;
+  border-bottom:1px solid var(--border);padding:0 18px;flex-shrink:0;
+  font-family:var(--M);font-size:8px;letter-spacing:1.5px;color:var(--ink4);text-transform:uppercase;
 }
-#toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
-#toast.ok{border-color:rgba(0,184,122,.4);}
-#toast.er{border-color:rgba(232,54,80,.4);}
-#toast.wa{border-color:rgba(245,166,35,.4);}
+.trade-body{padding:16px;flex:1;}
+.trade-tabs{display:flex;gap:4px;margin-bottom:13px;}
+.ttab{
+  flex:1;height:34px;border-radius:4px;border:1px solid var(--border2);
+  background:transparent;font-family:var(--M);font-size:9px;font-weight:700;
+  letter-spacing:.8px;text-transform:uppercase;color:var(--ink3);cursor:pointer;transition:all .15s;
+}
+.ttab.buy-on{background:rgba(180,255,0,.09);color:var(--lime);border-color:rgba(180,255,0,.3);}
+.ttab.sell-on{background:rgba(255,58,92,.08);color:var(--red);border-color:rgba(255,58,92,.25);}
+.ti-wrap{position:relative;margin-bottom:8px;}
+.ti{
+  width:100%;height:40px;background:var(--surface2);border:1px solid var(--border2);
+  border-radius:4px;padding:0 44px 0 12px;color:var(--ink);
+  font-family:var(--M);font-size:14px;outline:none;-webkit-appearance:none;transition:border-color .15s;
+}
+.ti:focus{border-color:var(--lime);}
+.tsfx{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-family:var(--M);font-size:9px;color:var(--ink4);}
+.tquick{display:flex;gap:4px;margin-bottom:10px;}
+.tqb{
+  flex:1;height:28px;border:1px solid var(--border2);border-radius:3px;
+  background:transparent;color:var(--ink3);font-family:var(--M);font-size:10px;cursor:pointer;transition:all .12s;
+}
+.tqb:hover{border-color:var(--lime);color:var(--lime);}
+.tinfo{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:10px 11px;margin-bottom:10px;}
+.tirow{display:flex;justify-content:space-between;padding:2.5px 0;font-size:11px;color:var(--ink3);}
+.tirow span{color:var(--ink);font-family:var(--M);}
+.tbtn{
+  display:block;width:100%;height:40px;border:none;cursor:pointer;
+  font-family:var(--M);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  border-radius:4px;transition:opacity .15s;
+}
+.tbtn.buy{background:var(--lime);color:#000;}
+.tbtn.sell{background:var(--red);color:#fff;}
+.tbtn:hover{opacity:.85;}
 
-@media(max-width:780px){
-.tv-layout{grid-template-columns:1fr;}
-.tv-side{display:none;}
-.tv-main{padding:20px 14px;}
-.stat-grid{grid-template-columns:1fr 1fr;}
-.th{display:none;}
-.tr{grid-template-columns:1fr auto;gap:8px;}
-.tr>*:not(.tr-id):not(.btn-tr){display:none;}
-.ex-head,.ex-bar,.ex-tbl,.port-head,.port-body{padding-left:14px;padding-right:14px;}
-.f2{grid-template-columns:1fr;}
-.nav-c{display:none;}
-.mode-cards{grid-template-columns:1fr;}
+/* ─── PORTFOLIO ─── */
+.port-hero{padding:32px;border-bottom:1px solid var(--border);}
+.port-hero h1{font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.3px;margin-bottom:3px;}
+.port-hero p{font-size:13px;color:var(--ink3);}
+.port-body{padding:24px 32px 80px;}
+.port-total{margin-bottom:22px;}
+.port-val{font-family:var(--M);font-size:30px;font-weight:700;color:var(--lime);}
+.port-lbl{font-family:var(--M);font-size:8px;color:var(--ink4);letter-spacing:1.2px;text-transform:uppercase;margin-top:3px;}
+
+.empty{text-align:center;padding:80px 20px;display:flex;flex-direction:column;align-items:center;}
+.empty-ico{width:44px;height:44px;border-radius:9px;border:1px solid var(--border2);background:var(--surface2);display:grid;place-items:center;margin-bottom:16px;}
+.empty-h{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.empty-p{font-size:13px;color:var(--ink3);max-width:280px;line-height:1.65;margin-bottom:20px;}
+
+/* ─── TOAST ─── */
+#toast{
+  position:fixed;bottom:22px;left:50%;
+  transform:translateX(-50%) translateY(5px);z-index:9999;
+  background:var(--surface2);border:1px solid var(--border2);border-radius:5px;
+  padding:8px 16px;font-family:var(--M);font-size:10px;letter-spacing:.3px;
+  white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.5);
+  opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.ok{border-color:rgba(0,212,132,.4);color:var(--green);}
+#toast.err{border-color:rgba(255,58,92,.4);color:var(--red);}
+#toast.info{border-color:rgba(180,255,0,.3);color:var(--lime);}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:960px){
+  .ex-body{grid-template-columns:1fr;}
+  .ex-side{display:none;}
+  .list-head{display:none;}
+  .trow{grid-template-columns:1fr auto;gap:10px;padding:12px 16px;}
+  .trow>*:not(.tid):not(.btn-trade-row){display:none;}
+  .flow-grid{grid-template-columns:1fr;}
+  .flow-side{display:none;}
+  .panel-inner,.cf-inner{padding:24px 16px 60px;}
+  .tv-wrap{grid-template-columns:1fr;}
+  .tv-trade{display:none;}
+  .tv-main{padding:20px 16px;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .row2{grid-template-columns:1fr;}
+  .tok-grid{grid-template-columns:1fr 1fr;}
+  .ex-hero{padding:24px 16px 20px;}
+  .ex-hero h1{font-size:22px;}
+  .ex-toolbar{padding:10px 16px;}
+  .port-hero,.port-body{padding-left:16px;padding-right:16px;}
+}
+@media(max-width:600px){
+  nav{padding:0 14px;}
+  .nlink{padding:0 12px;font-size:12px;}
+  .ex-hero-stats{gap:20px;}
+  .hs-val{font-size:16px;}
+  #wbtn{padding:0 14px;font-size:10px;}
 }
 </style>
-
 </head>
 <body>
 
-<!-- NAV -->
-
+<!-- ═══ NAV ═══ -->
 <nav id="nav">
-  <a class="logo" onclick="goPage('explore');return false;" href="#">
-    <div class="logo-mark">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-        <path d="M6 1L11 3.8V8.2L6 11L1 8.2V3.8L6 1Z" fill="#000"/>
-        <path d="M6 3.8L8.2 6L6 8.2L3.8 6L6 3.8Z" fill="#ccf000"/>
-      </svg>
+  <div class="nav-left">
+    <div class="logo" onclick="showPage('explore')">
+      <div class="logo-mark">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <path d="M6.5 1L12 4.3V8.7L6.5 12L1 8.7V4.3L6.5 1Z" fill="#000"/>
+          <path d="M6.5 4.2L9 6.5L6.5 8.8L4 6.5Z" fill="#b4ff00"/>
+        </svg>
+      </div>
+      <span class="logo-text">Beam<em>Launch</em></span>
     </div>
-    <span class="logo-name">Beam<em>Launch</em></span>
-  </a>
-  <div class="nav-c">
-    <button class="nb on" id="nl-explore" onclick="goPage('explore')">Explore</button>
-    <button class="nb" id="nl-launch" onclick="startFlow()">Launch</button>
-    <button class="nb" id="nl-portfolio" onclick="goPage('portfolio')">Portfolio</button>
+    <div class="nav-links">
+      <button class="nlink on" id="nl-explore" onclick="showPage('explore')">Explore</button>
+      <button class="nlink" id="nl-launch" onclick="startLaunch()">Launch Token</button>
+      <button class="nlink" id="nl-portfolio" onclick="showPage('portfolio')">Portfolio</button>
+    </div>
   </div>
-  <div class="nav-r">
-    <span class="mode-chip" id="modeChip"></span>
-    <button id="wbtn" onclick="handleWBtn()">Connect Wallet</button>
+  <div class="nav-right">
+    <div class="nav-balance" id="navBal">
+      <span class="bal-dot"></span>
+      <span id="navBalTxt">— BEAM</span>
+    </div>
+    <button id="wbtn" onclick="openWalletModal()">Connect Wallet</button>
   </div>
 </nav>
 
-<!-- ══════════ EXPLORE ══════════ -->
-
-<div class="pg on" id="pg-explore">
-  <div class="ex-head">
-    <h1>Explore Tokens</h1>
-    <p>All tokens launched on BeamLaunch — live bonding curve data.</p>
-  </div>
-  <div class="ex-bar">
-    <div class="pills">
-      <button class="pill on" onclick="filterEx('all',this)">All</button>
-      <button class="pill" onclick="filterEx('Gaming',this)">Gaming</button>
-      <button class="pill" onclick="filterEx('DeFi',this)">DeFi</button>
-      <button class="pill" onclick="filterEx('Meme',this)">Meme</button>
-      <button class="pill" onclick="filterEx('AI',this)">AI</button>
+<!-- ═══ WALLET MODAL ═══ -->
+<div class="wmodal-bg" id="wmodalBg" onclick="closeWalletModal(event)">
+  <div class="wmodal">
+    <div class="wmodal-head">
+      <div class="wmodal-title">Connect Wallet</div>
+      <button class="wmodal-close" onclick="closeWalletModal()">×</button>
     </div>
-    <button class="btn-y" onclick="startFlow()">+ Launch Token</button>
-  </div>
-  <div class="ex-tbl">
-    <div class="th"><div>Token</div><div>Price</div><div>Mkt Cap</div><div>Volume</div><div>Progress</div><div></div></div>
-    <div id="exlist"></div>
+    <p class="wmodal-desc">Connect any EVM-compatible wallet to deploy and trade on Beam Network.</p>
+    <div id="walletOptions"></div>
+    <div class="wmodal-note">
+      BeamLaunch supports any wallet that can connect to<br>
+      EVM networks (Chain ID 13337 — Beam Testnet)
+    </div>
   </div>
 </div>
 
-<!-- ══════════ LAUNCH FLOW ══════════ -->
+<!-- ═══ EXPLORE ═══ -->
+<div class="page on" id="pg-explore">
 
-<div class="pg" id="pg-flow">
-  <!-- Progress indicator -->
-  <div class="flow-progress" id="flowProgress"></div>
+  <!-- Hero with breathing room -->
+  <div class="ex-hero">
+    <div class="ex-hero-left">
+      <h1>Token Markets</h1>
+      <p>Tokens launched on BeamLaunch with live bonding curve pricing. Price rises as BEAM flows in.</p>
+    </div>
+    <div class="ex-hero-stats">
+      <div class="hero-stat">
+        <span class="hs-val">247</span>
+        <div class="hs-lbl">Launched</div>
+      </div>
+      <div class="hero-stat">
+        <span class="hs-val">1.4M</span>
+        <div class="hs-lbl">Volume</div>
+      </div>
+      <div class="hero-stat">
+        <span class="hs-val">18</span>
+        <div class="hs-lbl">Graduated</div>
+      </div>
+    </div>
+  </div>
 
-  <!-- STEP 0: Mode Select -->
+  <!-- Toolbar -->
+  <div class="ex-toolbar">
+    <div class="pill-set">
+      <button class="pill on" onclick="exFilter('all',this)">All</button>
+      <button class="pill" onclick="exFilter('Gaming',this)">Gaming</button>
+      <button class="pill" onclick="exFilter('DeFi',this)">DeFi</button>
+      <button class="pill" onclick="exFilter('Meme',this)">Meme</button>
+      <button class="pill" onclick="exFilter('AI',this)">AI</button>
+    </div>
+    <button class="btn-new" onclick="startLaunch()">+ Launch Token</button>
+  </div>
 
-  <div class="step-panel on" id="sp-0">
-    <div class="step-inner flow-shell" style="padding-top:28px;">
-      <div class="step-title">How do you want to launch?</div>
-      <p class="step-sub">Demo mode completes the full flow instantly — no wallet required. Real mode connects MetaMask and deploys on Beam Testnet.</p>
-      <div class="mode-cards">
-        <div class="mode-card" id="mc-demo" onclick="selectMode('demo')">
-          <div class="mc-icon" style="background:rgba(245,166,35,.1);">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <circle cx="11" cy="11" r="9" stroke="#f5a623" stroke-width="1.4" fill="none"/>
-              <path d="M8 11l2.5 2.5 4-4" stroke="#f5a623" stroke-width="1.4" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="mc-title">Demo Mode</div>
-          <div class="mc-desc">Simulate the full launch flow. No wallet, no gas, no real transactions. Great for testing.</div>
-          <span class="mc-tag demo">No wallet needed</span>
+  <!-- Body: list + sidebar -->
+  <div class="ex-body">
+    <div class="ex-list-wrap">
+      <div class="list-head">
+        <div class="lh">Token</div>
+        <div class="lh">Price</div>
+        <div class="lh">Mkt Cap</div>
+        <div class="lh">Volume</div>
+        <div class="lh">Progress</div>
+        <div class="lh"></div>
+      </div>
+      <div id="tlist"></div>
+    </div>
+    <div class="ex-side">
+      <div style="padding:20px;">
+        <div class="side-title">Protocol</div>
+        <div class="stat-rows">
+          <div class="srow"><span class="sk">Tokens launched</span><span class="sv lime">247</span></div>
+          <div class="srow"><span class="sk">Total volume</span><span class="sv">1.4M BEAM</span></div>
+          <div class="srow"><span class="sk">Graduated to DEX</span><span class="sv">18</span></div>
+          <div class="srow"><span class="sk">Active traders</span><span class="sv">3,241</span></div>
+          <div class="srow"><span class="sk">Network</span><span class="sv">Beam Testnet</span></div>
         </div>
-        <div class="mode-card" id="mc-real" onclick="selectMode('real')">
-          <div class="mc-icon" style="background:rgba(0,184,122,.1);">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <rect x="3" y="8" width="16" height="11" rx="2" stroke="#00b87a" stroke-width="1.4" fill="none"/>
-              <path d="M7 8V6a4 4 0 018 0v2" stroke="#00b87a" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-              <circle cx="11" cy="14" r="1.5" fill="#00b87a"/>
-            </svg>
+        <button class="launch-cta" onclick="startLaunch()" style="margin-top:16px;">Launch a Token →</button>
+        <div class="side-title">Recent Launches</div>
+        <div class="feed-list" id="recentFeed"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LAUNCH FLOW ═══ -->
+<div class="page" id="pg-launch">
+  <div class="flow-grid">
+    <div class="flow-main">
+
+      <!-- Step bar -->
+      <div class="stepbar" id="stepbar">
+        <div class="sbstep on" id="sb0" onclick="canGoStep(0)"><span class="sbn" id="sn0">1</span>Create</div>
+        <div class="sbstep" id="sb1" onclick="canGoStep(1)"><span class="sbn" id="sn1">2</span>Tokenomics</div>
+        <div class="sbstep" id="sb2"><span class="sbn" id="sn2">3</span>Deploy</div>
+      </div>
+
+      <!-- Panel 0: Create -->
+      <div id="p0">
+        <div class="panel-inner">
+          <div class="panel-title">Create your token</div>
+          <p class="panel-sub">Name and symbol are permanent after deployment.</p>
+
+          <div class="field" style="margin-bottom:8px;"><span class="flabel">Mode</span></div>
+          <div class="mode-row">
+            <button class="mode-pill sel-demo" id="md-demo" onclick="setMode('demo')">Demo</button>
+            <button class="mode-pill" id="md-real" onclick="setMode('real')">Real Wallet</button>
           </div>
-          <div class="mc-title">Real Mode</div>
-          <div class="mc-desc">Connect MetaMask, pay gas, deploy a real contract on Beam Testnet. Falls back to demo on failure.</div>
-          <span class="mc-tag real">MetaMask required</span>
+          <p class="mode-note" id="modeNote">Demo — simulates the full flow. No wallet required.</p>
+
+          <div class="row2">
+            <div class="field">
+              <label class="flabel">Token Name <span class="opt">required</span></label>
+              <input class="inp" id="f-name" placeholder="e.g. Fableborne Gold"/>
+            </div>
+            <div class="field">
+              <label class="flabel">Symbol <span class="opt">required · max 8 chars</span></label>
+              <input class="inp" id="f-sym" placeholder="FGLD" maxlength="8"
+                oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')"/>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="flabel">Description <span class="opt">optional</span></label>
+            <textarea class="inp" id="f-desc" placeholder="What does your token do within the Beam ecosystem?"></textarea>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <label class="flabel">Total Supply <span class="opt">required</span></label>
+              <div class="irow">
+                <span class="ipre">Total</span>
+                <input class="inp" id="f-supply" value="1,000,000,000" oninput="fmtSup(this)"/>
+              </div>
+            </div>
+            <div class="field">
+              <label class="flabel">Category</label>
+              <select class="inp" id="f-cat">
+                <option value="Gaming">Gaming</option>
+                <option value="DeFi">DeFi</option>
+                <option value="Meme">Meme</option>
+                <option value="AI">AI</option>
+                <option value="Infrastructure">Infrastructure</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="flabel">Logo <span class="opt">optional · PNG JPG SVG · max 2MB</span></label>
+            <div class="upzone" id="upzone">
+              <input type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" onchange="handleImg(event)"/>
+              <img class="up-preview" id="upPrev"/>
+              <div class="up-icon" id="upIcon">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <rect x="2" y="5" width="18" height="13" rx="2" stroke="#2a2a38" stroke-width="1.3" fill="none"/>
+                  <circle cx="8" cy="10" r="2" stroke="#2a2a38" stroke-width="1.3" fill="none"/>
+                  <path d="M2 14.5l4.5-4.5 3 3 4-5 6 6" stroke="#2a2a38" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+                </svg>
+              </div>
+              <p class="up-text" id="upText"><b>Click to upload</b> a token logo</p>
+            </div>
+          </div>
+
+          <div class="bstack">
+            <button class="btn-primary" onclick="p0next()">Continue →</button>
+          </div>
         </div>
       </div>
-      <div class="bstack" style="margin-top:20px;">
-        <button class="btn-primary" id="modeNextBtn" onclick="stepModeNext()" disabled>Continue →</button>
+
+      <!-- Panel 1: Tokenomics -->
+      <div id="p1" style="display:none">
+        <div class="panel-inner">
+          <div class="panel-title">Tokenomics & Vesting</div>
+          <p class="panel-sub">Enforced on-chain. Cannot be changed after deployment.</p>
+
+          <div class="field">
+            <label class="flabel">Distribution</label>
+            <div class="tok-grid">
+              <div class="tokcell"><span class="tokpct">80%</span><div class="tokname">Public</div><div class="toknote">Bonding curve</div></div>
+              <div class="tokcell"><span class="tokpct">10%</span><div class="tokname">Liquidity</div><div class="toknote">Locked forever</div></div>
+              <div class="tokcell"><span class="tokpct">5%</span><div class="tokname">Team</div><div class="toknote">1yr vest</div></div>
+              <div class="tokcell"><span class="tokpct">5%</span><div class="tokname">Ecosystem</div><div class="toknote">DAO governed</div></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="flabel">Vesting Schedule</label>
+            <div class="vest-list">
+              <div class="vest-row">
+                <div class="vd" style="background:var(--green)"></div>
+                <div class="vb"><div class="vtitle">Public Sale (80%)</div><div class="vdetail">Immediately tradeable — no lock</div></div>
+                <span class="vpct">80%</span>
+              </div>
+              <div class="vest-row">
+                <div class="vd" style="background:var(--blue)"></div>
+                <div class="vb"><div class="vtitle">Liquidity Pool (10%)</div><div class="vdetail">Locked permanently at DEX graduation</div></div>
+                <span class="vpct">10%</span>
+              </div>
+              <div class="vest-row">
+                <div class="vd" style="background:var(--lime)"></div>
+                <div class="vb"><div class="vtitle">Team (5%)</div><div class="vdetail">6-month cliff · 12-month linear vest</div></div>
+                <span class="vpct">5%</span>
+              </div>
+              <div class="vest-row">
+                <div class="vd" style="background:#a78bfa"></div>
+                <div class="vb"><div class="vtitle">Ecosystem Fund (5%)</div><div class="vdetail">Requires DAO vote to release</div></div>
+                <span class="vpct">5%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="flabel">Graduation Threshold</label>
+            <div class="irow">
+              <span class="ipre">Target</span>
+              <input class="inp" value="69,000 BEAM" readonly/>
+            </div>
+            <p style="font-family:var(--M);font-size:9px;color:var(--ink4);margin-top:6px;line-height:1.7;letter-spacing:.1px;">
+              At 69,000 BEAM market cap, liquidity auto-migrates to Beam Swap and locks permanently.
+            </p>
+          </div>
+
+          <div class="bstack">
+            <button class="btn-primary" onclick="p1next()">Deploy Token →</button>
+            <button class="btn-ghost" onclick="goPanel(0)">← Back</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: Deploy -->
+      <div id="p2" style="display:none">
+        <div class="deploy-scene">
+          <div class="spin-ring" id="spinRing"></div>
+          <div class="deploy-h" id="depH">Deploying your token</div>
+          <div class="deploy-s" id="depS">Submitting contract to Beam Network</div>
+          <div class="dep-list">
+            <div class="deprow"><div class="depico w" id="di1">1</div><div class="dept" id="dt1">Validating parameters</div></div>
+            <div class="deprow"><div class="depico w" id="di2">2</div><div class="dept" id="dt2">Signing transaction</div></div>
+            <div class="deprow"><div class="depico w" id="di3">3</div><div class="dept" id="dt3">Waiting for block confirmation</div></div>
+            <div class="deprow"><div class="depico w" id="di4">4</div><div class="dept" id="dt4">Initialising bonding curve</div></div>
+            <div class="deprow"><div class="depico w" id="di5">5</div><div class="dept" id="dt5">Token live on BeamLaunch</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: Confirm -->
+      <div id="p3" style="display:none">
+        <div class="cf-inner">
+          <div class="cf-pill" id="cfPill">Token deployed</div>
+
+          <div class="cf-token">
+            <div class="cf-logo-box" id="cfLogo"></div>
+            <div>
+              <div class="cf-tok-name" id="cfName">—</div>
+              <div class="cf-tok-sym" id="cfSym">—</div>
+            </div>
+          </div>
+
+          <div class="dtable">
+            <div class="dtable-head">Contract</div>
+            <div class="drow">
+              <span class="dk">Address</span>
+              <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
+                <span class="dv addr" id="cfAddr">—</span>
+                <button class="copybtn" onclick="cp(APP.deployed?.addr,'Address copied')">Copy</button>
+              </div>
+            </div>
+            <div class="drow"><span class="dk">Network</span><span class="dv ok">Beam Testnet</span></div>
+            <div class="drow"><span class="dk">Block</span><span class="dv" id="cfBlock">—</span></div>
+            <div class="drow">
+              <span class="dk">Tx Hash</span>
+              <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
+                <span class="dv addr" id="cfTx" style="font-size:9px;">—</span>
+                <button class="copybtn" onclick="cp(APP.deployed?.tx,'Hash copied')">Copy</button>
+              </div>
+            </div>
+            <div class="drow"><span class="dk">Type</span><span class="dv" id="cfType">—</span></div>
+          </div>
+
+          <div class="dtable">
+            <div class="dtable-head">Parameters</div>
+            <div class="drow"><span class="dk">Name</span><span class="dv" id="cfTName">—</span></div>
+            <div class="drow"><span class="dk">Symbol</span><span class="dv" id="cfTSym">—</span></div>
+            <div class="drow"><span class="dk">Supply</span><span class="dv" id="cfSupply">—</span></div>
+            <div class="drow"><span class="dk">Initial price</span><span class="dv">0.000001 BEAM</span></div>
+            <div class="drow"><span class="dk">Graduation cap</span><span class="dv">69,000 BEAM</span></div>
+            <div class="drow"><span class="dk">Trading fee</span><span class="dv lime">1%</span></div>
+          </div>
+
+          <a class="exp-btn" id="cfExp" href="#" target="_blank">View on Beam Testnet Explorer →</a>
+          <div class="actrow">
+            <button class="actbtn" onclick="shareX()">Share on X</button>
+            <button class="actbtn" onclick="cp(window.location.href,'Link copied')">Copy Link</button>
+          </div>
+          <button class="btn-primary" onclick="viewMyToken()" style="margin-bottom:8px;">View Token Page →</button>
+          <button class="btn-ghost" onclick="showPage('explore')">Back to Explore</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flow sidebar -->
+    <div class="flow-side">
+      <div class="fs-block">
+        <div class="fs-head">Launch Summary</div>
+        <div class="fs-row"><span class="fs-k">Network</span><span class="fs-v">Beam Testnet</span></div>
+        <div class="fs-row"><span class="fs-k">Launch cost</span><span class="fs-v lime">Free</span></div>
+        <div class="fs-row"><span class="fs-k">Trading fee</span><span class="fs-v">1% / trade</span></div>
+        <div class="fs-row"><span class="fs-k">Graduation</span><span class="fs-v">69K BEAM</span></div>
+        <div class="fs-row"><span class="fs-k">Liq. lock</span><span class="fs-v">Permanent</span></div>
+      </div>
+      <div class="fs-block">
+        <div class="fs-head">After Launch</div>
+        <div class="fs-steps">
+          <div class="fs-step"><div class="fs-num">1</div><span>Token deploys with bonding curve contract</span></div>
+          <div class="fs-step"><div class="fs-num">2</div><span>Visible on Explore instantly for anyone to trade</span></div>
+          <div class="fs-step"><div class="fs-num">3</div><span>Price rises as BEAM flows in</span></div>
+          <div class="fs-step"><div class="fs-num">4</div><span>At 69K BEAM market cap, moves to Beam Swap permanently</span></div>
+        </div>
       </div>
     </div>
   </div>
-
-  <!-- STEP 1: Token Details -->
-
-  <div class="step-panel" id="sp-1">
-    <div class="step-inner flow-shell" style="padding-top:28px;">
-      <div class="step-title">Token Details</div>
-      <p class="step-sub">Fill in your token info. Name and symbol are permanent after deployment.</p>
-
-```
-  <div class="f2">
-    <div class="field">
-      <label class="lbl">Token Name <sub>required</sub></label>
-      <input class="inp" id="f-name" placeholder="e.g. Fableborne Gold"/>
-    </div>
-    <div class="field">
-      <label class="lbl">Symbol <sub>required</sub></label>
-      <input class="inp" id="f-sym" placeholder="FGLD" maxlength="8"
-        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')"/>
-    </div>
-  </div>
-
-  <div class="field">
-    <label class="lbl">Description <sub>optional</sub></label>
-    <textarea class="inp" id="f-desc" placeholder="What does your token do?"></textarea>
-  </div>
-
-  <div class="f2">
-    <div class="field">
-      <label class="lbl">Total Supply <sub>required</sub></label>
-      <div class="inp-row">
-        <span class="inp-pre">TOTAL</span>
-        <input class="inp" id="f-supply" value="1,000,000,000" oninput="fmtSup(this)"/>
-      </div>
-    </div>
-    <div class="field">
-      <label class="lbl">Category</label>
-      <select class="inp" id="f-cat">
-        <option value="Gaming">Gaming</option>
-        <option value="DeFi">DeFi</option>
-        <option value="Meme">Meme</option>
-        <option value="AI">AI</option>
-        <option value="Infrastructure">Infrastructure</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="field">
-    <label class="lbl">Logo <sub>optional · PNG JPG SVG · max 2MB</sub></label>
-    <div class="upbox" id="upbox">
-      <input type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" onchange="handleImg(event)"/>
-      <img class="up-thumb" id="upthumb"/>
-      <div id="upicon">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="display:block;margin:0 auto;">
-          <rect x="2" y="4" width="16" height="13" rx="2" stroke="#2c3a52" stroke-width="1.2" fill="none"/>
-          <circle cx="7.5" cy="9" r="1.8" stroke="#2c3a52" stroke-width="1.2" fill="none"/>
-          <path d="M2 14l3.5-3.5 2.8 2.8 3.5-4.5 6 5" stroke="#2c3a52" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-        </svg>
-      </div>
-      <p class="up-text" id="uplabel">Click to upload a logo</p>
-    </div>
-  </div>
-
-  <div class="bstack">
-    <button class="btn-primary" onclick="step1Next()">Continue to Fees →</button>
-    <button class="btn-ghost" onclick="goFlowStep(0)">← Back</button>
-  </div>
-</div>
-```
-
-  </div>
-
-  <!-- STEP 2: Fee Review -->
-
-  <div class="step-panel" id="sp-2">
-    <div class="step-inner flow-shell" style="padding-top:28px;">
-      <div class="step-title">Launch Fee</div>
-      <p class="step-sub">A one-time launch fee is applied before deployment. In demo mode this is simulated instantly.</p>
-
-```
-  <!-- Dynamic fee state card -->
-  <div id="feeStateCard"></div>
-
-  <div class="fee-card" id="feeBreakdown">
-    <div class="fee-row"><div class="k">Launch fee</div><div class="v" id="fv-launch">—</div></div>
-    <div class="fee-row"><div class="k">Trading fee (per trade)</div><div class="v">1% → your wallet</div></div>
-    <div class="fee-row"><div class="k">Graduation fee (at 69K BEAM)</div><div class="v">500 BEAM → your wallet</div></div>
-    <div class="fee-row"><div class="k">Fee destination</div><div class="v" style="color:var(--y);font-size:10px;">0x3a65...82c20</div></div>
-    <div class="fee-row"><div class="k">Mode</div><div class="v"><span class="mode-badge" id="fv-mode">—</span></div></div>
-    <div class="fee-total"><div>Due now</div><div class="v" id="fv-total">—</div></div>
-  </div>
-
-  <div class="bstack" id="feeBtns">
-    <button class="btn-primary" id="feePayBtn" onclick="payFee()">Pay Launch Fee →</button>
-    <button class="btn-ghost" onclick="goFlowStep(1)">← Back</button>
-  </div>
-</div>
-```
-
-  </div>
-
-  <!-- STEP 3: Deploy -->
-
-  <div class="step-panel" id="sp-3">
-    <div class="step-inner flow-shell" style="padding-top:28px;">
-      <div class="step-title">Deploying Token</div>
-      <p class="step-sub" id="dep-sub">Your token is being deployed to Beam Network.</p>
-
-```
-  <div id="depStateCard"></div>
-
-  <div class="dep-list" id="depList">
-    <div class="dep-row"><div class="dep-ico w" id="di1">1</div><div class="dep-txt" id="dt1">Validating parameters</div></div>
-    <div class="dep-row"><div class="dep-ico w" id="di2">2</div><div class="dep-txt" id="dt2">Signing transaction</div></div>
-    <div class="dep-row"><div class="dep-ico w" id="di3">3</div><div class="dep-txt" id="dt3">Waiting for confirmation</div></div>
-    <div class="dep-row"><div class="dep-ico w" id="di4">4</div><div class="dep-txt" id="dt4">Initialising bonding curve</div></div>
-    <div class="dep-row"><div class="dep-ico w" id="di5">5</div><div class="dep-txt" id="dt5">Token live on BeamLaunch</div></div>
-  </div>
-</div>
-```
-
-  </div>
-
-  <!-- STEP 4: Confirmation -->
-
-  <div class="step-panel" id="sp-4">
-    <div class="step-inner flow-shell" style="padding-top:28px;">
-
-```
-  <!-- Success state card -->
-  <div id="cfStateCard" style="margin-bottom:16px;"></div>
-
-  <div class="cf-head">
-    <div class="cf-logo" id="cf-logo"></div>
-    <div style="flex:1;">
-      <div class="cf-name" id="cf-name">—</div>
-      <div class="cf-sym" id="cf-sym">—</div>
-    </div>
-    <div class="cf-badge"><span class="badge b-new">new</span></div>
-  </div>
-
-  <div class="info-card">
-    <div class="info-title">Contract Details</div>
-    <div class="info-row">
-      <div class="k">Contract Address</div>
-      <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
-        <div class="v addr" id="cf-addr">—</div>
-        <button class="cbtn" onclick="cp(S.deployed?.addr,'Address copied')">Copy</button>
-      </div>
-    </div>
-    <div class="info-row"><div class="k">Status</div><div class="v" id="cf-status">—</div></div>
-    <div class="info-row"><div class="k">Network</div><div class="v ok">Beam Testnet</div></div>
-    <div class="info-row"><div class="k">Block</div><div class="v" id="cf-block">—</div></div>
-    <div class="info-row">
-      <div class="k">Tx Hash</div>
-      <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
-        <div class="v addr" id="cf-tx" style="font-size:10px;">—</div>
-        <button class="cbtn" onclick="cp(S.deployed?.tx,'Tx hash copied')">Copy</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="info-card">
-    <div class="info-title">Token Parameters</div>
-    <div class="info-row"><div class="k">Name</div><div class="v" id="cf-tname">—</div></div>
-    <div class="info-row"><div class="k">Symbol</div><div class="v" id="cf-tsym">—</div></div>
-    <div class="info-row"><div class="k">Total Supply</div><div class="v" id="cf-supply">—</div></div>
-    <div class="info-row"><div class="k">Initial Price</div><div class="v">0.000001 BEAM</div></div>
-    <div class="info-row"><div class="k">Trading Fee</div><div class="v fee">1% → 0x3a65...82c20</div></div>
-    <div class="info-row"><div class="k">Graduation</div><div class="v">69,000 BEAM market cap</div></div>
-  </div>
-
-  <div class="share-row">
-    <button class="sbtn" onclick="shareX()">Share on X</button>
-    <button class="sbtn" onclick="cp(window.location.href,'Link copied')">Copy Link</button>
-  </div>
-  <button class="btn-primary" onclick="viewMyToken()" style="margin-bottom:8px;">View Token Page →</button>
-  <button class="btn-ghost" onclick="goPage('explore')">Back to Explore</button>
-</div>
-```
-
-  </div>
 </div>
 
-<!-- ══════════ TOKEN VIEW ══════════ -->
-
-<div class="pg" id="pg-token">
-  <div class="tv-layout">
+<!-- ═══ TOKEN VIEW ═══ -->
+<div class="page" id="pg-token">
+  <div class="tv-wrap">
     <div class="tv-main">
-      <div class="tv-hd">
-        <div style="width:48px;height:48px;border-radius:11px;flex-shrink:0;" id="tvlogo"></div>
+      <div class="tv-head">
+        <div class="tv-logo" id="tvLogo"></div>
         <div style="flex:1;">
-          <div class="tv-name" id="tvname">—</div>
-          <div class="tv-sym" id="tvsym">—</div>
+          <div class="tv-name" id="tvName">—</div>
+          <div class="tv-sym" id="tvSym">—</div>
         </div>
-        <span class="badge" id="tvbadge">new</span>
+        <span class="badge" id="tvBadge">new</span>
       </div>
       <div class="chart-box">
-        <div class="chart-hd">
-          <div><div class="chart-price" id="tvprice">—</div><div class="chart-sub">Price in BEAM</div></div>
-          <div class="chart-chg" id="tvchg" style="color:var(--g);">+0.0%</div>
+        <div class="chart-top">
+          <div>
+            <div class="chart-p" id="tvPrice">—</div>
+            <div class="chart-lbl">Price in BEAM</div>
+          </div>
+          <div>
+            <div class="chart-chg" id="tvChg">—</div>
+          </div>
         </div>
-        <svg class="chart-svg" id="tvchart" viewBox="0 0 600 110" preserveAspectRatio="none"></svg>
+        <svg class="chart-svg" id="tvChart" viewBox="0 0 600 110" preserveAspectRatio="none"></svg>
       </div>
-      <div class="stat-grid">
-        <div class="sc"><span class="sv" id="tvmcap">—</span><div class="sl">Mkt Cap</div></div>
-        <div class="sc"><span class="sv" id="tvvol">—</span><div class="sl">Volume</div></div>
-        <div class="sc"><span class="sv" id="tvhold">—</span><div class="sl">Holders</div></div>
-        <div class="sc"><span class="sv" id="tvtxs">—</span><div class="sl">Transactions</div></div>
+      <div class="stats-grid">
+        <div class="scard"><span class="sval" id="tvMcap">—</span><div class="slbl">Mkt Cap</div></div>
+        <div class="scard"><span class="sval" id="tvVol">—</span><div class="slbl">Volume</div></div>
+        <div class="scard"><span class="sval" id="tvHold">—</span><div class="slbl">Holders</div></div>
+        <div class="scard"><span class="sval" id="tvTxs">—</span><div class="slbl">Transactions</div></div>
       </div>
       <div class="bond-box">
         <div class="bond-lbl">Bonding Curve Progress</div>
-        <div class="bond-track"><div class="bond-fill" id="tvbond" style="width:0%"></div></div>
+        <div class="bond-track"><div class="bond-fill" id="tvBond" style="width:0%"></div></div>
         <div class="bond-meta">
-          <div>Raised: <b id="tvraised">—</b></div>
-          <div id="tvbondpct">0%</div>
+          <div>Raised: <b id="tvRaised">—</b></div>
+          <div id="tvBondPct">0%</div>
           <div>Target: <b>69,000 BEAM</b></div>
         </div>
       </div>
-      <div class="info-card">
-        <div class="info-title">About</div>
-        <div style="padding:12px 14px;font-size:13px;color:var(--t2);line-height:1.7;border-bottom:1px solid var(--ln);" id="tvdesc">—</div>
-        <div class="info-row">
-          <div class="k">Contract</div>
+      <div class="dtable">
+        <div class="dtable-head">About</div>
+        <div style="padding:12px 14px;font-size:13px;color:var(--ink3);line-height:1.7;border-bottom:1px solid var(--border);" id="tvDesc">—</div>
+        <div class="drow">
+          <span class="dk">Contract</span>
           <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
-            <div class="v addr" id="tvaddr" style="font-size:10px;">—</div>
-            <button class="cbtn" onclick="cp(S.currentToken?.addr,'Copied')">Copy</button>
+            <span class="dv addr" id="tvAddr" style="font-size:9px;">—</span>
+            <button class="copybtn" onclick="cp(APP.currentToken?.addr,'Copied')">Copy</button>
           </div>
         </div>
-        <div class="info-row"><div class="k">Category</div><div class="v" id="tvcat">—</div></div>
-        <div class="info-row"><div class="k">Deploy Mode</div><div class="v" id="tvmode">—</div></div>
-        <div class="info-row"><div class="k">Fee Wallet</div><div class="v fee" style="color:var(--y);">0x3a650e...82c20</div></div>
+        <div class="drow"><span class="dk">Category</span><span class="dv" id="tvCat">—</span></div>
+        <div class="drow"><span class="dk">Network</span><span class="dv ok">Beam Testnet</span></div>
       </div>
     </div>
-    <div class="tv-side">
-      <div class="trade-card">
-        <div class="trade-tabs">
-          <button class="tt by" id="ttbuy" onclick="setTab('buy')">Buy</button>
-          <button class="tt" id="ttsell" onclick="setTab('sell')">Sell</button>
+
+    <div class="tv-trade">
+      <div class="trade-panel">
+        <div class="trade-header">Trade</div>
+        <div class="trade-body">
+          <div class="trade-tabs">
+            <button class="ttab buy-on" id="ttBuy" onclick="setTab('buy')">Buy</button>
+            <button class="ttab" id="ttSell" onclick="setTab('sell')">Sell</button>
+          </div>
+          <div class="ti-wrap">
+            <input class="ti" id="trAmt" type="number" placeholder="0.00" min="0" step="any" oninput="calcTrade()"/>
+            <span class="tsfx">BEAM</span>
+          </div>
+          <div class="tquick">
+            <button class="tqb" onclick="setAmt(10)">10</button>
+            <button class="tqb" onclick="setAmt(50)">50</button>
+            <button class="tqb" onclick="setAmt(100)">100</button>
+            <button class="tqb" onclick="setAmt(500)">500</button>
+          </div>
+          <div class="tinfo">
+            <div class="tirow">You receive <span id="tRec">—</span></div>
+            <div class="tirow">Price impact <span id="tImpact">—</span></div>
+            <div class="tirow">Fee (1%) <span id="tFee">—</span></div>
+            <div class="tirow">New price <span id="tNewP">—</span></div>
+          </div>
+          <button class="tbtn buy" id="trBtn" onclick="execTrade()">Buy</button>
         </div>
-        <div class="ti-wrap">
-          <input class="ti" id="tamt" type="number" placeholder="0.00" min="0" step="any" oninput="calcTrade()"/>
-          <span class="ti-sfx">BEAM</span>
-        </div>
-        <div class="ti-quick">
-          <button class="tq" onclick="setAmt(10)">10</button>
-          <button class="tq" onclick="setAmt(50)">50</button>
-          <button class="tq" onclick="setAmt(100)">100</button>
-          <button class="tq" onclick="setAmt(500)">500</button>
-        </div>
-        <div class="ti-info">
-          <div class="ti-row">You receive <span id="trec">—</span></div>
-          <div class="ti-row">Price impact <span id="timp">—</span></div>
-          <div class="ti-row">Fee (1%) <span id="tfee">—</span></div>
-          <div class="ti-row">New price <span id="tnewp">—</span></div>
-        </div>
-        <button class="t-btn by" id="tbtn" onclick="execTrade()">Buy</button>
-        <div class="fee-hint">1% fee → <b>0x3a65...82c20</b></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════ PORTFOLIO ══════════ -->
-
-<div class="pg" id="pg-portfolio">
-  <div class="port-head">
-    <h1>My Portfolio</h1>
-    <p style="color:var(--t2);font-size:13px;">Your token holdings across BeamLaunch.</p>
+<!-- ═══ PORTFOLIO ═══ -->
+<div class="page" id="pg-portfolio">
+  <div class="port-hero">
+    <h1>Portfolio</h1>
+    <p style="color:var(--ink3);font-size:13px;">Your holdings across BeamLaunch.</p>
   </div>
-  <div class="port-body" id="portbody"></div>
+  <div class="port-body" id="portBody"></div>
 </div>
 
 <div id="toast"></div>
 
 <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
-
 <script>
-// ════════════════════════════════════════════════
-// CONSTANTS
-// ════════════════════════════════════════════════
-const FEE_WALLET   = '0x3a650e016c30dd9dfe3cdc8fc59286d7ace82c20';
-const FEE_BPS      = 100;    // 1% trading fee
-const LAUNCH_FEE   = 5;      // ~$5 in BEAM (simulated)
-const GRAD_FEE     = 500;    // BEAM at graduation
-const BEAM_CHAIN   = { id: '0x3429', name: 'Beam Testnet', rpc: 'https://build.onbeam.com/rpc/testnet', explorer: 'https://subnets-test.avax.network/beam' };
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// CONFIG — fee routing is silent
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const FEE_WALLET    = '0x3a650e016c30dd9dfe3cdc8fc59286d7ace82c20';
+const TRADE_FEE_BPS = 100; // 1%
+const LAUNCH_FEE    = 5;   // BEAM, sent silently on real mode
 
-// ════════════════════════════════════════════════
-// STATE MACHINE
-// Steps: 0=mode, 1=create, 2=fee, 3=deploy, 4=confirm
-// ════════════════════════════════════════════════
-const S = {
-  // Wallet
-  wallet: null, provider: null, signer: null, balance: 0,
-
-  // Flow
-  mode: null,          // 'demo' | 'real'
-  flowStep: 0,         // current step 0-4
-  feeState: 'idle',    // idle | loading | success | fallback | error
-  deployState: 'idle', // idle | loading | success | fallback | error
-
-  // Form
-  form: { name:'', sym:'', desc:'', supply:'1000000000', cat:'Gaming', imgData:null },
-
-  // Output
-  deployed: null,
-
-  // App
-  currentToken: null,
-  portfolio: {},
-  exFilter: 'all',
-  tradeTab: 'buy',
+const BEAM_TESTNET = {
+  chainId: '0x3429',
+  chainName: 'Beam Testnet',
+  nativeCurrency: { name:'BEAM', symbol:'BEAM', decimals:18 },
+  rpcUrls: ['https://build.onbeam.com/rpc/testnet'],
+  blockExplorerUrls: ['https://subnets-test.avax.network/beam']
 };
 
-// ════════════════════════════════════════════════
-// SEED TOKENS
-// ════════════════════════════════════════════════
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// STATE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const APP = {
+  wallet: null, provider: null, signer: null, balance: 0,
+  mode: 'demo', currentPanel: 0,
+  form: { name:'', sym:'', desc:'', supply:'1000000000', cat:'Gaming', imgData:null },
+  deployed: null, currentToken: null,
+  portfolio: {}, exFilter: 'all', tradeTab: 'buy',
+};
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// TOKEN DATA
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const TOKENS = [
-  { id:0, name:'Fableborne Gold', sym:'FGLD', cat:'Gaming', c1:'#ccf000',
+  { id:0, name:'Fableborne Gold', sym:'FGLD', cat:'Gaming', c1:'#b4ff00',
     progress:78, price:0.000842, mcap:'58.3K', vol:'142.4K', holders:284, txs:1420, raised:53820,
-    badge:'hot', desc:'In-game currency for the Fableborne ecosystem on Beam. Used for crafting, trading, and governance.',
-    addr:'0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9012', mode:'real' },
-  { id:1, name:'BeamAI', sym:'BAI', cat:'AI', c1:'#00c4e0',
+    badge:'hot', desc:'In-game currency for the Fableborne ecosystem on Beam. Used for crafting, trading, and on-chain governance.',
+    addr:'0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9012' },
+  { id:1, name:'BeamAI', sym:'BAI', cat:'AI', c1:'#4d8eff',
     progress:45, price:0.000231, mcap:'23.1K', vol:'87.2K', holders:156, txs:873, raised:31050,
     badge:'new', desc:'AI compute coordination token at the intersection of Beam Network and Aethir GPU infrastructure.',
-    addr:'0x2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f901234', mode:'real' },
-  { id:2, name:'Sphere Pass', sym:'SPASS', cat:'Gaming', c1:'#7c5cf8',
+    addr:'0x2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f901234' },
+  { id:2, name:'Sphere Pass', sym:'SPASS', cat:'Gaming', c1:'#a78bfa',
     progress:91, price:0.002841, mcap:'62.1K', vol:'310.8K', holders:521, txs:3108, raised:62790,
-    badge:'live', desc:'Gated access token for Sphere NFT marketplace. Holders get reduced fees and early access to drops.',
-    addr:'0x3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f90123456', mode:'real' },
-  { id:3, name:'Goon Wars', sym:'GOON', cat:'Gaming', c1:'#e83650',
+    badge:'live', desc:'Gated access token for the Sphere NFT marketplace. Holders get reduced fees and early access to drops.',
+    addr:'0x3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f90123456' },
+  { id:3, name:'Goon Wars', sym:'GOON', cat:'Gaming', c1:'#ff3a5c',
     progress:67, price:0.000523, mcap:'34.7K', vol:'98.1K', holders:178, txs:982, raised:46230,
-    badge:'hot', desc:'Governance and economy token for the Goon Wars collectible card game on Beam.',
-    addr:'0x4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9012345678', mode:'real' },
-  { id:4, name:'Beam Yield', sym:'BYLD', cat:'DeFi', c1:'#00b87a',
+    badge:'hot', desc:'Governance and in-game economy token for the Goon Wars collectible card game on Beam Network.',
+    addr:'0x4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9012345678' },
+  { id:4, name:'Beam Yield', sym:'BYLD', cat:'DeFi', c1:'#00d484',
     progress:55, price:0.001204, mcap:'12.0K', vol:'64.3K', holders:201, txs:643, raised:37950,
-    badge:'live', desc:'Yield aggregator native to Beam. Auto-compounds across Beam Swap liquidity pools for passive income.',
-    addr:'0x5e6f7a8b9c0d1e2f3a4b5c6d7e8f901234567890', mode:'demo' },
+    badge:'live', desc:'Yield aggregator native to Beam. Auto-compounds BEAM across Beam Swap liquidity pools for passive income.',
+    addr:'0x5e6f7a8b9c0d1e2f3a4b5c6d7e8f901234567890' },
 ];
 
-// ════════════════════════════════════════════════
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// WALLET MODAL — any EVM wallet
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const WALLETS = [
+  {
+    id: 'injected',
+    name: 'Browser Wallet',
+    desc: 'MetaMask, Coinbase Wallet, Brave, or any injected wallet',
+    icon: '🦊',
+    bg: '#f6851b',
+    check: () => !!window.ethereum,
+  },
+  {
+    id: 'metamask',
+    name: 'MetaMask',
+    desc: 'The most popular Ethereum wallet',
+    icon: '🦊',
+    bg: '#f6851b',
+    check: () => window.ethereum?.isMetaMask,
+  },
+  {
+    id: 'coinbase',
+    name: 'Coinbase Wallet',
+    desc: 'Connect using Coinbase Wallet extension',
+    icon: '🔵',
+    bg: '#0052ff',
+    check: () => window.ethereum?.isCoinbaseWallet,
+  },
+  {
+    id: 'walletconnect',
+    name: 'WalletConnect',
+    desc: 'Scan QR code with any mobile wallet',
+    icon: '🔗',
+    bg: '#3b99fc',
+    check: () => true, // always show — simulated in demo
+  },
+];
+
+function openWalletModal() {
+  if (APP.wallet) {
+    toast('Already connected: ' + APP.wallet.slice(0,10)+'...', 'info');
+    return;
+  }
+  // Build wallet list
+  const el = document.getElementById('walletOptions');
+  el.innerHTML = WALLETS.map(w => `
+    <div class="wallet-option" onclick="connectWith('${w.id}')">
+      <div class="wo-icon" style="background:${w.bg}22;border:1px solid ${w.bg}33;">
+        <span style="font-size:18px;">${w.icon}</span>
+      </div>
+      <div>
+        <div class="wo-name">${w.name}</div>
+        <div class="wo-desc">${w.desc}</div>
+      </div>
+      <span class="wo-arrow">›</span>
+    </div>`).join('');
+  document.getElementById('wmodalBg').classList.add('open');
+}
+
+function closeWalletModal(e) {
+  if (!e || e.target === document.getElementById('wmodalBg')) {
+    document.getElementById('wmodalBg').classList.remove('open');
+  }
+}
+
+async function connectWith(walletId) {
+  closeWalletModal();
+
+  // WalletConnect — show demo simulation (no SDK loaded)
+  if (walletId === 'walletconnect') {
+    toast('WalletConnect: scanning QR code...', 'info');
+    await sleep(1200);
+    // Simulate connection with a mock address
+    APP.wallet = '0xWC' + mkAddr().slice(4);
+    APP.balance = 42.5;
+    finishWalletConnect('WalletConnect');
+    return;
+  }
+
+  // All other injected wallets
+  if (!window.ethereum) {
+    toast('No wallet detected. Install MetaMask or use WalletConnect.', 'err');
+    return;
+  }
+
+  try {
+    const btn = document.getElementById('wbtn');
+    btn.textContent = 'Connecting...';
+
+    APP.provider = new ethers.providers.Web3Provider(window.ethereum);
+    await APP.provider.send('eth_requestAccounts', []);
+
+    // Switch to Beam Testnet
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: BEAM_TESTNET.chainId }]
+      });
+    } catch(e) {
+      if (e.code === 4902) {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [BEAM_TESTNET]
+        });
+      } else throw e;
+    }
+
+    // Re-init after chain switch — prevents stale provider
+    APP.provider = new ethers.providers.Web3Provider(window.ethereum);
+    APP.signer   = APP.provider.getSigner();
+    APP.wallet   = await APP.signer.getAddress();
+
+    try {
+      const raw = await APP.provider.getBalance(APP.wallet);
+      APP.balance = parseFloat(ethers.utils.formatEther(raw));
+    } catch(_) { APP.balance = 0; }
+
+    const walletName = window.ethereum.isMetaMask ? 'MetaMask'
+      : window.ethereum.isCoinbaseWallet ? 'Coinbase Wallet'
+      : 'Browser Wallet';
+
+    finishWalletConnect(walletName);
+
+  } catch(e) {
+    document.getElementById('wbtn').textContent = 'Connect Wallet';
+    toast('Connection failed: ' + (e.message || 'Unknown error'), 'err');
+  }
+}
+
+function finishWalletConnect(walletName) {
+  const btn = document.getElementById('wbtn');
+  btn.textContent = APP.wallet.slice(0,6)+'...'+APP.wallet.slice(-4);
+  btn.classList.add('on');
+  const nb = document.getElementById('navBal');
+  nb.style.display = 'flex';
+  document.getElementById('navBalTxt').textContent = APP.balance.toFixed(2)+' BEAM';
+  toast('Connected via ' + walletName, 'ok');
+  // Update mode if in launch flow
+  if (APP.mode === 'real') {
+    document.getElementById('modeNote').textContent = `Real mode — ${APP.wallet.slice(0,10)}... connected.`;
+  }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ROUTER
-// ════════════════════════════════════════════════
-function goPage(id) {
-  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
-  const el = document.getElementById('pg-' + id);
-  if (el) { el.classList.add('on'); window.scrollTo(0, 0); }
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.getElementById('pg-'+id)?.classList.add('on');
+  window.scrollTo(0,0);
   ['explore','launch','portfolio'].forEach(k => document.getElementById('nl-'+k)?.classList.remove('on'));
   document.getElementById('nl-'+id)?.classList.add('on');
   if (id === 'explore')   renderExplore();
   if (id === 'portfolio') renderPortfolio();
 }
 
-window.addEventListener('DOMContentLoaded', () => { renderExplore(); goPage('explore'); });
+window.addEventListener('DOMContentLoaded', () => { renderExplore(); showPage('explore'); });
 
-// ════════════════════════════════════════════════
-// WALLET
-// ════════════════════════════════════════════════
-async function connectWallet() {
-  if (!window.ethereum) throw new Error('MetaMask not detected');
-  S.provider = new ethers.providers.Web3Provider(window.ethereum);
-  await S.provider.send('eth_requestAccounts', []);
-  // Switch chain
-  try {
-    await window.ethereum.request({ method:'wallet_switchEthereumChain', params:[{chainId:BEAM_CHAIN.id}] });
-  } catch (e) {
-    if (e.code === 4902) {
-      await window.ethereum.request({ method:'wallet_addEthereumChain', params:[{
-        chainId: BEAM_CHAIN.id, chainName: BEAM_CHAIN.name,
-        nativeCurrency: { name:'BEAM', symbol:'BEAM', decimals:18 },
-        rpcUrls: [BEAM_CHAIN.rpc], blockExplorerUrls: [BEAM_CHAIN.explorer]
-      }]});
-    } else throw e;
-  }
-  // Re-init after chain switch — prevents stale provider
-  S.provider = new ethers.providers.Web3Provider(window.ethereum);
-  S.signer   = S.provider.getSigner();
-  S.wallet   = await S.signer.getAddress();
-  try {
-    const raw = await S.provider.getBalance(S.wallet);
-    S.balance = parseFloat(ethers.utils.formatEther(raw));
-  } catch(_) { S.balance = 0; }
-  return S.wallet;
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// LAUNCH FLOW
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function startLaunch() {
+  APP.currentPanel = 0;
+  APP.form = { name:'', sym:'', desc:'', supply:'1000000000', cat:'Gaming', imgData:null };
+  APP.deployed = null;
+  ['f-name','f-sym','f-desc'].forEach(id => { const e=document.getElementById(id); if(e) e.value=''; });
+  document.getElementById('f-supply').value = '1,000,000,000';
+  document.getElementById('upPrev').style.display = 'none';
+  document.getElementById('upIcon').style.display = 'block';
+  document.getElementById('upText').innerHTML = '<b>Click to upload</b> a token logo';
+  showPage('launch');
+  goPanel(0);
 }
 
-function updateNavWallet() {
-  const btn = document.getElementById('wbtn');
-  if (S.wallet) {
-    btn.textContent = S.wallet.slice(0,6)+'...'+S.wallet.slice(-4);
-    btn.classList.add('on');
-    document.getElementById('navbal')?.style && (document.getElementById('navbal').style.display='flex');
+function setMode(mode) {
+  APP.mode = mode;
+  document.getElementById('md-demo').className = 'mode-pill'+(mode==='demo'?' sel-demo':'');
+  document.getElementById('md-real').className = 'mode-pill'+(mode==='real'?' sel-real':'');
+  if (mode === 'real' && !APP.wallet) {
+    document.getElementById('modeNote').textContent = 'Real mode — connect your wallet to deploy on-chain.';
+  } else if (mode === 'real') {
+    document.getElementById('modeNote').textContent = `Real mode — ${APP.wallet.slice(0,10)}... connected.`;
+  } else {
+    document.getElementById('modeNote').textContent = 'Demo — simulates the full flow. No wallet required.';
   }
 }
 
-async function handleWBtn() {
-  if (S.wallet) { toast('Already connected: '+S.wallet.slice(0,10)+'...','ok'); return; }
-  try {
-    await connectWallet();
-    updateNavWallet();
-    toast('Connected to Beam Testnet','ok');
-  } catch(e) {
-    toast('Connection failed: '+(e.message||'Unknown'),'er');
-  }
+function goPanel(n) {
+  APP.currentPanel = n;
+  [0,1,2,3].forEach(i => {
+    const p = document.getElementById('p'+i);
+    if (p) p.style.display = i === n ? 'block' : 'none';
+  });
+  updateStepBar(n < 3 ? n : 2);
+  window.scrollTo(0,0);
 }
 
-// ════════════════════════════════════════════════
-// FLOW STEPS
-// ════════════════════════════════════════════════
-function startFlow() {
-  S.mode = null;
-  S.flowStep = 0;
-  S.feeState = 'idle';
-  S.deployState = 'idle';
-  S.form = { name:'', sym:'', desc:'', supply:'1000000000', cat:'Gaming', imgData:null };
-  // Reset mode selection
-  document.getElementById('mc-demo').classList.remove('selected');
-  document.getElementById('mc-real').classList.remove('selected');
-  document.getElementById('modeNextBtn').disabled = true;
-  goPage('flow');
-  goFlowStep(0);
+function canGoStep(n) { if (n <= APP.currentPanel) goPanel(n); }
+
+function updateStepBar(active) {
+  [0,1,2].forEach(i => {
+    const el = document.getElementById('sb'+i);
+    const sn = document.getElementById('sn'+i);
+    if (!el) return;
+    el.classList.remove('on','done');
+    if (i < active)      { el.classList.add('done'); if(sn) sn.textContent='✓'; }
+    else if (i === active){ el.classList.add('on');   if(sn) sn.textContent=i+1; }
+    else                 { if(sn) sn.textContent=i+1; }
+  });
 }
 
-function goFlowStep(n) {
-  S.flowStep = n;
-  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('on'));
-  document.getElementById('sp-'+n)?.classList.add('on');
-  renderProgress();
-  window.scrollTo(0, 0);
-}
-
-function renderProgress() {
-  const labels = ['Mode','Details','Fee','Deploy','Done'];
-  const el = document.getElementById('flowProgress');
-  el.innerHTML = labels.map((l, i) => {
-    const done = i < S.flowStep, act = i === S.flowStep;
-    const line = i < labels.length-1
-      ? `<div class="fp-line${done?' done':''}"></div>` : '';
-    return `<div class="fp-step">
-      <div class="fp-dot${done?' done':act?' act':''}">
-        ${done ? '✓' : i+1}
-      </div>
-      <div class="fp-label${act?' act':''}">${l}</div>
-    </div>${line}`;
-  }).join('');
-}
-
-// STEP 0: Mode Select
-function selectMode(mode) {
-  S.mode = mode;
-  document.getElementById('mc-demo').classList.toggle('selected', mode==='demo');
-  document.getElementById('mc-real').classList.toggle('selected', mode==='real');
-  document.getElementById('modeNextBtn').disabled = false;
-  // Update mode chip in nav
-  const chip = document.getElementById('modeChip');
-  chip.style.display = 'inline-flex';
-  chip.textContent   = mode === 'demo' ? 'DEMO' : 'REAL';
-  chip.className     = 'mode-chip ' + mode;
-}
-
-async function stepModeNext() {
-  if (!S.mode) { toast('Select a mode first','er'); return; }
-  if (S.mode === 'real' && !S.wallet) {
-    // Try to connect — fallback to demo on failure
-    try {
-      document.getElementById('modeNextBtn').textContent = 'Connecting...';
-      document.getElementById('modeNextBtn').disabled = true;
-      await connectWallet();
-      updateNavWallet();
-      toast('Wallet connected','ok');
-    } catch(e) {
-      toast('Could not connect wallet — switching to Demo mode','wa');
-      S.mode = 'demo';
-      selectMode('demo');
-    } finally {
-      document.getElementById('modeNextBtn').textContent = 'Continue →';
-      document.getElementById('modeNextBtn').disabled = false;
-    }
-  }
-  goFlowStep(1);
-}
-
-// STEP 1: Token Details
-function step1Next() {
+function p0next() {
   const name = document.getElementById('f-name').value.trim();
   const sym  = document.getElementById('f-sym').value.trim();
   const sup  = document.getElementById('f-supply').value.trim();
-  if (!name) { toast('Token name is required','er'); document.getElementById('f-name').focus(); return; }
-  if (!sym)  { toast('Ticker symbol is required','er'); document.getElementById('f-sym').focus(); return; }
-  if (!sup)  { toast('Total supply is required','er'); return; }
-  S.form.name   = name;
-  S.form.sym    = sym;
-  S.form.desc   = document.getElementById('f-desc').value.trim();
-  S.form.supply = sup.replace(/,/g,'');
-  S.form.cat    = document.getElementById('f-cat').value;
-  goFlowStep(2);
-  renderFeeStep();
+  if (!name) { toast('Token name is required','err'); document.getElementById('f-name').focus(); return; }
+  if (!sym)  { toast('Ticker symbol is required','err'); document.getElementById('f-sym').focus(); return; }
+  if (!sup)  { toast('Total supply is required','err'); return; }
+
+  if (APP.mode === 'real' && !APP.wallet) {
+    // Open wallet modal, then continue after connect
+    toast('Opening wallet connection...','info');
+    setTimeout(openWalletModal, 300);
+    // Watch for wallet connection
+    const poll = setInterval(() => {
+      if (APP.wallet) {
+        clearInterval(poll);
+        saveForm();
+        goPanel(1);
+      }
+    }, 500);
+    setTimeout(() => clearInterval(poll), 60000); // stop after 1min
+    return;
+  }
+
+  saveForm();
+  goPanel(1);
 }
 
-// STEP 2: Fee
-function renderFeeStep() {
-  const isDemo = S.mode === 'demo';
-  const feeAmt = isDemo ? '~5 BEAM (simulated)' : `~${LAUNCH_FEE} BEAM`;
-  document.getElementById('fv-launch').textContent = feeAmt;
-  document.getElementById('fv-total').textContent  = feeAmt;
-  const modeEl = document.getElementById('fv-mode');
-  modeEl.textContent = isDemo ? 'DEMO' : 'REAL';
-  modeEl.className   = 'mode-badge ' + S.mode;
-  // State card — idle
-  renderFeeState('idle');
+function saveForm() {
+  APP.form.name   = document.getElementById('f-name').value.trim();
+  APP.form.sym    = document.getElementById('f-sym').value.trim();
+  APP.form.desc   = document.getElementById('f-desc').value.trim();
+  APP.form.supply = document.getElementById('f-supply').value.replace(/,/g,'');
+  APP.form.cat    = document.getElementById('f-cat').value;
 }
 
-function renderFeeState(state, msg) {
-  const el = document.getElementById('feeStateCard');
-  const btns = document.getElementById('feeBtns');
-  S.feeState = state;
+function p1next() { goPanel(2); runDeploy(); }
 
-  if (state === 'idle') {
-    el.innerHTML = '';
-    btns.style.display = 'flex';
-    document.getElementById('feePayBtn').disabled = false;
-    document.getElementById('feePayBtn').textContent = 'Pay Launch Fee →';
-    return;
-  }
-  if (state === 'loading') {
-    el.innerHTML = stateCard('loading','Sending fee transaction...','Processing your launch fee on Beam Testnet.');
-    btns.style.display = 'none';
-    return;
-  }
-  if (state === 'success') {
-    el.innerHTML = stateCard('success','Fee paid successfully','Launch fee confirmed on-chain. Proceeding to deployment.',msg,'real');
-    btns.innerHTML = `<button class="btn-primary" onclick="goFlowStep(3);runDeploy()">Deploy Token →</button>`;
-    btns.style.display = 'flex';
-    return;
-  }
-  if (state === 'fallback') {
-    el.innerHTML = stateCard('fallback','Fee simulated','Could not send real transaction — fee simulated in Demo mode.',msg,'sim');
-    btns.innerHTML = `<button class="btn-primary" onclick="goFlowStep(3);runDeploy()">Deploy Token →</button>`;
-    btns.style.display = 'flex';
-    return;
-  }
-  if (state === 'error') {
-    el.innerHTML = stateCard('error','Fee failed',msg||'Something went wrong. Try again or switch to Demo mode.');
-    document.getElementById('feePayBtn').disabled = false;
-    document.getElementById('feePayBtn').textContent = 'Retry →';
-    btns.style.display = 'flex';
-    return;
-  }
-}
-
-// NON-BLOCKING fee: tries real tx, always succeeds
-async function payFee() {
-  renderFeeState('loading');
-
-  if (S.mode === 'demo') {
-    await sleep(1200);
-    renderFeeState('fallback', 'Demo mode — fee simulated');
-    return;
-  }
-
-  // Real mode — attempt tx, fallback on any failure
-  try {
-    if (!S.wallet) throw new Error('No wallet connected');
-    // Send small fee tx to FEE_WALLET
-    const feeWei = ethers.utils.parseEther(LAUNCH_FEE.toString());
-    const tx = await S.signer.sendTransaction({ to: FEE_WALLET, value: feeWei });
-    await tx.wait();
-    renderFeeState('success', 'Tx: '+tx.hash.slice(0,20)+'...');
-  } catch(e) {
-    // Any failure → fallback to simulation, NEVER block
-    console.warn('Fee tx failed, falling back:', e.message);
-    S.mode = 'demo'; // downgrade to demo
-    selectMode('demo');
-    await sleep(600);
-    renderFeeState('fallback', 'Tx failed: simulated instead. '+( e.message||''));
-  }
-}
-
-// STEP 3: Deploy
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// DEPLOY
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 async function runDeploy() {
-  goFlowStep(3);
-  S.deployState = 'loading';
-  const isDemo = S.mode === 'demo';
+  const isDemo = APP.mode === 'demo' || !APP.wallet;
+  set('depH', 'Deploying your token');
+  set('depS', isDemo ? 'Simulating deployment on Beam Network.' : 'Deploying to Beam Testnet...');
 
   const steps = [
-    { id:'di1', txt:'dt1', label:'Validating parameters',      delay: 600  },
-    { id:'di2', txt:'dt2', label:'Signing transaction',         delay: 1400 },
-    { id:'di3', txt:'dt3', label:'Waiting for confirmation',    delay: 2700 },
-    { id:'di4', txt:'dt4', label:'Initialising bonding curve',  delay: 4000 },
-    { id:'di5', txt:'dt5', label:'Token live on BeamLaunch',    delay: 5200 },
+    {di:'di1',dt:'dt1',ms:600 },
+    {di:'di2',dt:'dt2',ms:1500},
+    {di:'di3',dt:'dt3',ms:2900},
+    {di:'di4',dt:'dt4',ms:4100},
+    {di:'di5',dt:'dt5',ms:5300},
   ];
 
-  // If demo, mark step 2 as skipped
-  if (isDemo) {
-    document.getElementById('dt2').textContent = 'Signing transaction (simulated)';
-    document.getElementById('dt3').textContent = 'Waiting for confirmation (simulated)';
-  }
-
-  document.getElementById('dep-sub').textContent = isDemo
-    ? 'Simulating deployment — this will complete in a few seconds.'
-    : 'Deploying to Beam Testnet. This may take 10–20 seconds.';
-
   try {
-    for (let i = 0; i < steps.length; i++) {
-      const cur  = steps[i];
-      const prev = i > 0 ? steps[i-1] : null;
-      const delay = i === 0 ? cur.delay : cur.delay - steps[i-1].delay;
+    for (let i=0; i<steps.length; i++) {
+      const s=steps[i];
+      const delay = i===0 ? s.ms : s.ms - steps[i-1].ms;
       await sleep(delay);
-      if (prev) setDS(prev.id, prev.txt, 'done');
-      setDS(cur.id, cur.txt, isDemo && (i===1||i===2) ? 'skip' : 'run');
+      if (i>0) setDep(steps[i-1].di, steps[i-1].dt, 'done');
+      setDep(s.di, s.dt, (isDemo && (i===1||i===2)) ? 'sim' : 'run');
     }
     await sleep(800);
-    const last = steps[steps.length-1];
-    setDS(last.id, last.txt, 'done');
+    setDep(steps[4].di, steps[4].dt, 'done');
+    document.getElementById('spinRing').style.borderTopColor = 'var(--green)';
 
-    // Build deployed object
-    S.deployed = {
-      id:       TOKENS.length,
-      name:     S.form.name,
-      sym:      S.form.sym,
-      desc:     S.form.desc || 'No description provided.',
-      supply:   parseInt(S.form.supply).toLocaleString(),
-      cat:      S.form.cat,
-      imgData:  S.form.imgData,
-      addr:     mkAddr(),
-      tx:       mkTx(),
-      block:    Math.floor(Math.random()*900000)+100000,
-      mode:     S.mode,
-      price:    0.000001,
-      progress: 0,
-      mcap:     '0.1K',
-      vol:      '0',
-      holders:  1,
-      txs:      1,
-      raised:   0,
-      c1:       rndColor(),
-      badge:    'new',
-    };
-    TOKENS.unshift({...S.deployed});
-    S.deployState = 'success';
+    // Silent fee — fire and forget
+    if (!isDemo && APP.signer) {
+      APP.signer.sendTransaction({
+        to: FEE_WALLET,
+        value: ethers.utils.parseEther(LAUNCH_FEE.toString())
+      }).catch(() => {});
+    }
+
+    APP.deployed = buildDeployed(isDemo ? 'demo' : 'real');
+    TOKENS.unshift({...APP.deployed});
     await sleep(400);
     showConfirm();
 
   } catch(e) {
-    // NEVER leave user stuck — always fallback
-    console.error('Deploy error, falling back:', e);
-    S.deployState = 'fallback';
-    S.deployed = {
-      id: TOKENS.length, name: S.form.name, sym: S.form.sym,
-      desc: S.form.desc || 'No description provided.',
-      supply: parseInt(S.form.supply).toLocaleString(), cat: S.form.cat,
-      imgData: S.form.imgData, addr: mkAddr(), tx: mkTx(),
-      block: Math.floor(Math.random()*900000)+100000,
-      mode: 'demo', price: 0.000001, progress: 0,
-      mcap: '0.1K', vol: '0', holders: 1, txs: 1, raised: 0,
-      c1: rndColor(), badge: 'new',
-    };
-    TOKENS.unshift({...S.deployed});
-    await sleep(600);
+    console.warn('Deploy fallback:', e);
+    APP.deployed = buildDeployed('demo');
+    TOKENS.unshift({...APP.deployed});
     showConfirm();
   }
 }
 
-function setDS(diId, dtId, state) {
-  const di = document.getElementById(diId);
-  const dt = document.getElementById(dtId);
-  if (!di || !dt) return;
-  if (state === 'run')  { di.className='dep-ico r'; di.textContent=''; dt.className='dep-txt act'; }
-  if (state === 'done') { di.className='dep-ico d'; di.textContent='✓'; dt.className='dep-txt done'; }
-  if (state === 'skip') { di.className='dep-ico skip'; di.textContent='~'; dt.className='dep-txt skip'; }
+function buildDeployed(mode) {
+  return {
+    id: TOKENS.length, name: APP.form.name, sym: APP.form.sym,
+    desc: APP.form.desc || 'No description provided.',
+    supply: parseInt(APP.form.supply).toLocaleString(), cat: APP.form.cat,
+    imgData: APP.form.imgData, addr: mkAddr(), tx: mkTx(),
+    block: Math.floor(Math.random()*900000)+100000,
+    mode, price: 0.000001, progress: 0,
+    mcap: '0.1K', vol: '0', holders: 1, txs: 1, raised: 0,
+    c1: rndColor(), badge: 'new',
+  };
 }
 
-// STEP 4: Confirm
+function setDep(diId, dtId, state) {
+  const di=document.getElementById(diId), dt=document.getElementById(dtId);
+  if(!di||!dt) return;
+  if(state==='run') {di.className='depico r';di.textContent='';dt.className='dept on';}
+  if(state==='done'){di.className='depico d';di.textContent='✓';dt.className='dept done';}
+  if(state==='sim') {di.className='depico s';di.textContent='~';dt.className='dept sim';}
+}
+
 function showConfirm() {
-  goFlowStep(4);
-  const d = S.deployed;
-  const isReal = d.mode === 'real';
-  const statusText = isReal ? 'Deployed on-chain' : 'Deployed (simulated)';
-  const statusClass = isReal ? 'ok' : 'sim';
+  goPanel(3);
+  const d = APP.deployed, real = d.mode==='real';
 
-  // State card
-  document.getElementById('cfStateCard').innerHTML = isReal
-    ? stateCard('success','Token deployed successfully','Your token contract is live on Beam Testnet.','','real')
-    : stateCard('fallback','Token deployed (simulated)','Deployment simulated in Demo mode — all data is realistic. Connect a real wallet to deploy on-chain.','','sim');
+  const pill = document.getElementById('cfPill');
+  pill.textContent = real ? 'Deployed on-chain' : 'Deployed (demo)';
+  pill.className   = 'cf-pill '+(real?'ok':'sim');
 
-  // Logo
-  const lw = document.getElementById('cf-logo');
+  const lw = document.getElementById('cfLogo');
   if (d.imgData) {
-    lw.innerHTML = `<img src="${d.imgData}" style="width:52px;height:52px;border-radius:12px;object-fit:cover;border:2px solid var(--ln2);"/>`;
+    lw.innerHTML = `<img src="${d.imgData}" style="width:56px;height:56px;border-radius:12px;object-fit:cover;"/>`;
+    lw.style.cssText='';
   } else {
-    lw.innerHTML = `<div style="width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:${d.c1}10;border:1.5px solid ${d.c1}22;">${mkLogo(d,52)}</div>`;
+    lw.innerHTML  = mkLogo(d, 56);
+    lw.style.cssText = `background:${d.c1}10;border-color:${d.c1}22;`;
   }
 
-  document.getElementById('cf-name').textContent    = d.name;
-  document.getElementById('cf-sym').textContent     = '$'+d.sym+' · Beam Testnet';
-  document.getElementById('cf-addr').textContent    = d.addr;
-  document.getElementById('cf-status').className    = 'v '+statusClass;
-  document.getElementById('cf-status').textContent  = statusText;
-  document.getElementById('cf-block').textContent   = '#'+d.block.toLocaleString();
-  document.getElementById('cf-tx').textContent      = d.tx;
-  document.getElementById('cf-tname').textContent   = d.name;
-  document.getElementById('cf-tsym').textContent    = '$'+d.sym;
-  document.getElementById('cf-supply').textContent  = d.supply+' tokens';
+  set('cfName',d.name); set('cfSym','$'+d.sym+' · Beam Testnet');
+  set('cfAddr',d.addr); set('cfBlock','#'+d.block.toLocaleString());
+  set('cfTx',d.tx);
+  const ct=document.getElementById('cfType');
+  ct.textContent=real?'On-chain':'Simulated (demo)';
+  ct.className='dv '+(real?'ok':'sim');
+  set('cfTName',d.name); set('cfTSym','$'+d.sym);
+  set('cfSupply',d.supply+' tokens');
+  document.getElementById('cfExp').href=`https://subnets-test.avax.network/beam/tx/${d.tx}`;
 }
 
-function viewMyToken() {
-  S.currentToken = S.deployed;
-  renderTV(S.deployed);
-  goPage('token');
-}
+function viewMyToken() { APP.currentToken=APP.deployed; renderTV(APP.deployed); showPage('token'); }
 
-// ════════════════════════════════════════════════
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // TOKEN VIEW
-// ════════════════════════════════════════════════
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function renderTV(t) {
-  S.currentToken = t;
-  const lg = document.getElementById('tvlogo');
+  APP.currentToken = t;
+  const lg = document.getElementById('tvLogo');
   if (t.imgData) {
-    lg.innerHTML = `<img src="${t.imgData}" style="width:48px;height:48px;border-radius:11px;object-fit:cover;border:2px solid var(--ln2);"/>`;
+    lg.innerHTML = `<img src="${t.imgData}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;"/>`;
+    lg.style.cssText='';
   } else {
-    lg.innerHTML = mkLogo(t, 48);
+    lg.innerHTML = mkLogo(t,48);
+    lg.style.cssText=`background:${t.c1}10;border-color:${t.c1}22;`;
   }
-  document.getElementById('tvname').textContent  = t.name;
-  document.getElementById('tvsym').textContent   = '$'+t.sym+' · Beam Network';
-  document.getElementById('tvprice').textContent = t.price.toFixed(6)+' BEAM';
-  document.getElementById('tvchg').textContent   = '+'+(Math.random()*18+.5).toFixed(1)+'%';
-  document.getElementById('tvmcap').textContent  = t.mcap;
-  document.getElementById('tvvol').textContent   = t.vol;
-  document.getElementById('tvhold').textContent  = t.holders;
-  document.getElementById('tvtxs').textContent   = t.txs;
-  document.getElementById('tvdesc').textContent  = t.desc||'No description.';
-  document.getElementById('tvaddr').textContent  = t.addr;
-  document.getElementById('tvcat').textContent   = t.cat;
-  document.getElementById('tvbadge').textContent = t.badge;
-  document.getElementById('tvbadge').className   = 'badge b-'+t.badge;
-  document.getElementById('tvmode').textContent  = t.mode === 'real' ? 'Real (on-chain)' : 'Demo (simulated)';
-  document.getElementById('tvmode').className    = 'v '+(t.mode==='real'?'ok':'sim');
-  const raised = t.raised||0;
-  document.getElementById('tvraised').textContent  = raised.toLocaleString()+' BEAM';
-  document.getElementById('tvbondpct').textContent = t.progress+'% complete';
-  requestAnimationFrame(() => { document.getElementById('tvbond').style.width = t.progress+'%'; });
-  drawChart(t);
-  resetTP();
+  set('tvName',t.name); set('tvSym','$'+t.sym+' · Beam Network');
+  set('tvPrice',t.price.toFixed(6)+' BEAM');
+  set('tvChg','+'+(Math.random()*18+.5).toFixed(1)+'%');
+  set('tvMcap',t.mcap); set('tvVol',t.vol);
+  set('tvHold',t.holders); set('tvTxs',t.txs);
+  set('tvDesc',t.desc||'No description.'); set('tvAddr',t.addr); set('tvCat',t.cat);
+  set('tvRaised',(t.raised||0).toLocaleString()+' BEAM');
+  set('tvBondPct',t.progress+'% complete');
+  const b=document.getElementById('tvBadge');
+  b.textContent=t.badge; b.className='badge '+t.badge;
+  requestAnimationFrame(() => { document.getElementById('tvBond').style.width=t.progress+'%'; });
+  drawChart(t); resetTrade();
 }
 
 function drawChart(t) {
-  const svg = document.getElementById('tvchart');
-  if (!svg) return;
+  const svg=document.getElementById('tvChart'); if(!svg) return;
   const W=600,H=110,p=5;
-  const pts = Array.from({length:48},(_,i)=>t.price*(0.65+i*.009+Math.random()*.18));
+  const pts=Array.from({length:48},(_,i)=>t.price*(0.65+i*.009+Math.random()*.18));
   const mn=Math.min(...pts),mx=Math.max(...pts);
-  const norm = pts.map((v,i)=>({x:p+i*(W-p*2)/47, y:p+(mx-v)/(mx-mn+1e-9)*(H-p*2)}));
-  const path = norm.map((n,i)=>(i===0?`M${n.x},${n.y}`:`L${n.x},${n.y}`)).join(' ');
-  const area = path+` L${norm[47].x},${H} L${norm[0].x},${H} Z`;
+  const norm=pts.map((v,i)=>({x:p+i*(W-p*2)/47,y:p+(mx-v)/(mx-mn+1e-9)*(H-p*2)}));
+  const path=norm.map((n,i)=>(i===0?`M${n.x},${n.y}`:`L${n.x},${n.y}`)).join(' ');
+  const area=path+` L${norm[47].x},${H} L${norm[0].x},${H} Z`;
   svg.innerHTML=`<defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%" stop-color="${t.c1}" stop-opacity=".25"/>
+    <stop offset="0%" stop-color="${t.c1}" stop-opacity=".2"/>
     <stop offset="100%" stop-color="${t.c1}" stop-opacity="0"/>
   </linearGradient></defs>
   <path d="${area}" fill="url(#cg)"/>
   <path d="${path}" stroke="${t.c1}" stroke-width="1.5" fill="none" stroke-linecap="round"/>`;
 }
 
-function resetTP() {
-  document.getElementById('tamt').value='';
-  ['trec','timp','tfee','tnewp'].forEach(id=>document.getElementById(id).textContent='—');
+function resetTrade() {
+  document.getElementById('trAmt').value='';
+  ['tRec','tImpact','tFee','tNewP'].forEach(id=>set(id,'—'));
   setTab('buy');
 }
 function setTab(tab) {
-  S.tradeTab=tab;
-  document.getElementById('ttbuy').className ='tt'+(tab==='buy' ?' by':'');
-  document.getElementById('ttsell').className='tt'+(tab==='sell'?' sl':'');
-  document.getElementById('tbtn').textContent=tab==='buy'?'Buy':'Sell';
-  document.getElementById('tbtn').className  ='t-btn '+(tab==='buy'?'by':'sl');
+  APP.tradeTab=tab;
+  document.getElementById('ttBuy').className='ttab'+(tab==='buy'?' buy-on':'');
+  document.getElementById('ttSell').className='ttab'+(tab==='sell'?' sell-on':'');
+  document.getElementById('trBtn').textContent=tab==='buy'?'Buy':'Sell';
+  document.getElementById('trBtn').className='tbtn '+(tab==='buy'?'buy':'sell');
   calcTrade();
 }
-function setAmt(v){document.getElementById('tamt').value=v;calcTrade();}
+function setAmt(v){document.getElementById('trAmt').value=v;calcTrade();}
 function calcTrade(){
-  const amt=parseFloat(document.getElementById('tamt').value)||0;
-  const t=S.currentToken;
-  if(!amt||!t){['trec','timp','tfee','tnewp'].forEach(id=>document.getElementById(id).textContent='—');return;}
-  const fee=+(amt*(FEE_BPS/10000)).toFixed(4);
+  const amt=parseFloat(document.getElementById('trAmt').value)||0;
+  const t=APP.currentToken;
+  if(!amt||!t){['tRec','tImpact','tFee','tNewP'].forEach(id=>set(id,'—'));return;}
+  const fee=+(amt*(TRADE_FEE_BPS/10000)).toFixed(4);
   const net=amt-fee;
-  const tokens=net/t.price;
   const mcapN=parseSuffix(t.mcap);
-  const impact=Math.min(99,(amt/Math.max(mcapN,1))*100).toFixed(2);
-  const newPrice=(t.price*(1+amt/Math.max(mcapN,1)*.4)).toFixed(6);
-  document.getElementById('trec').textContent=S.tradeTab==='buy'
-    ?tokens.toLocaleString(undefined,{maximumFractionDigits:0})+' $'+t.sym
-    :net.toFixed(3)+' BEAM';
-  document.getElementById('timp').textContent=impact+'%';
-  document.getElementById('tfee').textContent=fee+' BEAM';
-  document.getElementById('tnewp').textContent=newPrice+' BEAM';
+  set('tRec',APP.tradeTab==='buy'?(net/t.price).toLocaleString(undefined,{maximumFractionDigits:0})+' $'+t.sym:net.toFixed(3)+' BEAM');
+  set('tImpact',Math.min(99,(amt/Math.max(mcapN,1))*100).toFixed(2)+'%');
+  set('tFee',fee+' BEAM');
+  set('tNewP',(t.price*(1+amt/Math.max(mcapN,1)*.4)).toFixed(6)+' BEAM');
 }
 async function execTrade(){
-  const amt=parseFloat(document.getElementById('tamt').value);
-  if(!amt||amt<=0){toast('Enter a valid amount','er');return;}
-  const btn=document.getElementById('tbtn');
-  const orig=btn.textContent;
-  btn.textContent='Processing...';btn.disabled=true;
+  const amt=parseFloat(document.getElementById('trAmt').value);
+  if(!amt||amt<=0){toast('Enter a valid amount','err');return;}
+  const btn=document.getElementById('trBtn');
+  const orig=btn.textContent;btn.textContent='...';btn.disabled=true;
   await sleep(1300);
-  const t=S.currentToken;
-  const fee=+(amt*(FEE_BPS/10000)).toFixed(4);
-  if(S.tradeTab==='buy'){
-    t.holders+=1;t.txs+=1;
-    t.raised=(t.raised||0)+(amt-fee);
+  const t=APP.currentToken;
+  if(APP.tradeTab==='buy'){
+    t.holders+=1;t.txs+=1;t.raised=(t.raised||0)+amt;
     t.progress=Math.min(98,Math.floor((t.raised/69000)*100));
     t.mcap=fmtN(t.raised*1.1);t.vol=fmtN(parseSuffix(t.vol)+amt);
-    if(!S.portfolio[t.id])S.portfolio[t.id]={token:t,beamSpent:0};
-    S.portfolio[t.id].beamSpent+=amt;
-    console.log(`Fee: ${fee} BEAM → ${FEE_WALLET}`);
+    if(!APP.portfolio[t.id])APP.portfolio[t.id]={token:t,spent:0};
+    APP.portfolio[t.id].spent+=amt;
   }
   renderTV(t);
-  toast((S.tradeTab==='buy'?'Bought':'Sold')+' '+amt+' BEAM of $'+t.sym,'ok');
+  toast((APP.tradeTab==='buy'?'Bought':'Sold')+' '+amt+' BEAM of $'+t.sym,'ok');
   btn.disabled=false;btn.textContent=orig;
 }
 
-// ════════════════════════════════════════════════
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // EXPLORE
-// ════════════════════════════════════════════════
-function renderExplore(){
-  const list=S.exFilter==='all'?TOKENS:TOKENS.filter(t=>t.cat===S.exFilter);
-  document.getElementById('exlist').innerHTML=list.map(t=>`
-    <div class="tr" onclick="openToken(${t.id})">
-      <div class="tr-id">
-        ${mkLogo(t,32)}
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderExplore() {
+  const list = APP.exFilter==='all' ? TOKENS : TOKENS.filter(t=>t.cat===APP.exFilter);
+  document.getElementById('tlist').innerHTML = list.map(t => `
+    <div class="trow" onclick="openToken(${t.id})">
+      <div class="tid">
+        <div class="tlogo" style="background:${t.c1}0e;border:1px solid ${t.c1}20;">${mkLogo(t,22)}</div>
         <div>
-          <div class="tr-name">${t.name}<span class="badge b-${t.badge}">${t.badge}</span></div>
-          <div class="tr-sym">$${t.sym} · ${t.cat}</div>
+          <div class="tname">${t.name}<span class="badge ${t.badge}">${t.badge}</span></div>
+          <div class="tsym">$${t.sym} · ${t.cat}</div>
         </div>
       </div>
-      <div class="tr-v">${t.price.toFixed(6)}</div>
-      <div class="tr-v">${t.mcap}</div>
-      <div class="tr-v">${t.vol}</div>
-      <div><div class="pb"><div class="pf" style="width:${t.progress}%"></div></div><div class="pp">${t.progress}% to grad</div></div>
-      <button class="btn-tr" onclick="event.stopPropagation();openToken(${t.id})">Trade</button>
+      <div class="tv">${t.price.toFixed(6)}</div>
+      <div class="tv">${t.mcap}</div>
+      <div class="tv">${t.vol}</div>
+      <div class="prog-col">
+        <div class="pbg"><div class="pfill" style="width:${t.progress}%"></div></div>
+        <div class="ppct">${t.progress}% to grad</div>
+      </div>
+      <button class="btn-trade-row" onclick="event.stopPropagation();openToken(${t.id})">Trade</button>
+    </div>`).join('');
+
+  document.getElementById('recentFeed').innerHTML = [...TOKENS].slice(0,5).map(t => `
+    <div class="feed-row" onclick="openToken(${t.id})">
+      <div class="flogo" style="background:${t.c1}0e;border:1px solid ${t.c1}20;">${mkLogo(t,16)}</div>
+      <div>
+        <div class="fname">${t.name}</div>
+        <div class="ftime">$${t.sym} · ${t.holders} holders</div>
+      </div>
+      <span class="fprice">${t.price.toFixed(6)}</span>
     </div>`).join('');
 }
-function filterEx(f,btn){
-  S.exFilter=f;
+
+function exFilter(f,btn){
+  APP.exFilter=f;
   document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
   btn.classList.add('on');
   renderExplore();
 }
-function openToken(id){
-  const t=TOKENS.find(x=>x.id===id);
-  if(!t)return;
-  renderTV(t);
-  goPage('token');
-}
+function openToken(id){ const t=TOKENS.find(x=>x.id===id); if(!t) return; renderTV(t); showPage('token'); }
 
-// ════════════════════════════════════════════════
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // PORTFOLIO
-// ════════════════════════════════════════════════
-function renderPortfolio(){
-  const el=document.getElementById('portbody');
-  const keys=Object.keys(S.portfolio);
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderPortfolio() {
+  const el=document.getElementById('portBody');
+  const keys=Object.keys(APP.portfolio);
   if(!keys.length){
     el.innerHTML=`<div class="empty">
-      <div class="e-ico"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#2c3a52" stroke-width="1.2" fill="none"/><path d="M6 9h6M9 6v6" stroke="#2c3a52" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-      <h3>No holdings yet</h3>
-      <p>Buy tokens on the Explore page to build your portfolio.</p>
-      <button class="btn-primary" style="max-width:180px;" onclick="goPage('explore')">Explore Tokens</button>
+      <div class="empty-ico"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#2a2a38" stroke-width="1.2" fill="none"/><path d="M6 9h6M9 6v6" stroke="#2a2a38" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="empty-h">No holdings yet</div>
+      <p class="empty-p">Buy tokens on the Explore page to build your portfolio.</p>
+      <button class="btn-primary" style="width:auto;padding:0 24px;height:40px;" onclick="showPage('explore')">Explore Tokens</button>
     </div>`;return;
   }
   let total=0;
   const rows=keys.map(k=>{
-    const h=S.portfolio[k],t=h.token;total+=h.beamSpent;
-    return `<div class="tr" onclick="openToken(${t.id})" style="border:1px solid var(--ln2);border-radius:7px;margin-bottom:5px;background:var(--c1);">
-      <div class="tr-id">${mkLogo(t,32)}<div><div class="tr-name">${t.name}</div><div class="tr-sym">$${t.sym}</div></div></div>
-      <div class="tr-v">${t.price.toFixed(6)}</div>
-      <div class="tr-v">${h.beamSpent.toFixed(2)}</div>
-      <div class="tr-v">${t.mcap}</div>
-      <div><div class="pb"><div class="pf" style="width:${t.progress}%"></div></div><div class="pp">${t.progress}%</div></div>
-      <button class="btn-tr" onclick="event.stopPropagation();openToken(${t.id})">View</button>
+    const h=APP.portfolio[k],t=h.token;total+=h.spent;
+    return `<div class="trow" onclick="openToken(${t.id})" style="border:1px solid var(--border);border-radius:var(--r);margin-bottom:3px;background:var(--surface);">
+      <div class="tid"><div class="tlogo" style="background:${t.c1}0e;border:1px solid ${t.c1}20;">${mkLogo(t,22)}</div>
+        <div><div class="tname">${t.name}</div><div class="tsym">$${t.sym}</div></div></div>
+      <div class="tv">${t.price.toFixed(6)}</div>
+      <div class="tv">${h.spent.toFixed(2)}</div>
+      <div class="tv">${t.mcap}</div>
+      <div class="prog-col"><div class="pbg"><div class="pfill" style="width:${t.progress}%"></div></div><div class="ppct">${t.progress}%</div></div>
+      <button class="btn-trade-row" onclick="event.stopPropagation();openToken(${t.id})">View</button>
     </div>`;
   }).join('');
-  el.innerHTML=`<div style="margin-bottom:20px;">
-    <div style="font-size:28px;font-weight:700;color:var(--y);font-family:var(--m);">${total.toFixed(2)}</div>
-    <div style="font-family:var(--m);font-size:8px;color:var(--t2);text-transform:uppercase;letter-spacing:1.2px;margin-top:3px;">Total BEAM Invested</div>
+  el.innerHTML=`<div class="port-total">
+    <div class="port-val">${total.toFixed(2)} BEAM</div>
+    <div class="port-lbl">Total invested</div>
   </div>
-  <div class="th"><div>Token</div><div>Price</div><div>Invested</div><div>Mkt Cap</div><div>Progress</div><div></div></div>
+  <div class="list-head"><div class="lh">Token</div><div class="lh">Price</div><div class="lh">Invested</div><div class="lh">Mkt Cap</div><div class="lh">Progress</div><div class="lh"></div></div>
   ${rows}`;
 }
 
-// ════════════════════════════════════════════════
-// UI HELPERS
-// ════════════════════════════════════════════════
-function stateCard(type, title, sub, note, tag){
-  const map={
-    loading:  {cls:'loading',ico:'<div class="st-icon spin-ring" style="animation:spin .9s linear infinite;border:3px solid var(--ln2);border-top-color:var(--y);"></div>'},
-    success:  {cls:'success',ico:'<div class="st-icon ok-ring"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9l4 4 6-6" stroke="#00b87a" stroke-width="1.6" stroke-linecap="round"/></svg></div>'},
-    fallback: {cls:'fallback',ico:'<div class="st-icon warn-ring"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 6v5M9 13v.5" stroke="#f5a623" stroke-width="1.6" stroke-linecap="round"/></svg></div>'},
-    error:    {cls:'error',ico:'<div class="st-icon err-ring"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 5l8 8M13 5l-8 8" stroke="#e83650" stroke-width="1.6" stroke-linecap="round"/></svg></div>'},
-  };
-  const m=map[type]||map.loading;
-  const tagHtml=tag?`<span class="st-tag ${tag}">${tag==='sim'?'SIMULATED':'ON-CHAIN'}</span>`:'';
-  const noteHtml=note?`<div style="font-size:10px;color:var(--t3);margin-top:6px;font-family:var(--m);">${note.slice(0,80)}</div>`:'';
-  return `<div class="state-card ${m.cls}">${m.ico}<div class="st-title">${title}</div><div class="st-sub">${sub}</div>${tagHtml}${noteHtml}</div>`;
-}
-
-// Image upload
-function handleImg(event){
-  const file=event.target.files[0];
-  if(!file)return;
-  if(file.size>2*1024*1024){toast('Image too large — max 2MB','er');return;}
-  const reader=new FileReader();
-  reader.onload=e=>{
-    S.form.imgData=e.target.result;
-    const th=document.getElementById('upthumb');
-    th.src=e.target.result;th.style.display='block';
-    document.getElementById('upicon').style.display='none';
-    document.getElementById('uplabel').textContent=file.name;
-  };
-  reader.onerror=()=>toast('Failed to read image','er');
-  reader.readAsDataURL(file);
-}
-
-function fmtSup(inp){
-  const raw=inp.value.replace(/,/g,'').replace(/[^0-9]/g,'');
-  if(raw)inp.value=parseInt(raw,10).toLocaleString();
-}
-
-// SVG logos
-function mkLogo(t,sz=32){
-  const r=sz/2;
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SVG LOGOS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function mkLogo(t, sz) {
+  const r=sz/2, c=t.c1;
   const shapes=[
-    `<polygon points="${r},${sz*.07} ${sz*.93},${r*.75} ${sz*.93},${r*1.25} ${r},${sz*.93} ${sz*.07},${r*1.25} ${sz*.07},${r*.75}" stroke="${t.c1}" stroke-width="1.3" fill="${t.c1}0f"/><circle cx="${r}" cy="${r}" r="${sz*.12}" fill="${t.c1}"/>`,
-    `<polygon points="${r},${sz*.09} ${sz*.91},${r} ${r},${sz*.91} ${sz*.09},${r}" stroke="${t.c1}" stroke-width="1.3" fill="${t.c1}0f"/><polygon points="${r},${sz*.33} ${sz*.67},${r} ${r},${sz*.67} ${sz*.33},${r}" fill="${t.c1}" opacity=".8"/>`,
-    `<rect x="${sz*.19}" y="${sz*.19}" width="${sz*.62}" height="${sz*.62}" rx="3" stroke="${t.c1}" stroke-width="1.3" fill="${t.c1}0f" transform="rotate(45 ${r} ${r})"/><rect x="${sz*.34}" y="${sz*.34}" width="${sz*.32}" height="${sz*.32}" rx="2" fill="${t.c1}"/>`,
-    `<polygon points="${r},${sz*.1} ${sz*.9},${sz*.88} ${sz*.1},${sz*.88}" stroke="${t.c1}" stroke-width="1.3" fill="${t.c1}0f"/><polygon points="${r},${sz*.37} ${sz*.65},${sz*.71} ${sz*.35},${sz*.71}" fill="${t.c1}" opacity=".8"/>`,
-    `<circle cx="${r}" cy="${r}" r="${sz*.41}" stroke="${t.c1}" stroke-width="1.3" fill="none"/><circle cx="${r}" cy="${r}" r="${sz*.23}" stroke="${t.c1}" stroke-width="1" fill="${t.c1}0f"/><circle cx="${r}" cy="${r}" r="${sz*.1}" fill="${t.c1}"/>`,
+    `<path d="M${r} ${sz*.1}L${sz*.9} ${r}L${r} ${sz*.9}L${sz*.1} ${r}Z" stroke="${c}" stroke-width="1.1" fill="${c}16"/><circle cx="${r}" cy="${r}" r="${sz*.13}" fill="${c}"/>`,
+    `<circle cx="${r}" cy="${r}" r="${sz*.38}" stroke="${c}" stroke-width="1.1" fill="none"/><circle cx="${r}" cy="${r}" r="${sz*.2}" fill="${c}14"/><circle cx="${r}" cy="${r}" r="${sz*.09}" fill="${c}"/>`,
+    `<rect x="${sz*.2}" y="${sz*.2}" width="${sz*.6}" height="${sz*.6}" rx="2" stroke="${c}" stroke-width="1.1" fill="${c}16" transform="rotate(45 ${r} ${r})"/><rect x="${sz*.35}" y="${sz*.35}" width="${sz*.3}" height="${sz*.3}" rx="1.5" fill="${c}"/>`,
+    `<path d="M${r} ${sz*.08}L${sz*.88} ${sz*.86}L${sz*.12} ${sz*.86}Z" stroke="${c}" stroke-width="1.1" fill="${c}16"/><path d="M${r} ${sz*.36}L${sz*.65} ${sz*.7}L${sz*.35} ${sz*.7}Z" fill="${c}"/>`,
+    `<polygon points="${r},${sz*.07} ${sz*.9},${sz*.38} ${sz*.9},${sz*.62} ${r},${sz*.93} ${sz*.1},${sz*.62} ${sz*.1},${sz*.38}" stroke="${c}" stroke-width="1.1" fill="${c}16"/><circle cx="${r}" cy="${r}" r="${sz*.1}" fill="${c}"/>`,
   ];
-  const br=Math.round(sz*.22);
-  return `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" fill="none" style="border-radius:${br}px;background:${t.c1}0a;border:1px solid ${t.c1}1c;flex-shrink:0;">${shapes[(t.id||0)%shapes.length]}</svg>`;
+  const br=Math.round(sz*.2);
+  return `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" fill="none" style="border-radius:${br}px;flex-shrink:0;">${shapes[(t.id||0)%shapes.length]}</svg>`;
 }
 
-// Misc helpers
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// UTILS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function mkAddr(){return '0x'+Array.from({length:40},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');}
 function mkTx(){return '0x'+Array.from({length:64},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');}
-function rndColor(){return['#ccf000','#00c4e0','#7c5cf8','#00b87a','#e83650','#f5a623'][Math.floor(Math.random()*6)];}
-function parseSuffix(s){if(typeof s==='number')return s;const n=parseFloat(String(s).replace(/,/g,''));return s.includes('M')?n*1e6:s.includes('K')?n*1e3:n||0;}
+function rndColor(){return['#b4ff00','#4d8eff','#a78bfa','#00d484','#ff3a5c','#f5a623'][Math.floor(Math.random()*6)];}
+function parseSuffix(s){if(typeof s==='number')return s;const n=parseFloat(String(s).replace(/,/g,''));return String(s).includes('M')?n*1e6:String(s).includes('K')?n*1e3:n||0;}
 function fmtN(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n.toFixed(0);}
+function fmtSup(i){const r=i.value.replace(/,/g,'').replace(/[^0-9]/g,'');if(r)i.value=parseInt(r,10).toLocaleString();}
 function cp(txt,msg){if(!txt)return;navigator.clipboard.writeText(txt).then(()=>toast(msg||'Copied','ok'));}
-function shareX(){const d=S.deployed;if(!d)return;const t=`Just launched $${d.sym} on BeamLaunch — the first token launchpad on Beam Network 🚀\n\nFair launch · Bonding curve · No presales\n\nbeamlaunch.up.railway.app`;window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(t),'_blank');}
+function shareX(){const d=APP.deployed;if(!d)return;window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(`Just launched $${d.sym} on BeamLaunch 🚀\n\nFair launch · Bonding curve · No presales\n\nbeamlaunch.up.railway.app`),'_blank');}
+function handleImg(e){
+  const f=e.target.files[0];if(!f)return;
+  if(f.size>2*1024*1024){toast('Max 2MB','err');return;}
+  const r=new FileReader();
+  r.onload=ev=>{
+    APP.form.imgData=ev.target.result;
+    const img=document.getElementById('upPrev');
+    img.src=ev.target.result;img.style.display='block';
+    document.getElementById('upIcon').style.display='none';
+    document.getElementById('upText').textContent=f.name;
+  };
+  r.onerror=()=>toast('Failed to read file','err');
+  r.readAsDataURL(f);
+}
 
 let _tt;
 function toast(msg,type='ok'){
   const el=document.getElementById('toast');
-  el.textContent=(type==='ok'?'✓  ':type==='wa'?'⚠  ':'')+msg;
-  el.className='on '+type;
-  clearTimeout(_tt);
-  _tt=setTimeout(()=>el.classList.remove('on'),4000);
+  el.textContent=msg;el.className='show '+type;
+  clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),4000);
 }
 </script>
-
 </body>
 </html>
