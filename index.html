@@ -8,437 +8,533 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ━━━ RESET ━━━ */
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#07070f;
-  --s1:#0d0d18;
-  --s2:#12121f;
-  --s3:#181828;
-  --b1:#1f1f32;
-  --b2:#272740;
-  --lime:#b0ff00;
-  --lime2:#8ccc00;
-  --green:#00cc78;
-  --red:#ff3355;
-  --blue:#5b8fff;
-  --amber:#ffaa00;
-  --ink:#e8e8f8;
-  --ink2:#7878a8;
-  --ink3:#404060;
-  --ink4:#20203a;
-  --F:'Inter',sans-serif;
-  --M:'JetBrains Mono',monospace;
-  --nav:52px;
-}
-html,body{background:var(--bg);color:var(--ink);font-family:var(--F);font-size:14px;line-height:1.5;}
-body{overflow-x:hidden;-webkit-font-smoothing:antialiased;}
-button,input,select,textarea{font-family:var(--F);}
+  /* Backgrounds — pure dark, no color cast */
+  --bg:    #0a0a0f;
+  --bg1:   #111118;
+  --bg2:   #18181f;
+  --bg3:   #1f1f28;
 
-/* ━━━ NAV ━━━ */
+/* Borders */
+–bd:    #1e1e28;
+–bd2:   #28283a;
+
+/* Accent — electric lime, the one pop of color */
+–lime:  #aaff00;
+–lime2: #88cc00;
+–limedim: rgba(170,255,0,.08);
+
+/* Semantic */
+–green: #00d97e;
+–red:   #ff304f;
+–blue:  #4d8eff;
+–amber: #ffb300;
+
+/* Text */
+–t1:    #f4f4ff;
+–t2:    #888899;
+–t3:    #3a3a50;
+
+–F:‘Inter’,sans-serif;
+–M:‘JetBrains Mono’,monospace;
+–nav:54px;
+}
+
+html,body{background:var(–bg);color:var(–t1);font-family:var(–F);font-size:14px;line-height:1.5;height:100%;}
+body{overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+button,input,select,textarea{font-family:var(–F);color:var(–t1);}
+
+/* ─── NAV ─── */
 #nav{
-position:fixed;inset:0 0 auto;z-index:800;height:var(–nav);
+position:fixed;inset:0 0 auto;z-index:900;height:var(–nav);
 display:flex;align-items:center;justify-content:space-between;
-padding:0 0 0 20px;
-background:rgba(7,7,15,.97);backdrop-filter:blur(20px);
-border-bottom:1px solid var(–b1);
+padding:0 24px;
+background:rgba(10,10,15,.95);
+backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+border-bottom:1px solid var(–bd);
 }
-.logo{display:flex;align-items:center;gap:9px;cursor:pointer;padding:0 20px 0 0;border-right:1px solid var(–b1);}
-.logo-icon{width:26px;height:26px;border-radius:6px;background:var(–lime);display:grid;place-items:center;flex-shrink:0;}
-.logo-text{font-size:15px;font-weight:700;color:var(–ink);letter-spacing:-.2px;}
-.logo-text em{font-style:normal;color:var(–lime);}
-.nav-c{display:flex;}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.logo-mark{
+width:28px;height:28px;border-radius:7px;background:var(–lime);
+display:grid;place-items:center;flex-shrink:0;
+}
+.logo-name{font-size:15px;font-weight:700;color:var(–t1);letter-spacing:-.2px;}
+.logo-name em{font-style:normal;color:var(–lime);}
+.nav-mid{display:flex;gap:2px;margin-left:24px;}
 .ntab{
-height:var(–nav);padding:0 18px;
-display:flex;align-items:center;
-font-size:13px;font-weight:500;color:var(–ink3);
-border:none;background:none;cursor:pointer;
-border-right:1px solid var(–b1);position:relative;
-transition:color .15s;
+height:36px;padding:0 16px;border-radius:7px;
+font-size:13px;font-weight:500;color:var(–t2);
+border:none;background:none;cursor:pointer;transition:all .15s;
 }
-.ntab:hover{color:var(–ink);}
-.ntab.on{color:var(–ink);}
-.ntab.on::after{content:’’;position:absolute;bottom:0;left:0;right:0;height:2px;background:var(–lime);}
-.nav-r{display:flex;align-items:center;height:100%;}
-.nav-bal{display:none;align-items:center;gap:6px;font-family:var(–M);font-size:10px;color:var(–ink2);padding:0 16px;border-right:1px solid var(–b1);height:100%;}
-.bal-dot{width:5px;height:5px;border-radius:50%;background:var(–green);}
+.ntab:hover{color:var(–t1);background:var(–bg2);}
+.ntab.on{color:var(–t1);background:var(–bg2);}
+.nav-r{display:flex;align-items:center;gap:10px;}
+.nav-bal{
+display:none;align-items:center;gap:7px;
+font-family:var(–M);font-size:10px;color:var(–t2);
+}
+.bal-dot{width:6px;height:6px;border-radius:50%;background:var(–green);}
 #wbtn{
-height:100%;padding:0 22px;border:none;cursor:pointer;
-font-family:var(–M);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
-background:var(–lime);color:#000;transition:background .15s;
+height:36px;padding:0 18px;border-radius:7px;border:none;cursor:pointer;
+background:var(–lime);color:#000;
+font-family:var(–M);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+transition:background .15s;
 }
 #wbtn:hover{background:var(–lime2);}
-#wbtn.on{background:transparent;color:var(–lime);border-left:1px solid var(–b1);font-size:11px;letter-spacing:.2px;text-transform:none;}
+#wbtn.on{
+background:var(–bg2);color:var(–lime);
+border:1px solid var(–bd2);text-transform:none;letter-spacing:0;font-size:11px;
+}
 
-/* ━━━ WALLET MODAL ━━━ */
-.overlay{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.75);backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:16px;}
+/* ─── WALLET MODAL ─── */
+.overlay{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;}
 .overlay.open{display:flex;}
-.wmodal{background:var(–s1);border:1px solid var(–b2);border-radius:14px;width:100%;max-width:370px;overflow:hidden;animation:up .18s ease;}
-@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.wm-hd{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 0;}
+.wm{background:var(–bg1);border:1px solid var(–bd2);border-radius:16px;width:100%;max-width:360px;overflow:hidden;animation:pop .18s ease;}
+@keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.wm-top{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 4px;}
 .wm-title{font-size:17px;font-weight:700;}
-.wm-close{width:28px;height:28px;border-radius:6px;border:1px solid var(–b2);background:none;color:var(–ink3);cursor:pointer;font-size:16px;display:grid;place-items:center;transition:all .1s;}
-.wm-close:hover{border-color:var(–ink2);color:var(–ink);}
-.wm-sub{font-size:12px;color:var(–ink2);padding:8px 20px 14px;line-height:1.6;}
-.wopt{display:flex;align-items:center;gap:12px;padding:13px 20px;border-top:1px solid var(–b1);cursor:pointer;transition:background .1s;}
-.wopt:hover{background:var(–s2);}
-.wopt-icon{width:38px;height:38px;border-radius:9px;flex-shrink:0;display:grid;place-items:center;font-size:20px;}
-.wopt-name{font-size:14px;font-weight:600;margin-bottom:1px;}
-.wopt-desc{font-size:11px;color:var(–ink3);}
-.wopt-arr{margin-left:auto;color:var(–ink4);font-size:18px;transition:transform .12s;}
-.wopt:hover .wopt-arr{transform:translateX(3px);color:var(–ink3);}
-.wm-note{font-family:var(–M);font-size:9px;color:var(–ink4);text-align:center;padding:12px 20px;line-height:1.7;}
+.wm-x{width:30px;height:30px;border-radius:8px;border:1px solid var(–bd2);background:none;color:var(–t2);cursor:pointer;font-size:18px;display:grid;place-items:center;transition:all .12s;}
+.wm-x:hover{border-color:var(–t2);color:var(–t1);}
+.wm-sub{font-size:12px;color:var(–t2);padding:8px 20px 14px;line-height:1.6;}
+.wopt{display:flex;align-items:center;gap:13px;padding:14px 20px;border-top:1px solid var(–bd);cursor:pointer;transition:background .1s;}
+.wopt:hover{background:var(–bg2);}
+.wopt-ico{width:40px;height:40px;border-radius:11px;flex-shrink:0;display:grid;place-items:center;font-size:22px;}
+.wopt-name{font-size:14px;font-weight:600;}
+.wopt-desc{font-size:11px;color:var(–t3);margin-top:1px;}
+.wopt-arr{margin-left:auto;color:var(–t3);font-size:18px;transition:all .12s;}
+.wopt:hover .wopt-arr{transform:translateX(3px);color:var(–t2);}
+.wm-note{font-family:var(–M);font-size:9px;color:var(–t3);text-align:center;padding:12px 20px;line-height:1.7;}
 
-/* ━━━ PAGES ━━━ */
+/* ─── PAGES ─── */
 .page{display:none;padding-top:var(–nav);}
 .page.on{display:block;}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━
+/* ════════════════════════
 EXPLORE
-━━━━━━━━━━━━━━━━━━━━━━ */
-.ex-hero{padding:44px 28px 36px;text-align:center;border-bottom:1px solid var(–b1);}
-.ex-hero-badge{
-display:inline-flex;align-items:center;gap:6px;
-font-family:var(–M);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
-color:var(–lime);background:rgba(176,255,0,.06);border:1px solid rgba(176,255,0,.2);
-padding:5px 13px;border-radius:20px;margin-bottom:18px;
+════════════════════════ */
+.hero{
+padding:56px 32px 48px;
+text-align:center;
+border-bottom:1px solid var(–bd);
 }
-.ex-hero-badge::before{content:’’;width:4px;height:4px;border-radius:50%;background:var(–lime);}
-.ex-hero h1{font-size:36px;font-weight:700;letter-spacing:-.6px;color:var(–ink);margin-bottom:10px;line-height:1.15;}
-.ex-hero h1 span{color:var(–lime);}
-.ex-hero p{font-size:14px;color:var(–ink2);max-width:460px;margin:0 auto 26px;line-height:1.7;}
-.ex-hero-btns{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:36px;}
-.btn-lime{height:44px;padding:0 26px;background:var(–lime);color:#000;border:none;border-radius:7px;font-weight:600;font-size:14px;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:7px;}
-.btn-lime:hover{background:var(–lime2);}
-.btn-outline{height:44px;padding:0 22px;background:transparent;color:var(–ink2);border:1px solid var(–b2);border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;}
-.btn-outline:hover{border-color:var(–ink2);color:var(–ink);}
-.ex-stats{display:inline-flex;border:1px solid var(–b1);border-radius:10px;overflow:hidden;background:var(–s1);}
-.ex-stat{padding:13px 28px;border-right:1px solid var(–b1);text-align:center;}
-.ex-stat:last-child{border-right:none;}
-.es-v{font-family:var(–M);font-size:17px;font-weight:700;color:var(–lime);display:block;}
-.es-l{font-family:var(–M);font-size:8px;color:var(–ink3);letter-spacing:1.2px;text-transform:uppercase;margin-top:2px;}
+.hero-tag{
+display:inline-flex;align-items:center;gap:7px;
+font-family:var(–M);font-size:9px;letter-spacing:2px;text-transform:uppercase;
+color:var(–lime);
+background:var(–limedim);
+border:1px solid rgba(170,255,0,.18);
+padding:6px 14px;border-radius:20px;margin-bottom:22px;
+}
+.hero-tag::before{content:’’;width:5px;height:5px;border-radius:50%;background:var(–lime);}
+.hero h1{
+font-size:40px;font-weight:700;letter-spacing:-.8px;
+color:var(–t1);line-height:1.12;margin-bottom:14px;
+}
+.hero h1 span{color:var(–lime);}
+.hero-sub{
+font-size:16px;font-weight:600;color:var(–t1);
+letter-spacing:.2px;margin-bottom:32px;
+font-family:var(–M);
+}
+.hero-btns{display:flex;gap:10px;justify-content:center;align-items:center;margin-bottom:44px;flex-wrap:wrap;}
+.hero-btn-main{
+height:46px;padding:0 28px;border-radius:9px;border:none;cursor:pointer;
+background:var(–lime);color:#000;font-size:14px;font-weight:700;
+display:flex;align-items:center;gap:8px;transition:background .15s;
+}
+.hero-btn-main:hover{background:var(–lime2);}
+.hero-btn-ghost{
+height:46px;padding:0 24px;border-radius:9px;cursor:pointer;
+background:transparent;color:var(–t2);
+border:1px solid var(–bd2);font-size:13px;font-weight:500;
+transition:all .15s;
+}
+.hero-btn-ghost:hover{border-color:var(–t2);color:var(–t1);}
+
+/* Stats strip */
+.hero-stats{
+display:inline-flex;
+background:var(–bg1);
+border:1px solid var(–bd2);
+border-radius:12px;overflow:hidden;
+}
+.hstat{padding:14px 32px;text-align:center;border-right:1px solid var(–bd);}
+.hstat:last-child{border-right:none;}
+.hstat-v{font-family:var(–M);font-size:18px;font-weight:700;color:var(–lime);display:block;letter-spacing:-.3px;}
+.hstat-l{font-family:var(–M);font-size:8px;color:var(–t3);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;}
 
 /* Filter bar */
-.ex-bar{
+.filterbar{
 display:flex;align-items:center;justify-content:space-between;
-padding:12px 28px;border-bottom:1px solid var(–b1);
+padding:13px 28px;border-bottom:1px solid var(–bd);
 position:sticky;top:var(–nav);z-index:10;
-background:rgba(7,7,15,.98);backdrop-filter:blur(16px);
-flex-wrap:wrap;gap:10px;
+background:rgba(10,10,15,.97);backdrop-filter:blur(20px);
+gap:12px;flex-wrap:wrap;
 }
-.filter-pills{display:flex;gap:5px;flex-wrap:wrap;}
-.fpill{height:32px;padding:0 14px;border-radius:6px;border:1px solid var(–b2);background:transparent;color:var(–ink3);font-family:var(–M);font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;transition:all .12s;}
-.fpill:hover{border-color:var(–ink2);color:var(–ink);}
-.fpill.on{background:var(–lime);color:#000;border-color:var(–lime);}
-.ex-bar-launch{height:32px;padding:0 16px;background:var(–lime);color:#000;border:none;border-radius:6px;font-family:var(–M);font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;transition:background .12s;flex-shrink:0;}
-.ex-bar-launch:hover{background:var(–lime2);}
+.fpills{display:flex;gap:5px;flex-wrap:wrap;}
+.fp{
+height:32px;padding:0 14px;border-radius:7px;
+font-family:var(–M);font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+border:1px solid var(–bd2);background:transparent;color:var(–t2);cursor:pointer;transition:all .12s;
+}
+.fp:hover{border-color:var(–t2);color:var(–t1);}
+.fp.on{background:var(–lime);color:#000;border-color:var(–lime);}
+.fbar-btn{
+height:32px;padding:0 16px;border-radius:7px;border:none;cursor:pointer;
+background:var(–lime);color:#000;font-family:var(–M);font-size:9px;font-weight:700;
+letter-spacing:.8px;text-transform:uppercase;transition:background .12s;flex-shrink:0;
+}
+.fbar-btn:hover{background:var(–lime2);}
 
-/* Token card grid */
-.card-grid{
+/* ─── CARD GRID ─── */
+.grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
-gap:16px;
-padding:20px 28px 40px;
+gap:18px;
+padding:24px 28px 48px;
 }
-.tcard{
-border:1px solid var(–b1);border-radius:10px;
+
+.card{
+background:var(–bg1);
+border:1px solid var(–bd);
+border-radius:12px;
 overflow:hidden;
-cursor:pointer;transition:background .12s,border-color .12s,transform .12s;
-background:var(–s1);
+cursor:pointer;
+transition:border-color .15s,transform .15s,box-shadow .15s;
 }
-.tcard:hover{background:var(–s2);border-color:var(–b2);transform:translateY(-2px);}
-.tcard-art{width:100%;aspect-ratio:1;position:relative;overflow:hidden;background:var(–s2);}
-.tcard-art img{width:100%;height:100%;object-fit:cover;}
-.tcard-art svg{position:absolute;inset:0;width:100%;height:100%;}
-.tcard-bdg{
-position:absolute;top:9px;left:9px;
-font-family:var(–M);font-size:8px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
-padding:3px 7px;border-radius:4px;
+.card:hover{
+border-color:var(–bd2);
+transform:translateY(-3px);
+box-shadow:0 12px 32px rgba(0,0,0,.4);
 }
-.bg-hot{background:rgba(255,51,85,.15);color:var(–red);border:1px solid rgba(255,51,85,.3);}
-.bg-new{background:rgba(176,255,0,.13);color:var(–lime);border:1px solid rgba(176,255,0,.28);}
-.bg-live{background:rgba(0,204,120,.12);color:var(–green);border:1px solid rgba(0,204,120,.26);}
-.tcard-body{padding:13px 14px 15px;}
-.tcard-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px;}
-.tcard-name{font-size:14px;font-weight:700;color:var(–ink);letter-spacing:-.1px;}
-.tcard-sym{font-family:var(–M);font-size:9px;color:var(–lime);margin-top:2px;}
-.tcard-p{text-align:right;}
-.tcard-pval{font-family:var(–M);font-size:11px;color:var(–ink);font-weight:500;}
-.tcard-pcur{font-family:var(–M);font-size:8px;color:var(–ink3);margin-top:1px;}
-.tcard-desc{font-size:12px;color:var(–ink3);line-height:1.5;margin-bottom:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.tcard-prog-row{display:flex;justify-content:space-between;margin-bottom:4px;}
-.tcard-prog-lbl{font-family:var(–M);font-size:8px;color:var(–ink3);text-transform:uppercase;letter-spacing:.5px;}
-.tcard-prog-pct{font-family:var(–M);font-size:9px;color:var(–lime);font-weight:700;}
-.prog{height:3px;background:var(–b2);border-radius:2px;overflow:hidden;margin-bottom:9px;}
-.prog-f{height:100%;border-radius:2px;background:linear-gradient(90deg,var(–lime),var(–green));}
-.tcard-foot{display:flex;justify-content:space-between;align-items:center;}
-.tcard-mcap{font-family:var(–M);font-size:10px;color:var(–ink2);}
-.tcard-mcap b{color:var(–ink);font-weight:600;}
-.tcard-vol{font-family:var(–M);font-size:9px;color:var(–ink3);}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━
+/* Card image */
+.card-img{
+width:100%;aspect-ratio:1;
+position:relative;overflow:hidden;
+background:var(–bg2);
+}
+.card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.card-img svg{position:absolute;inset:0;width:100%;height:100%;}
+
+/* Badge */
+.cbadge{
+position:absolute;top:10px;left:10px;
+font-family:var(–M);font-size:8px;font-weight:700;
+letter-spacing:.5px;text-transform:uppercase;
+padding:3px 8px;border-radius:5px;
+}
+.hot{background:rgba(255,48,79,.14);color:var(–red);border:1px solid rgba(255,48,79,.28);}
+.new{background:rgba(170,255,0,.12);color:var(–lime);border:1px solid rgba(170,255,0,.26);}
+.live{background:rgba(0,217,126,.12);color:var(–green);border:1px solid rgba(0,217,126,.26);}
+
+/* Card body */
+.card-body{padding:14px 16px 16px;}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px;}
+.card-name{font-size:14px;font-weight:700;color:var(–t1);letter-spacing:-.1px;}
+.card-sym{font-family:var(–M);font-size:9px;color:var(–lime);margin-top:2px;letter-spacing:.3px;}
+.card-price-wrap{text-align:right;flex-shrink:0;}
+.card-price{font-family:var(–M);font-size:11px;font-weight:500;color:var(–t1);}
+.card-cur{font-family:var(–M);font-size:8px;color:var(–t3);margin-top:1px;}
+.card-desc{
+font-size:12px;color:var(–t2);line-height:1.55;margin-bottom:12px;
+display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+
+/* Progress */
+.card-prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.card-prog-lbl{font-family:var(–M);font-size:8px;color:var(–t3);text-transform:uppercase;letter-spacing:.5px;}
+.card-prog-pct{font-family:var(–M);font-size:9px;color:var(–lime);font-weight:700;}
+.ptrack{height:3px;background:var(–bg3);border-radius:2px;overflow:hidden;margin-bottom:11px;}
+.pbar{height:100%;border-radius:2px;background:linear-gradient(90deg,var(–lime),var(–green));}
+
+/* Card footer */
+.card-foot{display:flex;justify-content:space-between;align-items:center;}
+.card-mcap{font-family:var(–M);font-size:10px;color:var(–t2);}
+.card-mcap b{color:var(–t1);font-weight:600;}
+.card-vol{font-family:var(–M);font-size:9px;color:var(–t3);}
+
+/* ════════════════════════
 TOKEN PAGE
-━━━━━━━━━━━━━━━━━━━━━━ */
-.token-page{max-width:900px;margin:0 auto;padding:28px 20px 80px;}
-
-.tok-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;flex-wrap:wrap;}
-.tok-art{width:56px;height:56px;border-radius:12px;flex-shrink:0;overflow:hidden;border:1px solid var(–b2);display:grid;place-items:center;}
-.tok-art svg{width:100%;height:100%;}
-.tok-art img{width:100%;height:100%;object-fit:cover;}
-.tok-title{flex:1;}
-.tok-name{font-size:22px;font-weight:700;color:var(–ink);letter-spacing:-.3px;}
-.tok-sym{font-family:var(–M);font-size:11px;color:var(–ink3);margin-top:2px;}
-.tok-bdg{font-family:var(–M);font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 10px;border-radius:5px;margin-left:auto;flex-shrink:0;}
-.back-btn{font-family:var(–M);font-size:10px;color:var(–ink3);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:0;margin-bottom:18px;letter-spacing:.3px;transition:color .12s;}
-.back-btn:hover{color:var(–ink);}
+════════════════════════ */
+.tok-page{max-width:860px;margin:0 auto;padding:28px 24px 80px;}
+.back{
+display:inline-flex;align-items:center;gap:6px;
+font-family:var(–M);font-size:10px;color:var(–t2);
+background:none;border:none;cursor:pointer;padding:0;
+margin-bottom:20px;transition:color .12s;letter-spacing:.2px;
+}
+.back:hover{color:var(–t1);}
+.tok-hd{display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
+.tok-logo{
+width:54px;height:54px;border-radius:13px;flex-shrink:0;
+overflow:hidden;border:1px solid var(–bd2);
+display:grid;place-items:center;background:var(–bg2);
+}
+.tok-logo img,.tok-logo svg{width:100%;height:100%;object-fit:cover;}
+.tok-info{flex:1;}
+.tok-name{font-size:22px;font-weight:700;color:var(–t1);letter-spacing:-.3px;}
+.tok-sym{font-family:var(–M);font-size:11px;color:var(–t2);margin-top:2px;}
+.tok-badge{font-family:var(–M);font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 11px;border-radius:6px;}
 
 /* Chart */
-.chart-box{background:var(–s1);border:1px solid var(–b2);border-radius:10px;padding:16px;margin-bottom:12px;}
-.chart-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
-.chart-price{font-family:var(–M);font-size:24px;font-weight:700;color:var(–lime);}
-.chart-sub{font-family:var(–M);font-size:9px;color:var(–ink3);margin-top:2px;letter-spacing:.5px;}
+.chart-c{background:var(–bg1);border:1px solid var(–bd2);border-radius:12px;padding:18px;margin-bottom:14px;}
+.chart-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:13px;}
+.chart-price{font-family:var(–M);font-size:26px;font-weight:700;color:var(–lime);}
+.chart-lbl{font-family:var(–M);font-size:9px;color:var(–t3);margin-top:2px;letter-spacing:.5px;}
 .chart-chg{font-family:var(–M);font-size:12px;font-weight:700;color:var(–green);}
 .chart-svg{width:100%;height:120px;display:block;}
 
-/* Stats row */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
-.stat-box{background:var(–s1);border:1px solid var(–b2);border-radius:8px;padding:13px 14px;}
-.stat-val{font-family:var(–M);font-size:14px;font-weight:500;color:var(–ink);display:block;}
-.stat-lbl{font-family:var(–M);font-size:8px;color:var(–ink3);text-transform:uppercase;letter-spacing:.8px;margin-top:3px;}
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.sbox{background:var(–bg1);border:1px solid var(–bd2);border-radius:10px;padding:14px;}
+.sval{font-family:var(–M);font-size:14px;font-weight:500;color:var(–t1);display:block;}
+.slbl{font-family:var(–M);font-size:8px;color:var(–t3);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
 
-/* Bond progress */
-.bond-box{background:var(–s1);border:1px solid var(–b2);border-radius:8px;padding:14px;margin-bottom:12px;}
-.bond-label{font-family:var(–M);font-size:8px;letter-spacing:1.2px;color:var(–ink3);text-transform:uppercase;margin-bottom:9px;}
-.bond-track{height:5px;background:var(–b2);border-radius:3px;overflow:hidden;margin-bottom:7px;}
-.bond-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(–lime),var(–green));transition:width 1s ease;}
-.bond-meta{display:flex;justify-content:space-between;font-family:var(–M);font-size:10px;color:var(–ink2);}
-.bond-meta b{color:var(–ink);}
+/* Bond */
+.bond-c{background:var(–bg1);border:1px solid var(–bd2);border-radius:12px;padding:16px;margin-bottom:14px;}
+.bond-lbl{font-family:var(–M);font-size:8px;letter-spacing:1.2px;color:var(–t3);text-transform:uppercase;margin-bottom:10px;}
+.bond-track{height:5px;background:var(–bg3);border-radius:3px;overflow:hidden;margin-bottom:7px;}
+.bond-fill{height:100%;border-radius:3px;background:var(–lime);transition:width 1s ease;}
+.bond-meta{display:flex;justify-content:space-between;font-family:var(–M);font-size:9px;color:var(–t2);}
+.bond-meta b{color:var(–t1);}
 
-/* ━━━ BUY / SELL — always visible, inline ━━━ */
-.trade-box{background:var(–s1);border:1px solid var(–b2);border-radius:10px;padding:18px;margin-bottom:12px;}
-.trade-box-title{font-family:var(–M);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(–ink3);margin-bottom:14px;}
-.trade-tabs{display:flex;gap:5px;margin-bottom:14px;}
-.tr-tab{
-flex:1;height:40px;border-radius:7px;border:1px solid var(–b2);
+/* ─── BUY / SELL ─── */
+.trade-c{background:var(–bg1);border:1px solid var(–bd2);border-radius:12px;padding:20px;margin-bottom:14px;}
+.trade-title{font-family:var(–M);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(–t3);margin-bottom:16px;}
+.trade-tabs{display:flex;gap:6px;margin-bottom:16px;}
+.ttab{
+flex:1;height:42px;border-radius:8px;border:1px solid var(–bd2);
 font-family:var(–M);font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
-background:transparent;color:var(–ink3);cursor:pointer;transition:all .15s;
+background:transparent;color:var(–t2);cursor:pointer;transition:all .15s;
 }
-.tr-tab:hover{border-color:var(–ink2);color:var(–ink);}
-.tr-tab.buy-on{background:rgba(176,255,0,.1);color:var(–lime);border-color:rgba(176,255,0,.35);}
-.tr-tab.sell-on{background:rgba(255,51,85,.09);color:var(–red);border-color:rgba(255,51,85,.3);}
+.ttab:hover{border-color:var(–t2);color:var(–t1);}
+.ttab.buy-on{background:var(–limedim);color:var(–lime);border-color:rgba(170,255,0,.35);}
+.ttab.sell-on{background:rgba(255,48,79,.08);color:var(–red);border-color:rgba(255,48,79,.3);}
 
-/* Amount input row */
-.tr-input-wrap{position:relative;margin-bottom:10px;}
-.tr-input{
-width:100%;height:48px;background:var(–s2);border:1px solid var(–b2);border-radius:8px;
-padding:0 52px 0 14px;color:var(–ink);font-family:var(–M);font-size:16px;
+/* Amount */
+.amt-wrap{position:relative;margin-bottom:10px;}
+.amt-inp{
+width:100%;height:52px;
+background:var(–bg2);border:1px solid var(–bd2);border-radius:9px;
+padding:0 60px 0 16px;
+color:var(–t1);font-family:var(–M);font-size:18px;
 outline:none;-webkit-appearance:none;transition:border-color .15s;
 }
-.tr-input:focus{border-color:var(–lime);}
-.tr-input::placeholder{color:var(–ink4);}
-.tr-sfx{
-position:absolute;right:14px;top:50%;transform:translateY(-50%);
-font-family:var(–M);font-size:11px;color:var(–ink3);font-weight:700;
+.amt-inp:focus{border-color:var(–lime);}
+.amt-inp::placeholder{color:var(–t3);}
+.amt-sfx{
+position:absolute;right:16px;top:50%;transform:translateY(-50%);
+font-family:var(–M);font-size:11px;color:var(–t2);font-weight:700;
 }
 
 /* Quick amounts */
-.tr-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px;}
-.tr-qb{
-height:32px;border-radius:5px;border:1px solid var(–b2);
-background:transparent;color:var(–ink3);font-family:var(–M);font-size:11px;
-cursor:pointer;transition:all .12s;
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px;}
+.qb{
+height:34px;border-radius:7px;border:1px solid var(–bd2);
+background:transparent;color:var(–t2);
+font-family:var(–M);font-size:11px;cursor:pointer;transition:all .12s;
 }
-.tr-qb:hover{border-color:var(–lime);color:var(–lime);}
+.qb:hover{border-color:var(–lime);color:var(–lime);}
 
-/* Info summary */
-.tr-summary{background:var(–s2);border:1px solid var(–b1);border-radius:7px;padding:11px 13px;margin-bottom:14px;}
-.tr-row{display:flex;justify-content:space-between;padding:3px 0;font-size:12px;color:var(–ink3);}
-.tr-row span{color:var(–ink);font-family:var(–M);font-size:11px;}
+/* Trade summary */
+.trade-sum{background:var(–bg2);border:1px solid var(–bd);border-radius:8px;padding:12px 14px;margin-bottom:16px;}
+.trow{display:flex;justify-content:space-between;padding:3px 0;font-size:12px;color:var(–t2);}
+.trow span{color:var(–t1);font-family:var(–M);font-size:11px;}
 
-/* THE button */
-.tr-btn{
-width:100%;height:48px;border:none;cursor:pointer;border-radius:8px;
-font-size:15px;font-weight:700;letter-spacing:.3px;transition:opacity .15s;
+/* Trade button */
+.trade-btn{
+width:100%;height:50px;border:none;cursor:pointer;border-radius:9px;
+font-size:16px;font-weight:700;letter-spacing:.2px;transition:opacity .15s;
 }
-.tr-btn.buy{background:var(–lime);color:#000;}
-.tr-btn.sell{background:var(–red);color:#fff;}
-.tr-btn:hover{opacity:.85;}
-.tr-btn:disabled{opacity:.4;cursor:not-allowed;}
+.trade-btn.buy{background:var(–lime);color:#000;}
+.trade-btn.sell{background:var(–red);color:#fff;}
+.trade-btn:hover{opacity:.88;}
+.trade-btn:disabled{opacity:.35;cursor:not-allowed;}
 
 /* About */
-.about-box{background:var(–s1);border:1px solid var(–b2);border-radius:10px;overflow:hidden;}
-.about-head{font-family:var(–M);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(–ink3);padding:12px 16px;border-bottom:1px solid var(–b1);background:var(–s2);}
-.about-desc{padding:14px 16px;font-size:13px;color:var(–ink2);line-height:1.7;border-bottom:1px solid var(–b1);}
-.arow{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(–b1);font-size:13px;}
+.about-c{background:var(–bg1);border:1px solid var(–bd2);border-radius:12px;overflow:hidden;}
+.about-head{font-family:var(–M);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(–t3);padding:12px 16px;border-bottom:1px solid var(–bd);background:var(–bg2);}
+.about-desc{padding:14px 16px;font-size:13px;color:var(–t2);line-height:1.7;border-bottom:1px solid var(–bd);}
+.arow{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(–bd);font-size:13px;}
 .arow:last-child{border-bottom:none;}
-.arow-k{color:var(–ink3);}
-.arow-v{font-family:var(–M);font-size:11px;color:var(–ink);text-align:right;word-break:break-all;max-width:60%;}
-.arow-v.lime{color:var(–lime);}
-.arow-v.green{color:var(–green);}
-.arow-v.blue{color:var(–blue);font-size:10px;}
-.cp{font-family:var(–M);font-size:9px;padding:2px 8px;border-radius:3px;border:1px solid var(–b2);background:var(–s2);color:var(–ink3);cursor:pointer;margin-left:7px;transition:all .12s;flex-shrink:0;}
+.ak{color:var(–t2);}
+.av{font-family:var(–M);font-size:10px;color:var(–t1);text-align:right;word-break:break-all;max-width:62%;}
+.av.lime{color:var(–lime);}
+.av.green{color:var(–green);}
+.av.blue{color:var(–blue);font-size:9px;}
+.cp{font-family:var(–M);font-size:8px;padding:2px 8px;border-radius:4px;border:1px solid var(–bd2);background:var(–bg2);color:var(–t2);cursor:pointer;margin-left:7px;flex-shrink:0;transition:all .12s;}
 .cp:hover{border-color:var(–blue);color:var(–blue);}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━
+/* ════════════════════════
 LAUNCH
-━━━━━━━━━━━━━━━━━━━━━━ */
-.launch-wrap{max-width:540px;margin:0 auto;padding:40px 20px 80px;}
-.launch-h{font-size:24px;font-weight:700;color:var(–ink);letter-spacing:-.4px;margin-bottom:5px;}
-.launch-s{font-size:13px;color:var(–ink2);margin-bottom:28px;line-height:1.65;}
+════════════════════════ */
+.launch-page{max-width:520px;margin:0 auto;padding:40px 24px 80px;}
+.launch-h{font-size:24px;font-weight:700;color:var(–t1);letter-spacing:-.4px;margin-bottom:5px;}
+.launch-s{font-size:13px;color:var(–t2);margin-bottom:28px;line-height:1.65;}
 
-/* Mode toggle */
-.mode-row{display:flex;gap:6px;margin-bottom:6px;}
-.mode-btn{
-flex:1;height:38px;border-radius:6px;border:1px solid var(–b2);
+/* Mode */
+.mode-r{display:flex;gap:7px;margin-bottom:7px;}
+.mbtn{
+flex:1;height:38px;border-radius:8px;border:1px solid var(–bd2);
 font-family:var(–M);font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
-background:transparent;color:var(–ink3);cursor:pointer;transition:all .15s;
+background:transparent;color:var(–t2);cursor:pointer;transition:all .15s;
 }
-.mode-btn:hover{border-color:var(–ink2);color:var(–ink);}
-.mode-btn.demo-on{border-color:rgba(255,170,0,.5);color:var(–amber);background:rgba(255,170,0,.06);}
-.mode-btn.real-on{border-color:rgba(0,204,120,.5);color:var(–green);background:rgba(0,204,120,.05);}
-.mode-caption{font-family:var(–M);font-size:9px;color:var(–ink4);margin-bottom:24px;letter-spacing:.2px;}
+.mbtn:hover{border-color:var(–t2);color:var(–t1);}
+.mbtn.d{border-color:rgba(255,179,0,.45);color:var(–amber);background:rgba(255,179,0,.06);}
+.mbtn.r{border-color:rgba(0,217,126,.45);color:var(–green);background:rgba(0,217,126,.05);}
+.mode-cap{font-family:var(–M);font-size:9px;color:var(–t3);margin-bottom:26px;letter-spacing:.2px;}
 
 /* Fields */
-.lfield{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
-.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.llbl{font-family:var(–M);font-size:8px;letter-spacing:1.5px;color:var(–ink3);text-transform:uppercase;}
-.llbl .opt{color:var(–ink4);font-size:7px;letter-spacing:0;text-transform:none;margin-left:4px;}
-.linp{
-height:42px;background:var(–s2);border:1px solid var(–b2);border-radius:7px;
-padding:0 13px;color:var(–ink);font-size:14px;font-weight:500;
+.fl{display:flex;flex-direction:column;gap:7px;margin-bottom:18px;}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.flbl{font-family:var(–M);font-size:8px;letter-spacing:1.5px;color:var(–t2);text-transform:uppercase;}
+.flbl .opt{color:var(–t3);font-size:7px;letter-spacing:0;text-transform:none;margin-left:4px;}
+
+.inp{
+height:43px;background:var(–bg1);border:1px solid var(–bd2);border-radius:8px;
+padding:0 14px;color:var(–t1);font-size:14px;font-weight:500;
 outline:none;width:100%;transition:border-color .15s;-webkit-appearance:none;
 }
-.linp:focus{border-color:var(–lime);}
-.linp::placeholder{color:var(–ink4);font-weight:400;}
-.linp[readonly]{color:var(–ink3);cursor:default;}
-textarea.linp{height:78px;padding:11px 13px;resize:vertical;line-height:1.55;font-size:13px;}
-select.linp{cursor:pointer;}
-.linp-g{display:flex;height:42px;background:var(–s2);border:1px solid var(–b2);border-radius:7px;overflow:hidden;transition:border-color .15s;}
-.linp-g:focus-within{border-color:var(–lime);}
-.linp-pre{display:flex;align-items:center;padding:0 11px;background:var(–s3);border-right:1px solid var(–b2);font-family:var(–M);font-size:8px;letter-spacing:.8px;color:var(–ink3);text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
-.linp-g .linp{border:none;border-radius:0;background:transparent;height:100%;}
+.inp:focus{border-color:var(–lime);}
+.inp::placeholder{color:var(–t3);font-weight:400;}
+.inp[readonly]{color:var(–t2);cursor:default;}
+textarea.inp{height:80px;padding:12px 14px;resize:vertical;line-height:1.6;font-size:13px;}
+select.inp{cursor:pointer;}
+
+.ing{display:flex;height:43px;background:var(–bg1);border:1px solid var(–bd2);border-radius:8px;overflow:hidden;transition:border-color .15s;}
+.ing:focus-within{border-color:var(–lime);}
+.ingpre{display:flex;align-items:center;padding:0 12px;background:var(–bg2);border-right:1px solid var(–bd2);font-family:var(–M);font-size:8px;letter-spacing:.8px;color:var(–t2);text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.ing .inp{border:none;border-radius:0;background:transparent;height:100%;}
 
 /* Upload */
-.upbox{border:1px dashed var(–b2);border-radius:7px;padding:22px;text-align:center;cursor:pointer;transition:border-color .15s;position:relative;overflow:hidden;}
-.upbox:hover{border-color:var(–ink3);}
+.upbox{border:1px dashed var(–bd2);border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:border-color .15s;position:relative;overflow:hidden;}
+.upbox:hover{border-color:var(–t2);}
 .upbox input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0;}
-.up-preview{width:52px;height:52px;border-radius:9px;object-fit:cover;display:none;margin:0 auto 8px;border:1px solid var(–b2);}
-.up-txt{font-family:var(–M);font-size:9px;color:var(–ink3);margin-top:7px;letter-spacing:.2px;}
-.up-txt b{color:var(–ink2);}
+.up-prev{width:52px;height:52px;border-radius:10px;object-fit:cover;display:none;margin:0 auto 8px;border:1px solid var(–bd2);}
+.up-txt{font-family:var(–M);font-size:9px;color:var(–t2);margin-top:7px;letter-spacing:.2px;}
+.up-txt b{color:var(–t1);}
 
-/* Summary card */
-.launch-summary{background:var(–s1);border:1px solid var(–b2);border-radius:8px;overflow:hidden;margin-bottom:16px;}
-.ls-head{font-family:var(–M);font-size:8px;letter-spacing:1.5px;color:var(–ink3);text-transform:uppercase;padding:10px 14px;border-bottom:1px solid var(–b1);background:var(–s2);}
-.ls-row{display:flex;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(–b1);font-size:13px;}
-.ls-row:last-child{border-bottom:none;}
-.ls-k{color:var(–ink3);}
-.ls-v{font-family:var(–M);font-size:11px;color:var(–ink);}
-.ls-v.lime{color:var(–lime);}
+/* Summary */
+.sum-card{background:var(–bg1);border:1px solid var(–bd2);border-radius:10px;overflow:hidden;margin-bottom:18px;}
+.sum-head{font-family:var(–M);font-size:8px;letter-spacing:1.5px;color:var(–t3);text-transform:uppercase;padding:10px 14px;border-bottom:1px solid var(–bd);background:var(–bg2);}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(–bd);font-size:12px;}
+.sum-row:last-child{border-bottom:none;}
+.sk{color:var(–t2);}
+.sv{font-family:var(–M);font-size:10px;color:var(–t1);}
+.sv.lime{color:var(–lime);}
 
-/* Buttons */
-.btn-primary{display:block;width:100%;height:44px;background:var(–lime);color:#000;border:none;border-radius:7px;font-weight:700;font-size:14px;cursor:pointer;transition:background .15s;}
-.btn-primary:hover{background:var(–lime2);}
-.btn-primary:disabled{opacity:.35;cursor:not-allowed;}
-.btn-secondary{display:block;width:100%;height:40px;background:transparent;color:var(–ink2);border:1px solid var(–b2);border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;margin-top:7px;}
-.btn-secondary:hover{border-color:var(–ink2);color:var(–ink);}
+.btn-p{display:block;width:100%;height:46px;background:var(–lime);color:#000;border:none;border-radius:9px;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s;}
+.btn-p:hover{background:var(–lime2);}
+.btn-p:disabled{opacity:.35;cursor:not-allowed;}
+.btn-g{display:block;width:100%;height:42px;background:transparent;color:var(–t2);border:1px solid var(–bd2);border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;margin-top:8px;}
+.btn-g:hover{border-color:var(–t2);color:var(–t1);}
 
-/* Deploy screen */
-.deploy-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;min-height:60vh;text-align:center;}
-.dep-ring{width:52px;height:52px;border-radius:50%;border:2px solid var(–b2);border-top-color:var(–lime);animation:spin .85s linear infinite;margin-bottom:22px;}
+/* Deploy */
+.dep-scene{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 24px;min-height:60vh;text-align:center;}
+.dep-ring{width:52px;height:52px;border-radius:50%;border:2px solid var(–bd2);border-top-color:var(–lime);animation:spin .85s linear infinite;margin-bottom:22px;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.dep-h{font-size:20px;font-weight:700;color:var(–ink);margin-bottom:6px;letter-spacing:-.3px;}
-.dep-sub{font-family:var(–M);font-size:10px;color:var(–ink3);margin-bottom:28px;letter-spacing:.2px;}
-.dep-steps{width:100%;max-width:380px;border:1px solid var(–b2);border-radius:8px;overflow:hidden;text-align:left;}
-.dep-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(–b1);font-size:12px;color:var(–ink3);}
-.dep-row:last-child{border-bottom:none;}
-.dep-ico{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-size:9px;}
-.dep-ico.w{border:1px solid var(–b2);color:var(–ink4);}
-.dep-ico.r{border:2px solid var(–lime);border-top-color:transparent;animation:spin .75s linear infinite;}
-.dep-ico.d{background:var(–green);color:#000;font-weight:700;}
-.dep-ico.s{background:rgba(255,170,0,.15);color:var(–amber);}
-.dep-txt.on{color:var(–ink);}
-.dep-txt.done{color:var(–green);}
-.dep-txt.sim{color:var(–amber);}
+.dep-h{font-size:20px;font-weight:700;color:var(–t1);margin-bottom:6px;letter-spacing:-.3px;}
+.dep-sub{font-family:var(–M);font-size:10px;color:var(–t3);margin-bottom:28px;letter-spacing:.2px;}
+.dep-list{width:100%;max-width:380px;background:var(–bg1);border:1px solid var(–bd2);border-radius:10px;overflow:hidden;text-align:left;}
+.depr{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(–bd);font-size:12px;color:var(–t2);}
+.depr:last-child{border-bottom:none;}
+.dico{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-size:9px;}
+.dico.w{border:1px solid var(–bd2);color:var(–t3);}
+.dico.r{border:2px solid var(–lime);border-top-color:transparent;animation:spin .75s linear infinite;}
+.dico.d{background:var(–green);color:#000;font-weight:700;}
+.dico.s{background:rgba(255,179,0,.12);color:var(–amber);}
+.dtxt.on{color:var(–t1);}
+.dtxt.done{color:var(–green);}
+.dtxt.sim{color:var(–amber);}
 
 /* Confirm */
-.confirm-wrap{max-width:520px;margin:0 auto;padding:36px 20px 80px;}
-.cf-status{display:inline-flex;align-items:center;gap:6px;font-family:var(–M);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:4px;margin-bottom:20px;}
-.cf-status::before{content:’’;width:4px;height:4px;border-radius:50%;background:currentColor;}
-.cf-status.ok{color:var(–green);background:rgba(0,204,120,.07);border:1px solid rgba(0,204,120,.2);}
-.cf-status.sim{color:var(–amber);background:rgba(255,170,0,.07);border:1px solid rgba(255,170,0,.2);}
-.cf-tok-head{display:flex;align-items:center;gap:13px;margin-bottom:22px;}
-.cf-art{width:54px;height:54px;border-radius:12px;border:1px solid var(–b2);display:grid;place-items:center;overflow:hidden;flex-shrink:0;}
-.cf-tok-name{font-size:22px;font-weight:700;color:var(–ink);letter-spacing:-.3px;}
-.cf-tok-sym{font-family:var(–M);font-size:11px;color:var(–ink3);margin-top:2px;}
-.dtbl{border:1px solid var(–b2);border-radius:8px;overflow:hidden;margin-bottom:10px;}
-.dtbl-h{font-family:var(–M);font-size:8px;letter-spacing:1.5px;color:var(–ink3);text-transform:uppercase;padding:9px 14px;border-bottom:1px solid var(–b1);background:var(–s2);}
-.drow{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(–b1);font-size:12px;}
+.cf-wrap{max-width:500px;margin:0 auto;padding:36px 24px 80px;}
+.cf-pill{display:inline-flex;align-items:center;gap:6px;font-family:var(–M);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:5px;margin-bottom:22px;}
+.cf-pill::before{content:’’;width:4px;height:4px;border-radius:50%;background:currentColor;}
+.cf-pill.ok{color:var(–green);background:rgba(0,217,126,.07);border:1px solid rgba(0,217,126,.2);}
+.cf-pill.sim{color:var(–amber);background:rgba(255,179,0,.07);border:1px solid rgba(255,179,0,.2);}
+.cf-hd{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.cf-art{width:56px;height:56px;border-radius:13px;border:1px solid var(–bd2);display:grid;place-items:center;overflow:hidden;flex-shrink:0;}
+.cf-tname{font-size:22px;font-weight:700;color:var(–t1);letter-spacing:-.3px;}
+.cf-tsym{font-family:var(–M);font-size:11px;color:var(–t2);margin-top:2px;}
+.dtbl{background:var(–bg1);border:1px solid var(–bd2);border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.dtbl-h{font-family:var(–M);font-size:8px;letter-spacing:1.5px;color:var(–t3);text-transform:uppercase;padding:10px 14px;border-bottom:1px solid var(–bd);background:var(–bg2);}
+.drow{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(–bd);font-size:12px;}
 .drow:last-child{border-bottom:none;}
-.dk{color:var(–ink3);}
-.dv{font-family:var(–M);font-size:10px;color:var(–ink);text-align:right;word-break:break-all;max-width:65%;}
+.dk{color:var(–t2);}
+.dv{font-family:var(–M);font-size:10px;color:var(–t1);text-align:right;word-break:break-all;max-width:65%;}
 .dv.addr{color:var(–blue);font-size:9px;}
 .dv.ok{color:var(–green);}
 .dv.sim{color:var(–amber);}
 .dv.lime{color:var(–lime);}
-.cpbtn{font-family:var(–M);font-size:8px;padding:2px 7px;border-radius:3px;border:1px solid var(–b2);background:var(–s2);color:var(–ink3);cursor:pointer;margin-left:6px;flex-shrink:0;transition:all .12s;}
-.cpbtn:hover{border-color:var(–blue);color:var(–blue);}
-.exp-link{display:flex;align-items:center;justify-content:center;gap:6px;font-family:var(–M);font-size:9px;letter-spacing:.8px;text-transform:uppercase;color:var(–blue);padding:10px;border:1px solid rgba(91,143,255,.2);border-radius:7px;background:rgba(91,143,255,.04);text-decoration:none;transition:all .15s;margin-bottom:9px;}
-.exp-link:hover{background:rgba(91,143,255,.08);}
-.cf-actions{display:flex;gap:7px;margin-bottom:10px;}
-.cf-act-btn{flex:1;height:36px;border:1px solid var(–b2);border-radius:6px;background:var(–s2);color:var(–ink3);font-family:var(–M);font-size:9px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .12s;}
-.cf-act-btn:hover{border-color:var(–ink2);color:var(–ink);}
+.cpb{font-family:var(–M);font-size:8px;padding:2px 8px;border-radius:4px;border:1px solid var(–bd2);background:var(–bg2);color:var(–t2);cursor:pointer;margin-left:7px;flex-shrink:0;transition:all .12s;}
+.cpb:hover{border-color:var(–blue);color:var(–blue);}
+.exp-a{display:flex;align-items:center;justify-content:center;gap:6px;font-family:var(–M);font-size:9px;letter-spacing:.8px;text-transform:uppercase;color:var(–blue);padding:10px;border:1px solid rgba(77,142,255,.2);border-radius:8px;background:rgba(77,142,255,.04);text-decoration:none;transition:all .15s;margin-bottom:10px;}
+.exp-a:hover{background:rgba(77,142,255,.08);}
+.cf-acts{display:flex;gap:7px;margin-bottom:10px;}
+.cf-ab{flex:1;height:38px;border:1px solid var(–bd2);border-radius:8px;background:var(–bg1);color:var(–t2);font-family:var(–M);font-size:9px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .12s;}
+.cf-ab:hover{border-color:var(–t2);color:var(–t1);}
 
-/* ━━━ PORTFOLIO ━━━ */
-.port-hero{padding:32px 28px 24px;border-bottom:1px solid var(–b1);}
-.port-hero h1{font-size:22px;font-weight:700;color:var(–ink);letter-spacing:-.3px;margin-bottom:3px;}
-.port-hero p{font-size:13px;color:var(–ink3);}
-.port-body{padding:20px 28px 80px;}
-.port-total{margin-bottom:22px;}
-.port-total-val{font-family:var(–M);font-size:28px;font-weight:700;color:var(–lime);}
-.port-total-lbl{font-family:var(–M);font-size:8px;color:var(–ink4);letter-spacing:1.2px;text-transform:uppercase;margin-top:3px;}
-.port-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+/* ════════════════════════
+PORTFOLIO
+════════════════════════ */
+.port-hd{padding:32px 28px 22px;border-bottom:1px solid var(–bd);}
+.port-hd h1{font-size:22px;font-weight:700;color:var(–t1);letter-spacing:-.3px;margin-bottom:3px;}
+.port-hd p{font-size:13px;color:var(–t2);}
+.port-body{padding:22px 28px 80px;}
+.port-total{margin-bottom:24px;}
+.port-v{font-family:var(–M);font-size:30px;font-weight:700;color:var(–lime);}
+.port-l{font-family:var(–M);font-size:8px;color:var(–t3);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;}
+.port-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
 
 /* Empty */
 .empty{display:flex;flex-direction:column;align-items:center;padding:80px 20px;text-align:center;}
-.empty-ico{width:44px;height:44px;border-radius:10px;border:1px solid var(–b2);background:var(–s2);display:grid;place-items:center;margin-bottom:16px;}
-.empty-h{font-size:16px;font-weight:700;color:var(–ink);margin-bottom:5px;}
-.empty-p{font-size:13px;color:var(–ink3);max-width:280px;line-height:1.65;margin-bottom:20px;}
+.ei{width:46px;height:46px;border-radius:11px;border:1px solid var(–bd2);background:var(–bg1);display:grid;place-items:center;margin-bottom:16px;}
+.eh{font-size:16px;font-weight:700;color:var(–t1);margin-bottom:5px;}
+.ep{font-size:13px;color:var(–t2);max-width:280px;line-height:1.65;margin-bottom:20px;}
 
-/* ━━━ TOAST ━━━ */
-#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(4px);z-index:9999;background:var(–s2);border:1px solid var(–b2);border-radius:6px;padding:9px 16px;font-family:var(–M);font-size:10px;letter-spacing:.3px;white-space:nowrap;box-shadow:0 8px 28px rgba(0,0,0,.6);opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;}
-#toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
-#toast.ok{border-color:rgba(0,204,120,.4);color:var(–green);}
-#toast.err{border-color:rgba(255,51,85,.4);color:var(–red);}
-#toast.info{border-color:rgba(176,255,0,.3);color:var(–lime);}
-
-/* ━━━ RESPONSIVE ━━━ */
-@media(max-width:1100px){.card-grid{grid-template-columns:repeat(3,1fr);}.port-grid{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:800px){
-.card-grid{grid-template-columns:repeat(2,1fr);gap:12px;padding:16px 16px 32px;}
-.port-grid{grid-template-columns:repeat(2,1fr);}
-.stats-row{grid-template-columns:1fr 1fr;}
-.ex-hero h1{font-size:26px;}
-.ex-stats{flex-wrap:wrap;}
-.ex-stat{flex:1;min-width:100px;}
-.r2{grid-template-columns:1fr;}
-.ex-hero{padding:32px 20px 28px;}
-.ex-bar{padding:10px 16px;}
-.port-body,.port-hero{padding-left:16px;padding-right:16px;}
-.token-page{padding:20px 14px 60px;}
+/* ─── TOAST ─── */
+#toast{
+position:fixed;bottom:24px;left:50%;
+transform:translateX(-50%) translateY(5px);z-index:9999;
+background:var(–bg1);border:1px solid var(–bd2);border-radius:8px;
+padding:10px 18px;font-family:var(–M);font-size:10px;letter-spacing:.3px;
+white-space:nowrap;box-shadow:0 12px 36px rgba(0,0,0,.55);
+opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
 }
-@media(max-width:540px){
-.card-grid{grid-template-columns:1fr 1fr;}
-.port-grid{grid-template-columns:1fr 1fr;}
-#nav{padding:0 0 0 12px;}
-.ntab{padding:0 12px;font-size:12px;}
-#wbtn{padding:0 14px;}
-.tr-quick{grid-template-columns:repeat(4,1fr);}
-.ex-hero-btns{flex-direction:column;gap:8px;}
-.btn-lime,.btn-outline{width:100%;justify-content:center;}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.ok{border-color:rgba(0,217,126,.4);color:var(–green);}
+#toast.err{border-color:rgba(255,48,79,.4);color:var(–red);}
+#toast.info{border-color:rgba(170,255,0,.3);color:var(–lime);}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1100px){.grid,.port-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:820px){
+.grid,.port-grid{grid-template-columns:repeat(2,1fr);gap:14px;padding:18px 18px 40px;}
+.stats{grid-template-columns:1fr 1fr;}
+.hero h1{font-size:28px;}
+.hero-stats{flex-wrap:wrap;}
+.hstat{flex:1;min-width:110px;}
+.r2{grid-template-columns:1fr;}
+.hero{padding:36px 20px 32px;}
+.filterbar{padding:11px 18px;}
+.port-hd,.port-body{padding-left:18px;padding-right:18px;}
+.tok-page{padding:20px 16px 60px;}
+.launch-page{padding:28px 16px 60px;}
+}
+@media(max-width:560px){
+.grid,.port-grid{grid-template-columns:1fr 1fr;gap:12px;padding:14px 14px 36px;}
+#nav{padding:0 14px;}
+.nav-mid{display:none;}
+.hero h1{font-size:24px;}
+.hero-btns{flex-direction:column;width:100%;}
+.hero-btn-main,.hero-btn-ghost{width:100%;justify-content:center;}
+.quick{grid-template-columns:repeat(4,1fr);}
 }
 @media(max-width:380px){
-.card-grid{grid-template-columns:1fr;}
-.ntab:not(.on){display:none;}
+.grid,.port-grid{grid-template-columns:1fr;}
 }
 </style>
 
@@ -448,163 +544,164 @@ select.linp{cursor:pointer;}
 <!-- NAV -->
 
 <nav id="nav">
-  <div style="display:flex;align-items:center;height:100%;">
-    <div class="logo" onclick="showPage('explore')">
-      <div class="logo-icon">
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-          <path d="M6.5 1L12 4.3V8.7L6.5 12L1 8.7V4.3L6.5 1Z" fill="#000"/>
-          <path d="M6.5 4.2L9 6.5L6.5 8.8L4 6.5Z" fill="#b0ff00"/>
+  <div style="display:flex;align-items:center;">
+    <div class="logo" onclick="pg('explore')">
+      <div class="logo-mark">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M7 1L13 4.5V9.5L7 13L1 9.5V4.5L7 1Z" fill="#000"/>
+          <path d="M7 4.5L9.5 7L7 9.5L4.5 7Z" fill="#aaff00"/>
         </svg>
       </div>
-      <span class="logo-text">Beam<em>Launch</em></span>
+      <span class="logo-name">Beam<em>Launch</em></span>
     </div>
-    <div class="nav-c">
-      <button class="ntab on" id="nt-explore" onclick="showPage('explore')">Explore</button>
-      <button class="ntab" id="nt-launch" onclick="startLaunch()">Launch Token</button>
-      <button class="ntab" id="nt-portfolio" onclick="showPage('portfolio')">Portfolio</button>
+    <div class="nav-mid">
+      <button class="ntab on" id="nt-explore" onclick="pg('explore')">Explore</button>
+      <button class="ntab" id="nt-launch" onclick="goLaunch()">Launch Token</button>
+      <button class="ntab" id="nt-portfolio" onclick="pg('portfolio')">Portfolio</button>
     </div>
   </div>
   <div class="nav-r">
-    <div class="nav-bal" id="navBal"><span class="bal-dot"></span><span id="navBalTxt">0 BEAM</span></div>
+    <div class="nav-bal" id="navbal">
+      <span class="bal-dot"></span>
+      <span id="navbaltxt">0 BEAM</span>
+    </div>
     <button id="wbtn" onclick="openWallet()">Connect Wallet</button>
   </div>
 </nav>
 
 <!-- WALLET MODAL -->
 
-<div class="overlay" id="walletOverlay" onclick="closeWalletClick(event)">
-  <div class="wmodal">
-    <div class="wm-hd">
+<div class="overlay" id="woverlay" onclick="wovclick(event)">
+  <div class="wm">
+    <div class="wm-top">
       <div class="wm-title">Connect a Wallet</div>
-      <button class="wm-close" onclick="closeWallet()">×</button>
+      <button class="wm-x" onclick="closeWallet()">×</button>
     </div>
-    <p class="wm-sub">Any EVM-compatible wallet works with BeamLaunch. We'll switch to Beam Network automatically.</p>
-    <div id="walletList"></div>
-    <div class="wm-note">BeamLaunch is non-custodial. We never touch your private keys.</div>
+    <p class="wm-sub">Any EVM-compatible wallet works. BeamLaunch will switch you to Beam Testnet automatically.</p>
+    <div id="wlist"></div>
+    <div class="wm-note">BeamLaunch is non-custodial — we never access your private keys.</div>
   </div>
 </div>
 
 <!-- EXPLORE -->
 
 <div class="page on" id="pg-explore">
-  <div class="ex-hero">
-    <div class="ex-hero-badge">Live on Beam Testnet</div>
-    <h1>Fair-launch tokens on <span>Beam Network</span></h1>
-    <p>Fair. Open. Unstoppable.</p>
-    <div class="ex-hero-btns">
-      <button class="btn-lime" onclick="startLaunch()">
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L12 4.3V8.7L6.5 12L1 8.7V4.3L6.5 1Z" fill="#000"/></svg>
+  <div class="hero">
+    <div class="hero-tag">Live on Beam Testnet</div>
+    <h1>The token launchpad<br>built for <span>Beam Network</span></h1>
+    <div class="hero-sub">Fair. Open. Unstoppable.</div>
+    <div class="hero-btns">
+      <button class="hero-btn-main" onclick="goLaunch()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L13 4.5V9.5L7 13L1 9.5V4.5L7 1Z" fill="#000"/></svg>
         Launch a Token
       </button>
-      <button class="btn-outline" onclick="scrollToGrid()">Browse Tokens</button>
+      <button class="hero-btn-ghost" onclick="document.getElementById('fbar').scrollIntoView({behavior:'smooth'})">Browse Tokens</button>
     </div>
-    <div class="ex-stats">
-      <div class="ex-stat"><span class="es-v">247</span><div class="es-l">Launched</div></div>
-      <div class="ex-stat"><span class="es-v">1.4M</span><div class="es-l">BEAM Volume</div></div>
-      <div class="ex-stat"><span class="es-v">18</span><div class="es-l">Graduated</div></div>
-      <div class="ex-stat"><span class="es-v">3,241</span><div class="es-l">Traders</div></div>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-v">247</span><div class="hstat-l">Launched</div></div>
+      <div class="hstat"><span class="hstat-v">1.4M</span><div class="hstat-l">BEAM Volume</div></div>
+      <div class="hstat"><span class="hstat-v">18</span><div class="hstat-l">Graduated</div></div>
+      <div class="hstat"><span class="hstat-v">3,241</span><div class="hstat-l">Traders</div></div>
     </div>
   </div>
-  <div class="ex-bar" id="exBar">
-    <div class="filter-pills">
-      <button class="fpill on" onclick="filterEx('all',this)">All</button>
-      <button class="fpill" onclick="filterEx('trending',this)">🔥 Trending</button>
-      <button class="fpill" onclick="filterEx('Gaming',this)">Gaming</button>
-      <button class="fpill" onclick="filterEx('DeFi',this)">DeFi</button>
-      <button class="fpill" onclick="filterEx('Meme',this)">Meme</button>
-      <button class="fpill" onclick="filterEx('AI',this)">AI</button>
+
+  <div class="filterbar" id="fbar">
+    <div class="fpills">
+      <button class="fp on" onclick="doFilter('all',this)">All</button>
+      <button class="fp" onclick="doFilter('trending',this)">🔥 Trending</button>
+      <button class="fp" onclick="doFilter('Gaming',this)">Gaming</button>
+      <button class="fp" onclick="doFilter('DeFi',this)">DeFi</button>
+      <button class="fp" onclick="doFilter('Meme',this)">Meme</button>
+      <button class="fp" onclick="doFilter('AI',this)">AI</button>
     </div>
-    <button class="ex-bar-launch" onclick="startLaunch()">+ Launch</button>
+    <button class="fbar-btn" onclick="goLaunch()">+ Launch</button>
   </div>
-  <div class="card-grid" id="cardGrid"></div>
+  <div class="grid" id="cardgrid"></div>
 </div>
 
 <!-- TOKEN PAGE -->
 
 <div class="page" id="pg-token">
-  <div class="token-page">
-    <button class="back-btn" onclick="showPage('explore')">← Back to Explore</button>
-    <div class="tok-header">
-      <div class="tok-art" id="tokArt"></div>
-      <div class="tok-title">
-        <div class="tok-name" id="tokName">—</div>
-        <div class="tok-sym" id="tokSym">—</div>
-      </div>
-      <span class="tok-bdg" id="tokBdg"></span>
-    </div>
+  <div class="tok-page">
+    <button class="back" onclick="pg('explore')">← Back to Explore</button>
 
 ```
-<!-- Chart -->
-<div class="chart-box">
-  <div class="chart-top">
-    <div>
-      <div class="chart-price" id="tokPrice">—</div>
-      <div class="chart-sub">Price in BEAM</div>
-    </div>
-    <div class="chart-chg" id="tokChg">—</div>
+<div class="tok-hd">
+  <div class="tok-logo" id="toklogo"></div>
+  <div class="tok-info">
+    <div class="tok-name" id="tokname">—</div>
+    <div class="tok-sym" id="toksym">—</div>
   </div>
-  <svg class="chart-svg" id="tokChart" viewBox="0 0 600 120" preserveAspectRatio="none"></svg>
+  <span class="tok-badge" id="tokbadge"></span>
 </div>
 
-<!-- Stats -->
-<div class="stats-row">
-  <div class="stat-box"><span class="stat-val" id="tokMcap">—</span><div class="stat-lbl">Market Cap</div></div>
-  <div class="stat-box"><span class="stat-val" id="tokVol">—</span><div class="stat-lbl">Volume</div></div>
-  <div class="stat-box"><span class="stat-val" id="tokHolders">—</span><div class="stat-lbl">Holders</div></div>
-  <div class="stat-box"><span class="stat-val" id="tokTxs">—</span><div class="stat-lbl">Transactions</div></div>
+<div class="chart-c">
+  <div class="chart-hd">
+    <div>
+      <div class="chart-price" id="tokprice">—</div>
+      <div class="chart-lbl">Price in BEAM</div>
+    </div>
+    <div class="chart-chg" id="tokchg">—</div>
+  </div>
+  <svg class="chart-svg" id="tokchart" viewBox="0 0 600 120" preserveAspectRatio="none"></svg>
 </div>
 
-<!-- Bond progress -->
-<div class="bond-box">
-  <div class="bond-label">Bonding Curve Progress — Graduates at 69,000 BEAM</div>
-  <div class="bond-track"><div class="bond-fill" id="tokBond" style="width:0%"></div></div>
+<div class="stats">
+  <div class="sbox"><span class="sval" id="tokmcap">—</span><div class="slbl">Market Cap</div></div>
+  <div class="sbox"><span class="sval" id="tokvol">—</span><div class="slbl">Volume</div></div>
+  <div class="sbox"><span class="sval" id="tokhold">—</span><div class="slbl">Holders</div></div>
+  <div class="sbox"><span class="sval" id="toktxs">—</span><div class="slbl">Transactions</div></div>
+</div>
+
+<div class="bond-c">
+  <div class="bond-lbl">Bonding Curve — Graduates at 69,000 BEAM</div>
+  <div class="bond-track"><div class="bond-fill" id="tokbond" style="width:0%"></div></div>
   <div class="bond-meta">
-    <span>Raised: <b id="tokRaised">—</b></span>
-    <span id="tokBondPct">0% complete</span>
+    <span>Raised: <b id="tokraised">—</b></span>
+    <span id="tokbondpct">0%</span>
     <span>Target: <b>69,000 BEAM</b></span>
   </div>
 </div>
 
-<!-- BUY / SELL — ALWAYS VISIBLE, NOT IN A SIDEBAR -->
-<div class="trade-box">
-  <div class="trade-box-title">Trade</div>
+<!-- BUY / SELL — full width, always visible -->
+<div class="trade-c">
+  <div class="trade-title">Trade</div>
   <div class="trade-tabs">
-    <button class="tr-tab buy-on" id="tabBuy" onclick="setTradeTab('buy')">Buy</button>
-    <button class="tr-tab" id="tabSell" onclick="setTradeTab('sell')">Sell</button>
+    <button class="ttab buy-on" id="tb-buy" onclick="setTab('buy')">Buy</button>
+    <button class="ttab" id="tb-sell" onclick="setTab('sell')">Sell</button>
   </div>
-  <div class="tr-input-wrap">
-    <input class="tr-input" id="tradeAmt" type="number" placeholder="0.00" min="0" step="any" oninput="calcTrade()"/>
-    <span class="tr-sfx">BEAM</span>
+  <div class="amt-wrap">
+    <input class="amt-inp" id="tramt" type="number" placeholder="0.00" min="0" step="any" oninput="calcTrade()"/>
+    <span class="amt-sfx">BEAM</span>
   </div>
-  <div class="tr-quick">
-    <button class="tr-qb" onclick="setAmt(10)">10</button>
-    <button class="tr-qb" onclick="setAmt(50)">50</button>
-    <button class="tr-qb" onclick="setAmt(100)">100</button>
-    <button class="tr-qb" onclick="setAmt(500)">500</button>
+  <div class="quick">
+    <button class="qb" onclick="setamt(10)">10</button>
+    <button class="qb" onclick="setamt(50)">50</button>
+    <button class="qb" onclick="setamt(100)">100</button>
+    <button class="qb" onclick="setamt(500)">500</button>
   </div>
-  <div class="tr-summary">
-    <div class="tr-row">You receive <span id="trRec">—</span></div>
-    <div class="tr-row">Price impact <span id="trImpact">—</span></div>
-    <div class="tr-row">Fee (1%) <span id="trFee">—</span></div>
-    <div class="tr-row">Price after trade <span id="trNewP">—</span></div>
+  <div class="trade-sum">
+    <div class="trow">You receive <span id="tr-rec">—</span></div>
+    <div class="trow">Price impact <span id="tr-impact">—</span></div>
+    <div class="trow">Fee (1%) <span id="tr-fee">—</span></div>
+    <div class="trow">Price after <span id="tr-newp">—</span></div>
   </div>
-  <button class="tr-btn buy" id="tradeBtn" onclick="execTrade()">Buy</button>
+  <button class="trade-btn buy" id="tradebtn" onclick="execTrade()">Buy</button>
 </div>
 
-<!-- About -->
-<div class="about-box">
+<div class="about-c">
   <div class="about-head">About</div>
-  <div class="about-desc" id="tokDesc">—</div>
+  <div class="about-desc" id="tokdesc">—</div>
   <div class="arow">
-    <span class="arow-k">Contract</span>
+    <span class="ak">Contract</span>
     <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
-      <span class="arow-v blue" id="tokAddr">—</span>
-      <button class="cp" onclick="copyText(APP.currentToken?.addr,'Address copied')">Copy</button>
+      <span class="av blue" id="tokaddr">—</span>
+      <button class="cp" onclick="cptext(A.token?.addr,'Address copied')">Copy</button>
     </div>
   </div>
-  <div class="arow"><span class="arow-k">Category</span><span class="arow-v" id="tokCat">—</span></div>
-  <div class="arow"><span class="arow-k">Network</span><span class="arow-v green">Beam Testnet</span></div>
-  <div class="arow"><span class="arow-k">Trading fee</span><span class="arow-v lime">1% per trade</span></div>
+  <div class="arow"><span class="ak">Category</span><span class="av" id="tokcat">—</span></div>
+  <div class="arow"><span class="ak">Network</span><span class="av green">Beam Testnet</span></div>
+  <div class="arow"><span class="ak">Trading fee</span><span class="av lime">1% per trade</span></div>
 </div>
 ```
 
@@ -616,78 +713,77 @@ select.linp{cursor:pointer;}
 <div class="page" id="pg-launch">
   <!-- Panel 0: Form -->
   <div id="lp0">
-    <div class="launch-wrap">
+    <div class="launch-page">
       <div class="launch-h">Launch a Token</div>
-      <p class="launch-s">Fill in your token details. Name and symbol are permanent after deployment.</p>
+      <p class="launch-s">Name and symbol are permanent after deployment.</p>
 
 ```
-  <!-- Mode -->
-  <div style="margin-bottom:6px;"><span class="llbl">Mode</span></div>
-  <div class="mode-row">
-    <button class="mode-btn demo-on" id="mbDemo" onclick="setMode('demo')">Demo</button>
-    <button class="mode-btn" id="mbReal" onclick="setMode('real')">Real Wallet</button>
+  <div style="margin-bottom:7px;"><span class="flbl">Mode</span></div>
+  <div class="mode-r">
+    <button class="mbtn d" id="mb-demo" onclick="setMode('demo')">Demo</button>
+    <button class="mbtn" id="mb-real" onclick="setMode('real')">Real Wallet</button>
   </div>
-  <p class="mode-caption" id="modeCap">Demo — simulates the full flow. No wallet required.</p>
+  <p class="mode-cap" id="mcap-txt">Demo — full simulation, no wallet needed.</p>
 
   <div class="r2">
-    <div class="lfield">
-      <label class="llbl">Token Name <span class="opt">required</span></label>
-      <input class="linp" id="fName" placeholder="e.g. Fableborne Gold"/>
+    <div class="fl">
+      <label class="flbl">Token Name <span class="opt">required</span></label>
+      <input class="inp" id="fn" placeholder="e.g. Fableborne Gold"/>
     </div>
-    <div class="lfield">
-      <label class="llbl">Symbol <span class="opt">required · max 8</span></label>
-      <input class="linp" id="fSym" placeholder="FGLD" maxlength="8" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')"/>
+    <div class="fl">
+      <label class="flbl">Symbol <span class="opt">required · max 8</span></label>
+      <input class="inp" id="fs" placeholder="FGLD" maxlength="8" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')"/>
     </div>
   </div>
 
-  <div class="lfield">
-    <label class="llbl">Description <span class="opt">optional</span></label>
-    <textarea class="linp" id="fDesc" placeholder="What does your token do in the Beam ecosystem?"></textarea>
+  <div class="fl">
+    <label class="flbl">Description <span class="opt">optional</span></label>
+    <textarea class="inp" id="fd" placeholder="What does your token do in the Beam ecosystem?"></textarea>
   </div>
 
   <div class="r2">
-    <div class="lfield">
-      <label class="llbl">Total Supply <span class="opt">required</span></label>
-      <div class="linp-g">
-        <span class="linp-pre">Total</span>
-        <input class="linp" id="fSupply" value="1,000,000,000" oninput="fmtSup(this)"/>
+    <div class="fl">
+      <label class="flbl">Total Supply <span class="opt">required</span></label>
+      <div class="ing">
+        <span class="ingpre">Total</span>
+        <input class="inp" id="fsu" value="1,000,000,000" oninput="fmtsup(this)"/>
       </div>
     </div>
-    <div class="lfield">
-      <label class="llbl">Category</label>
-      <select class="linp" id="fCat">
-        <option>Gaming</option><option>DeFi</option><option>Meme</option>
-        <option>AI</option><option>Infrastructure</option>
+    <div class="fl">
+      <label class="flbl">Category</label>
+      <select class="inp" id="fcat">
+        <option>Gaming</option><option>DeFi</option>
+        <option>Meme</option><option>AI</option><option>Infrastructure</option>
       </select>
     </div>
   </div>
 
-  <div class="lfield">
-    <label class="llbl">Logo <span class="opt">optional · PNG JPG SVG · max 2MB</span></label>
+  <div class="fl">
+    <label class="flbl">Logo <span class="opt">optional · PNG JPG SVG · max 2MB</span></label>
     <div class="upbox">
-      <input type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" onchange="handleImg(event)"/>
-      <img class="up-preview" id="upPrev"/>
-      <div id="upIcon">
+      <input type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" onchange="handleimg(event)"/>
+      <img class="up-prev" id="upprev"/>
+      <div id="upicon">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="display:block;margin:0 auto 6px;">
-          <rect x="2" y="5" width="18" height="13" rx="2" stroke="#20203a" stroke-width="1.3" fill="none"/>
-          <circle cx="8" cy="10" r="2" stroke="#20203a" stroke-width="1.3" fill="none"/>
-          <path d="M2 14.5l5-5 3 3 4-5 6 7" stroke="#20203a" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+          <rect x="2" y="5" width="18" height="13" rx="2" stroke="#1e1e28" stroke-width="1.3" fill="none"/>
+          <circle cx="8" cy="10" r="2" stroke="#1e1e28" stroke-width="1.3" fill="none"/>
+          <path d="M2 14.5l5-5 3 3 4-5 6 7" stroke="#1e1e28" stroke-width="1.3" stroke-linecap="round" fill="none"/>
         </svg>
       </div>
-      <p class="up-txt" id="upTxt"><b>Click to upload</b> a logo</p>
+      <p class="up-txt" id="uptxt"><b>Click to upload</b> a logo</p>
     </div>
   </div>
 
-  <div class="launch-summary">
-    <div class="ls-head">Launch Details</div>
-    <div class="ls-row"><span class="ls-k">Network</span><span class="ls-v">Beam Testnet (Chain 13337)</span></div>
-    <div class="ls-row"><span class="ls-k">Launch cost</span><span class="ls-v lime">Free</span></div>
-    <div class="ls-row"><span class="ls-k">Trading fee</span><span class="ls-v">1% per trade</span></div>
-    <div class="ls-row"><span class="ls-k">Graduation at</span><span class="ls-v">69,000 BEAM market cap</span></div>
-    <div class="ls-row"><span class="ls-k">After graduation</span><span class="ls-v">Liquidity moves to Beam Swap, locked permanently</span></div>
+  <div class="sum-card">
+    <div class="sum-head">Launch Details</div>
+    <div class="sum-row"><span class="sk">Network</span><span class="sv">Beam Testnet · Chain 13337</span></div>
+    <div class="sum-row"><span class="sk">Launch cost</span><span class="sv lime">Free</span></div>
+    <div class="sum-row"><span class="sk">Trading fee</span><span class="sv">1% per trade</span></div>
+    <div class="sum-row"><span class="sk">Graduation at</span><span class="sv">69,000 BEAM market cap</span></div>
+    <div class="sum-row"><span class="sk">After graduation</span><span class="sv">Moves to Beam Swap — locked permanently</span></div>
   </div>
 
-  <button class="btn-primary" onclick="submitLaunch()">Deploy Token →</button>
+  <button class="btn-p" onclick="submitLaunch()">Deploy Token →</button>
 </div>
 ```
 
@@ -696,16 +792,16 @@ select.linp{cursor:pointer;}
   <!-- Panel 1: Deploying -->
 
   <div id="lp1" style="display:none">
-    <div class="deploy-screen">
-      <div class="dep-ring" id="depRing"></div>
-      <div class="dep-h" id="depH">Deploying your token</div>
-      <div class="dep-sub" id="depSub">Submitting contract to Beam Network...</div>
-      <div class="dep-steps">
-        <div class="dep-row"><div class="dep-ico w" id="di1">1</div><div class="dep-txt" id="dt1">Validating parameters</div></div>
-        <div class="dep-row"><div class="dep-ico w" id="di2">2</div><div class="dep-txt" id="dt2">Signing transaction</div></div>
-        <div class="dep-row"><div class="dep-ico w" id="di3">3</div><div class="dep-txt" id="dt3">Waiting for confirmation</div></div>
-        <div class="dep-row"><div class="dep-ico w" id="di4">4</div><div class="dep-txt" id="dt4">Initialising bonding curve</div></div>
-        <div class="dep-row"><div class="dep-ico w" id="di5">5</div><div class="dep-txt" id="dt5">Token live on BeamLaunch</div></div>
+    <div class="dep-scene">
+      <div class="dep-ring" id="dring"></div>
+      <div class="dep-h" id="deph">Deploying your token</div>
+      <div class="dep-sub" id="deps">Submitting contract to Beam Network...</div>
+      <div class="dep-list">
+        <div class="depr"><div class="dico w" id="di1">1</div><div class="dtxt" id="dt1">Validating parameters</div></div>
+        <div class="depr"><div class="dico w" id="di2">2</div><div class="dtxt" id="dt2">Signing transaction</div></div>
+        <div class="depr"><div class="dico w" id="di3">3</div><div class="dtxt" id="dt3">Waiting for confirmation</div></div>
+        <div class="depr"><div class="dico w" id="di4">4</div><div class="dtxt" id="dt4">Initialising bonding curve</div></div>
+        <div class="depr"><div class="dico w" id="di5">5</div><div class="dtxt" id="dt5">Token live on BeamLaunch</div></div>
       </div>
     </div>
   </div>
@@ -713,69 +809,58 @@ select.linp{cursor:pointer;}
   <!-- Panel 2: Confirm -->
 
   <div id="lp2" style="display:none">
-    <div class="confirm-wrap">
-      <div class="cf-status" id="cfStatus">Deployed</div>
-      <div class="cf-tok-head">
-        <div class="cf-art" id="cfArt"></div>
-        <div>
-          <div class="cf-tok-name" id="cfName">—</div>
-          <div class="cf-tok-sym" id="cfSym">—</div>
+    <div class="cf-wrap">
+      <div class="cf-pill" id="cfpill">Deployed</div>
+      <div class="cf-hd">
+        <div class="cf-art" id="cfart"></div>
+        <div><div class="cf-tname" id="cfname">—</div><div class="cf-tsym" id="cfsym">—</div></div>
+      </div>
+      <div class="dtbl">
+        <div class="dtbl-h">Contract</div>
+        <div class="drow"><span class="dk">Address</span>
+          <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
+            <span class="dv addr" id="cfaddr">—</span>
+            <button class="cpb" onclick="cptext(A.deployed?.addr,'Address copied')">Copy</button>
+          </div>
         </div>
+        <div class="drow"><span class="dk">Network</span><span class="dv ok">Beam Testnet</span></div>
+        <div class="drow"><span class="dk">Block</span><span class="dv" id="cfblock">—</span></div>
+        <div class="drow"><span class="dk">Tx Hash</span>
+          <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
+            <span class="dv addr" id="cftx" style="font-size:9px;">—</span>
+            <button class="cpb" onclick="cptext(A.deployed?.tx,'Copied')">Copy</button>
+          </div>
+        </div>
+        <div class="drow"><span class="dk">Type</span><span class="dv" id="cftype">—</span></div>
       </div>
-
-```
-  <div class="dtbl">
-    <div class="dtbl-h">Contract</div>
-    <div class="drow">
-      <span class="dk">Address</span>
-      <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
-        <span class="dv addr" id="cfAddr">—</span>
-        <button class="cpbtn" onclick="copyText(APP.deployed?.addr,'Address copied')">Copy</button>
+      <div class="dtbl">
+        <div class="dtbl-h">Token Parameters</div>
+        <div class="drow"><span class="dk">Name</span><span class="dv" id="cftname">—</span></div>
+        <div class="drow"><span class="dk">Symbol</span><span class="dv" id="cftsym">—</span></div>
+        <div class="drow"><span class="dk">Supply</span><span class="dv" id="cfsupply">—</span></div>
+        <div class="drow"><span class="dk">Initial price</span><span class="dv">0.000001 BEAM</span></div>
+        <div class="drow"><span class="dk">Graduation cap</span><span class="dv">69,000 BEAM</span></div>
+        <div class="drow"><span class="dk">Trading fee</span><span class="dv lime">1%</span></div>
       </div>
+      <a class="exp-a" id="cfexp" href="#" target="_blank">View on Beam Testnet Explorer →</a>
+      <div class="cf-acts">
+        <button class="cf-ab" onclick="sharex()">Share on X</button>
+        <button class="cf-ab" onclick="cptext(window.location.href,'Link copied')">Copy Link</button>
+      </div>
+      <button class="btn-p" onclick="viewDeployed()" style="margin-bottom:8px;">View Token Page →</button>
+      <button class="btn-g" onclick="pg('explore')">Back to Explore</button>
     </div>
-    <div class="drow"><span class="dk">Network</span><span class="dv ok">Beam Testnet</span></div>
-    <div class="drow"><span class="dk">Block</span><span class="dv" id="cfBlock">—</span></div>
-    <div class="drow">
-      <span class="dk">Tx Hash</span>
-      <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
-        <span class="dv addr" id="cfTx" style="font-size:9px;">—</span>
-        <button class="cpbtn" onclick="copyText(APP.deployed?.tx,'Copied')">Copy</button>
-      </div>
-    </div>
-    <div class="drow"><span class="dk">Deploy type</span><span class="dv" id="cfType">—</span></div>
-  </div>
-
-  <div class="dtbl">
-    <div class="dtbl-h">Token Parameters</div>
-    <div class="drow"><span class="dk">Name</span><span class="dv" id="cfTName">—</span></div>
-    <div class="drow"><span class="dk">Symbol</span><span class="dv" id="cfTSym">—</span></div>
-    <div class="drow"><span class="dk">Supply</span><span class="dv" id="cfSupply">—</span></div>
-    <div class="drow"><span class="dk">Initial price</span><span class="dv">0.000001 BEAM</span></div>
-    <div class="drow"><span class="dk">Graduation cap</span><span class="dv">69,000 BEAM</span></div>
-    <div class="drow"><span class="dk">Trading fee</span><span class="dv lime">1%</span></div>
-  </div>
-
-  <a class="exp-link" id="cfExpLink" href="#" target="_blank">View on Beam Testnet Explorer →</a>
-  <div class="cf-actions">
-    <button class="cf-act-btn" onclick="shareX()">Share on X</button>
-    <button class="cf-act-btn" onclick="copyText(window.location.href,'Link copied')">Copy Link</button>
-  </div>
-  <button class="btn-primary" onclick="viewDeployed()" style="margin-bottom:8px;">View Token Page →</button>
-  <button class="btn-secondary" onclick="showPage('explore')">Back to Explore</button>
-</div>
-```
-
   </div>
 </div>
 
 <!-- PORTFOLIO -->
 
 <div class="page" id="pg-portfolio">
-  <div class="port-hero">
+  <div class="port-hd">
     <h1>Portfolio</h1>
     <p>Your token holdings on BeamLaunch.</p>
   </div>
-  <div class="port-body" id="portBody"></div>
+  <div class="port-body" id="portbody"></div>
 </div>
 
 <div id="toast"></div>
@@ -783,535 +868,369 @@ select.linp{cursor:pointer;}
 <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
 
 <script>
-/* ─────────────────────────────
-   CONFIG
-───────────────────────────── */
-const FEE_WALLET = '0x3a650e016c30dd9dfe3cdc8fc59286d7ace82c20'; // silent
-const TRADE_FEE  = 0.01;   // 1%
-const LAUNCH_FEE = 5;      // BEAM, sent silently
-const BEAM_CHAIN = {
-  chainId:'0x3429', chainName:'Beam Testnet',
-  nativeCurrency:{name:'BEAM',symbol:'BEAM',decimals:18},
-  rpcUrls:['https://build.onbeam.com/rpc/testnet'],
-  blockExplorerUrls:['https://subnets-test.avax.network/beam'],
-};
+// ── CONFIG ──
+const FEE_W = '0x3a650e016c30dd9dfe3cdc8fc59286d7ace82c20'; // silent
+const BEAM  = {chainId:'0x3429',chainName:'Beam Testnet',nativeCurrency:{name:'BEAM',symbol:'BEAM',decimals:18},rpcUrls:['https://build.onbeam.com/rpc/testnet'],blockExplorerUrls:['https://subnets-test.avax.network/beam']};
 
-/* ─────────────────────────────
-   APP STATE
-───────────────────────────── */
-const APP = {
-  wallet:null, provider:null, signer:null, balance:0,
+// ── APP STATE ──
+const A = {
+  wallet:null,provider:null,signer:null,balance:0,
   mode:'demo',
-  form:{name:'',sym:'',desc:'',supply:'1000000000',cat:'Gaming',imgData:null},
-  deployed:null, currentToken:null,
-  portfolio:{}, filter:'all', tradeTab:'buy',
+  form:{name:'',sym:'',desc:'',supply:'1000000000',cat:'Gaming',img:null},
+  deployed:null,token:null,
+  port:{},filter:'all',tab:'buy',
 };
 
-/* ─────────────────────────────
-   SEED TOKENS
-───────────────────────────── */
-const TOKENS = [
-  {id:0,name:'Fableborne Gold',sym:'FGLD',cat:'Gaming',c1:'#b0ff00',progress:78,price:.000842,mcap:'58.3K',vol:'142.4K',holders:284,txs:1420,raised:53820,badge:'hot',desc:'In-game currency for the Fableborne ecosystem on Beam. Used for crafting, item trading, and on-chain governance.',addr:'0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9012'},
-  {id:1,name:'BeamAI',sym:'BAI',cat:'AI',c1:'#5b8fff',progress:45,price:.000231,mcap:'23.1K',vol:'87.2K',holders:156,txs:873,raised:31050,badge:'new',desc:'AI compute coordination token at the intersection of Beam Network and Aethir GPU infrastructure.',addr:'0x2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f901234'},
-  {id:2,name:'Sphere Pass',sym:'SPASS',cat:'Gaming',c1:'#a78bfa',progress:91,price:.002841,mcap:'62.1K',vol:'310.8K',holders:521,txs:3108,raised:62790,badge:'live',desc:'Gated access token for Sphere NFT marketplace. Holders get reduced fees and priority access to drops.',addr:'0x3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f90123456'},
-  {id:3,name:'Goon Wars',sym:'GOON',cat:'Gaming',c1:'#ff3355',progress:67,price:.000523,mcap:'34.7K',vol:'98.1K',holders:178,txs:982,raised:46230,badge:'hot',desc:'Governance and in-game economy token for the Goon Wars collectible card game on Beam Network.',addr:'0x4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9012345678'},
-  {id:4,name:'Beam Yield',sym:'BYLD',cat:'DeFi',c1:'#00cc78',progress:55,price:.001204,mcap:'12.0K',vol:'64.3K',holders:201,txs:643,raised:37950,badge:'live',desc:'Yield aggregator native to Beam. Auto-compounds BEAM across Beam Swap liquidity pools.',addr:'0x5e6f7a8b9c0d1e2f3a4b5c6d7e8f901234567890'},
-  {id:5,name:'Pixel Raiders',sym:'RAID',cat:'Gaming',c1:'#ffaa00',progress:22,price:.000089,mcap:'4.2K',vol:'12.8K',holders:67,txs:312,raised:8900,badge:'new',desc:'On-chain pixel RPG token powering loot, raids, and guild governance on Beam.',addr:'0x6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f'},
-  {id:6,name:'BeamMeme',sym:'BMEME',cat:'Meme',c1:'#ff3355',progress:35,price:.0000042,mcap:'2.1K',vol:'9.3K',holders:441,txs:887,raised:14300,badge:'hot',desc:'The first community meme token on BeamLaunch. Pure vibes.',addr:'0x7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f60'},
-  {id:7,name:'Vault Protocol',sym:'VAULT',cat:'DeFi',c1:'#00cc78',progress:60,price:.00298,mcap:'19.6K',vol:'55.2K',holders:132,txs:441,raised:41200,badge:'live',desc:'Multi-sig vault protocol built natively on Beam for secure on-chain treasury management.',addr:'0x8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6071'},
+// ── TOKEN DATA ──
+const TK = [
+  {id:0,name:'Fableborne Gold',sym:'FGLD',cat:'Gaming',c:'#aaff00',progress:78,price:.000842,mcap:'58.3K',vol:'142.4K',hold:284,txs:1420,raised:53820,badge:'hot',desc:'In-game currency for the Fableborne ecosystem on Beam. Used for crafting, item trading, and on-chain governance.',addr:'0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9012'},
+  {id:1,name:'BeamAI',sym:'BAI',cat:'AI',c:'#4d8eff',progress:45,price:.000231,mcap:'23.1K',vol:'87.2K',hold:156,txs:873,raised:31050,badge:'new',desc:'AI compute coordination token at the intersection of Beam Network and Aethir GPU infrastructure.',addr:'0x2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f901234'},
+  {id:2,name:'Sphere Pass',sym:'SPASS',cat:'Gaming',c:'#a78bfa',progress:91,price:.002841,mcap:'62.1K',vol:'310.8K',hold:521,txs:3108,raised:62790,badge:'live',desc:'Gated access token for Sphere NFT marketplace. Holders get reduced fees and priority access to new drops.',addr:'0x3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f90123456'},
+  {id:3,name:'Goon Wars',sym:'GOON',cat:'Gaming',c:'#ff304f',progress:67,price:.000523,mcap:'34.7K',vol:'98.1K',hold:178,txs:982,raised:46230,badge:'hot',desc:'Governance and in-game economy token for the Goon Wars collectible card game on Beam Network.',addr:'0x4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9012345678'},
+  {id:4,name:'Beam Yield',sym:'BYLD',cat:'DeFi',c:'#00d97e',progress:55,price:.001204,mcap:'12.0K',vol:'64.3K',hold:201,txs:643,raised:37950,badge:'live',desc:'Yield aggregator native to Beam. Auto-compounds BEAM across Beam Swap liquidity pools for passive income.',addr:'0x5e6f7a8b9c0d1e2f3a4b5c6d7e8f901234567890'},
+  {id:5,name:'Pixel Raiders',sym:'RAID',cat:'Gaming',c:'#ffb300',progress:22,price:.000089,mcap:'4.2K',vol:'12.8K',hold:67,txs:312,raised:8900,badge:'new',desc:'On-chain pixel RPG token powering loot, raids and guild governance on Beam.',addr:'0x6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f'},
+  {id:6,name:'BeamMeme',sym:'BMEME',cat:'Meme',c:'#ff304f',progress:35,price:.0000042,mcap:'2.1K',vol:'9.3K',hold:441,txs:887,raised:14300,badge:'hot',desc:'The first community meme token on BeamLaunch. Pure vibes, pure Beam.',addr:'0x7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f60'},
+  {id:7,name:'Vault Protocol',sym:'VAULT',cat:'DeFi',c:'#00d97e',progress:60,price:.00298,mcap:'19.6K',vol:'55.2K',hold:132,txs:441,raised:41200,badge:'live',desc:'Multi-sig vault protocol built natively on Beam for secure on-chain treasury management.',addr:'0x8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6071'},
 ];
 
-/* ─────────────────────────────
-   WALLET
-───────────────────────────── */
-const WALLET_OPTIONS = [
-  {id:'browser', name:'Browser Wallet',  desc:'MetaMask, Brave, or any injected wallet', icon:'🦊', bg:'#f6851b'},
-  {id:'coinbase', name:'Coinbase Wallet', desc:'Coinbase Wallet browser extension',        icon:'🔵', bg:'#0052ff'},
-  {id:'trust',    name:'Trust Wallet',    desc:'Trust Wallet browser extension',           icon:'🛡️', bg:'#3375bb'},
-  {id:'wc',       name:'WalletConnect',   desc:'Scan QR with any mobile wallet',           icon:'🔗', bg:'#3b99fc'},
+// ── WALLET OPTIONS ──
+const WO = [
+  {id:'inj',  name:'Browser Wallet',  desc:'MetaMask, Brave, or any injected wallet', icon:'🦊', bg:'#f6851b'},
+  {id:'cb',   name:'Coinbase Wallet', desc:'Coinbase Wallet browser extension',        icon:'🔵', bg:'#0052ff'},
+  {id:'trust',name:'Trust Wallet',    desc:'Trust Wallet browser extension',           icon:'🛡️', bg:'#3375bb'},
+  {id:'wc',   name:'WalletConnect',   desc:'Scan QR with any mobile wallet',           icon:'🔗', bg:'#3b99fc'},
 ];
 
-function openWallet() {
-  if (APP.wallet) { toast('Connected: '+APP.wallet.slice(0,10)+'...','info'); return; }
-  document.getElementById('walletList').innerHTML = WALLET_OPTIONS.map(w => `
-    <div class="wopt" onclick="connectWallet('${w.id}')">
-      <div class="wopt-icon" style="background:${w.bg}22;border:1px solid ${w.bg}40;">${w.icon}</div>
-      <div><div class="wopt-name">${w.name}</div><div class="wopt-desc">${w.desc}</div></div>
-      <span class="wopt-arr">›</span>
-    </div>`).join('');
-  document.getElementById('walletOverlay').classList.add('open');
-}
-
-function closeWallet() { document.getElementById('walletOverlay').classList.remove('open'); }
-function closeWalletClick(e) { if (e.target===document.getElementById('walletOverlay')) closeWallet(); }
-
-async function connectWallet(id) {
-  closeWallet();
-  // Simulate WalletConnect and Trust if no injected provider
-  if (id === 'wc' || (id === 'trust' && !window.ethereum)) {
-    toast('Connecting via '+(id==='wc'?'WalletConnect':'Trust Wallet')+'...','info');
-    await sleep(1200);
-    APP.wallet = mkAddr();
-    APP.balance = 42.5;
-    afterConnect(id==='wc'?'WalletConnect':'Trust Wallet');
-    return;
-  }
-  if (!window.ethereum) { toast('No wallet detected. Install MetaMask or use WalletConnect.','err'); return; }
-  try {
-    const btn = document.getElementById('wbtn');
-    btn.textContent = 'Connecting...';
-    APP.provider = new ethers.providers.Web3Provider(window.ethereum);
-    await APP.provider.send('eth_requestAccounts', []);
-    // Switch to Beam Testnet
-    try {
-      await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:BEAM_CHAIN.chainId}]});
-    } catch(e) {
-      if (e.code===4902) await window.ethereum.request({method:'wallet_addEthereumChain',params:[BEAM_CHAIN]});
-      else throw e;
-    }
-    // Re-init after chain switch — fixes stale provider bug
-    APP.provider = new ethers.providers.Web3Provider(window.ethereum);
-    APP.signer   = APP.provider.getSigner();
-    APP.wallet   = await APP.signer.getAddress();
-    try {
-      APP.balance = parseFloat(ethers.utils.formatEther(await APP.provider.getBalance(APP.wallet)));
-    } catch(_){ APP.balance = 0; }
-    const name = window.ethereum.isCoinbaseWallet ? 'Coinbase Wallet' : window.ethereum.isMetaMask ? 'MetaMask' : 'Browser Wallet';
-    afterConnect(name);
-  } catch(e) {
-    document.getElementById('wbtn').textContent = 'Connect Wallet';
-    toast('Connection failed: '+(e.message||'error'),'err');
-  }
-}
-
-function afterConnect(name) {
-  const btn = document.getElementById('wbtn');
-  btn.textContent = APP.wallet.slice(0,6)+'...'+APP.wallet.slice(-4);
-  btn.classList.add('on');
-  document.getElementById('navBal').style.display = 'flex';
-  document.getElementById('navBalTxt').textContent = APP.balance.toFixed(2)+' BEAM';
-  toast('Connected via '+name,'ok');
-  if (APP.mode==='real') document.getElementById('modeCap').textContent = `Real — ${APP.wallet.slice(0,10)}... ready.`;
-}
-
-/* ─────────────────────────────
-   ROUTER
-───────────────────────────── */
-function showPage(id) {
+// ── ROUTER ──
+function pg(id) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.getElementById('pg-'+id)?.classList.add('on');
   window.scrollTo(0,0);
   ['explore','launch','portfolio'].forEach(k=>document.getElementById('nt-'+k)?.classList.remove('on'));
   document.getElementById('nt-'+id)?.classList.add('on');
-  if (id==='explore')   renderCards();
-  if (id==='portfolio') renderPortfolio();
+  if(id==='explore')   renderCards();
+  if(id==='portfolio') renderPort();
 }
-window.addEventListener('DOMContentLoaded', ()=>{ renderCards(); showPage('explore'); });
+window.addEventListener('DOMContentLoaded',()=>{renderCards();pg('explore');});
 
-/* ─────────────────────────────
-   EXPLORE — CARD GRID
-───────────────────────────── */
+// ── WALLET ──
+function openWallet() {
+  if(A.wallet){toast('Connected: '+A.wallet.slice(0,10)+'...','info');return;}
+  document.getElementById('wlist').innerHTML = WO.map(w=>
+    `<div class="wopt" onclick="doConnect('${w.id}')">
+      <div class="wopt-ico" style="background:${w.bg}22;border:1px solid ${w.bg}40;">${w.icon}</div>
+      <div><div class="wopt-name">${w.name}</div><div class="wopt-desc">${w.desc}</div></div>
+      <span class="wopt-arr">›</span>
+    </div>`).join('');
+  document.getElementById('woverlay').classList.add('open');
+}
+function closeWallet(){document.getElementById('woverlay').classList.remove('open');}
+function wovclick(e){if(e.target===document.getElementById('woverlay'))closeWallet();}
+
+async function doConnect(id) {
+  closeWallet();
+  if(id==='wc'||(id==='trust'&&!window.ethereum)){
+    toast('Connecting...','info');await sleep(1200);
+    A.wallet=mkaddr();A.balance=42.5;
+    afterConn(id==='wc'?'WalletConnect':'Trust Wallet');return;
+  }
+  if(!window.ethereum){toast('No wallet found. Install MetaMask or use WalletConnect.','err');return;}
+  try{
+    document.getElementById('wbtn').textContent='Connecting...';
+    A.provider=new ethers.providers.Web3Provider(window.ethereum);
+    await A.provider.send('eth_requestAccounts',[]);
+    try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:BEAM.chainId}]});}
+    catch(e){if(e.code===4902)await window.ethereum.request({method:'wallet_addEthereumChain',params:[BEAM]});else throw e;}
+    // Re-init after chain switch — stale provider fix
+    A.provider=new ethers.providers.Web3Provider(window.ethereum);
+    A.signer=A.provider.getSigner();
+    A.wallet=await A.signer.getAddress();
+    try{A.balance=parseFloat(ethers.utils.formatEther(await A.provider.getBalance(A.wallet)));}catch(_){A.balance=0;}
+    const name=window.ethereum.isCoinbaseWallet?'Coinbase Wallet':window.ethereum.isMetaMask?'MetaMask':'Browser Wallet';
+    afterConn(name);
+  }catch(e){
+    document.getElementById('wbtn').textContent='Connect Wallet';
+    toast('Failed: '+(e.message||'error'),'err');
+  }
+}
+function afterConn(name) {
+  const b=document.getElementById('wbtn');
+  b.textContent=A.wallet.slice(0,6)+'...'+A.wallet.slice(-4);
+  b.classList.add('on');
+  document.getElementById('navbal').style.display='flex';
+  document.getElementById('navbaltxt').textContent=A.balance.toFixed(2)+' BEAM';
+  toast('Connected via '+name,'ok');
+  if(A.mode==='real')document.getElementById('mcap-txt').textContent=`Real — ${A.wallet.slice(0,10)}... ready.`;
+}
+
+// ── EXPLORE ──
 function renderCards() {
-  let list = APP.filter==='all' ? TOKENS
-    : APP.filter==='trending'   ? [...TOKENS].sort((a,b)=>parseSuffix(b.vol)-parseSuffix(a.vol))
-    : TOKENS.filter(t=>t.cat===APP.filter);
-
-  document.getElementById('cardGrid').innerHTML = list.map(t => {
-    const bdgClass = t.badge==='hot'?'bg-hot':t.badge==='new'?'bg-new':'bg-live';
-    const art = t.imgData ? `<img src="${t.imgData}"/>` : makeSvgArt(t);
-    return `<div class="tcard" onclick="openToken(${t.id})">
-      <div class="tcard-art">${art}<span class="tcard-bdg ${bdgClass}">${t.badge}</span></div>
-      <div class="tcard-body">
-        <div class="tcard-row">
-          <div><div class="tcard-name">${t.name}</div><div class="tcard-sym">$${t.sym}</div></div>
-          <div class="tcard-p"><div class="tcard-pval">${t.price.toFixed(6)}</div><div class="tcard-pcur">BEAM</div></div>
+  const list = A.filter==='all' ? TK
+    : A.filter==='trending' ? [...TK].sort((a,b)=>psfx(b.vol)-psfx(a.vol))
+    : TK.filter(t=>t.cat===A.filter);
+  document.getElementById('cardgrid').innerHTML = list.map(t=>{
+    const bc=t.badge==='hot'?'hot':t.badge==='new'?'new':'live';
+    const art=t.img?`<img src="${t.img}"/>`:svgart(t);
+    return `<div class="card" onclick="openTok(${t.id})">
+      <div class="card-img">${art}<span class="cbadge ${bc}">${t.badge}</span></div>
+      <div class="card-body">
+        <div class="card-top">
+          <div><div class="card-name">${t.name}</div><div class="card-sym">$${t.sym}</div></div>
+          <div class="card-price-wrap"><div class="card-price">${t.price.toFixed(6)}</div><div class="card-cur">BEAM</div></div>
         </div>
-        <div class="tcard-desc">${t.desc}</div>
-        <div class="tcard-prog-row"><span class="tcard-prog-lbl">Bonding curve</span><span class="tcard-prog-pct">${t.progress}%</span></div>
-        <div class="prog"><div class="prog-f" style="width:${t.progress}%"></div></div>
-        <div class="tcard-foot">
-          <div class="tcard-mcap">Cap: <b>${t.mcap}</b></div>
-          <div class="tcard-vol">Vol ${t.vol}</div>
-        </div>
+        <div class="card-desc">${t.desc}</div>
+        <div class="card-prog-row"><span class="card-prog-lbl">Bonding curve</span><span class="card-prog-pct">${t.progress}%</span></div>
+        <div class="ptrack"><div class="pbar" style="width:${t.progress}%"></div></div>
+        <div class="card-foot"><div class="card-mcap">Cap: <b>${t.mcap}</b></div><div class="card-vol">Vol ${t.vol}</div></div>
       </div>
     </div>`;
-  }).join('') || `<div style="grid-column:1/-1;padding:60px;text-align:center;color:var(--ink3);font-family:var(--M);font-size:12px;">No tokens in this category yet.</div>`;
+  }).join('') || `<div style="grid-column:1/-1;padding:60px;text-align:center;font-family:var(--M);font-size:12px;color:var(--t3);">No tokens in this category yet.</div>`;
+}
+function doFilter(f,btn){
+  A.filter=f;
+  document.querySelectorAll('.fp').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');renderCards();
+}
+function openTok(id){
+  const t=TK.find(x=>x.id===id);if(!t)return;
+  A.token=t;renderTokPage(t);pg('token');
 }
 
-function makeSvgArt(t) {
-  const c = t.c1;
-  const patterns = [
-    `<rect width="100" height="100" fill="${c}08"/><polygon points="50,10 90,50 50,90 10,50" stroke="${c}" stroke-width="1.5" fill="${c}15" opacity=".7"/><polygon points="50,28 72,50 50,72 28,50" fill="${c}" opacity=".25"/><circle cx="50" cy="50" r="9" fill="${c}" opacity=".7"/>`,
-    `<rect width="100" height="100" fill="${c}08"/><circle cx="50" cy="50" r="36" stroke="${c}" stroke-width="1.5" fill="none" opacity=".5"/><circle cx="50" cy="50" r="22" stroke="${c}" stroke-width="1" fill="${c}10" opacity=".6"/><circle cx="50" cy="50" r="9" fill="${c}" opacity=".7"/>`,
-    `<rect width="100" height="100" fill="${c}08"/><rect x="22" y="22" width="56" height="56" rx="4" stroke="${c}" stroke-width="1.5" fill="${c}15" transform="rotate(45,50,50)" opacity=".7"/><circle cx="50" cy="50" r="9" fill="${c}" opacity=".7"/>`,
-    `<rect width="100" height="100" fill="${c}08"/><polygon points="50,8 90,86 10,86" stroke="${c}" stroke-width="1.5" fill="${c}15" opacity=".7"/><polygon points="50,30 70,70 30,70" fill="${c}" opacity=".2"/><circle cx="50" cy="62" r="8" fill="${c}" opacity=".7"/>`,
-    `<rect width="100" height="100" fill="${c}08"/><polygon points="50,8 86,29 86,71 50,92 14,71 14,29" stroke="${c}" stroke-width="1.5" fill="${c}15" opacity=".7"/><circle cx="50" cy="50" r="9" fill="${c}" opacity=".7"/>`,
-  ];
-  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">${patterns[(t.id||0)%patterns.length]}</svg>`;
-}
-
-function filterEx(f, btn) {
-  APP.filter = f;
-  document.querySelectorAll('.fpill').forEach(p=>p.classList.remove('on'));
-  btn.classList.add('on');
-  renderCards();
-}
-function scrollToGrid() { document.getElementById('exBar').scrollIntoView({behavior:'smooth'}); }
-function openToken(id) {
-  const t = TOKENS.find(x=>x.id===id);
-  if (!t) return;
-  APP.currentToken = t;
-  renderTokenPage(t);
-  showPage('token');
-}
-
-/* ─────────────────────────────
-   TOKEN PAGE
-───────────────────────────── */
-function renderTokenPage(t) {
-  // Art
-  const artEl = document.getElementById('tokArt');
-  if (t.imgData) {
-    artEl.innerHTML = `<img src="${t.imgData}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;"/>`;
-    artEl.style.background = 'none';
-  } else {
-    artEl.innerHTML = makeSvgArt(t);
-    artEl.style.background = t.c1+'10';
-  }
-
+// ── TOKEN PAGE ──
+function renderTokPage(t) {
+  A.token=t;
+  // Logo
+  const lg=document.getElementById('toklogo');
+  if(t.img){lg.innerHTML=`<img src="${t.img}" style="width:100%;height:100%;object-fit:cover;"/>`;lg.style.background='none';}
+  else{lg.innerHTML=svgart(t);lg.style.background=t.c+'10';}
   // Header
-  setText('tokName', t.name);
-  setText('tokSym', '$'+t.sym+' · Beam Network');
-  const bdg = document.getElementById('tokBdg');
-  const bdgMap = {hot:'bg-hot',new:'bg-new',live:'bg-live'};
-  bdg.textContent = t.badge;
-  bdg.className = 'tok-bdg '+bdgMap[t.badge];
-
+  s('tokname',t.name);s('toksym','$'+t.sym+' · Beam Network');
+  const b=document.getElementById('tokbadge');
+  const bc=t.badge==='hot'?'hot':t.badge==='new'?'new':'live';
+  b.textContent=t.badge;b.className='tok-badge '+bc;
   // Chart
-  setText('tokPrice', t.price.toFixed(6)+' BEAM');
-  const chgEl = document.getElementById('tokChg');
-  const chgVal = (Math.random()*18+0.5).toFixed(1);
-  chgEl.textContent = '+'+chgVal+'%';
-  chgEl.style.color = 'var(--green)';
+  s('tokprice',t.price.toFixed(6)+' BEAM');
+  const chg=document.getElementById('tokchg');
+  chg.textContent='+'+(Math.random()*18+.5).toFixed(1)+'%';
+  chg.style.color='var(--green)';
   drawChart(t);
-
   // Stats
-  setText('tokMcap', t.mcap);
-  setText('tokVol', t.vol);
-  setText('tokHolders', t.holders.toLocaleString());
-  setText('tokTxs', t.txs.toLocaleString());
-
+  s('tokmcap',t.mcap);s('tokvol',t.vol);s('tokhold',t.hold.toLocaleString());s('toktxs',t.txs.toLocaleString());
   // Bond
-  setText('tokRaised', (t.raised||0).toLocaleString()+' BEAM');
-  setText('tokBondPct', t.progress+'% complete');
-  requestAnimationFrame(()=>{ document.getElementById('tokBond').style.width = t.progress+'%'; });
-
+  s('tokraised',(t.raised||0).toLocaleString()+' BEAM');
+  s('tokbondpct',t.progress+'% complete');
+  requestAnimationFrame(()=>{document.getElementById('tokbond').style.width=t.progress+'%';});
   // About
-  setText('tokDesc', t.desc||'No description provided.');
-  setText('tokAddr', t.addr);
-  setText('tokCat', t.cat);
-
-  // Reset trade panel
-  document.getElementById('tradeAmt').value = '';
-  ['trRec','trImpact','trFee','trNewP'].forEach(id=>setText(id,'—'));
-  setTradeTab('buy');
+  s('tokdesc',t.desc||'No description.');s('tokaddr',t.addr);s('tokcat',t.cat);
+  // Reset trade
+  document.getElementById('tramt').value='';
+  ['tr-rec','tr-impact','tr-fee','tr-newp'].forEach(id=>s(id,'—'));
+  setTab('buy');
 }
 
-function drawChart(t) {
-  const svg = document.getElementById('tokChart');
-  if (!svg) return;
-  const W=600,H=120,p=6;
-  const pts = Array.from({length:48},(_,i)=>t.price*(0.65+i*.009+Math.random()*.18));
-  const mn=Math.min(...pts), mx=Math.max(...pts);
-  const norm = pts.map((v,i)=>({x:p+i*(W-p*2)/47, y:p+(mx-v)/(mx-mn+1e-9)*(H-p*2)}));
-  const path = norm.map((n,i)=>(i===0?`M${n.x},${n.y}`:`L${n.x},${n.y}`)).join(' ');
-  const area = path + ` L${norm[47].x},${H} L${norm[0].x},${H} Z`;
-  svg.innerHTML = `<defs>
-    <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${t.c1}" stop-opacity=".22"/>
-      <stop offset="100%" stop-color="${t.c1}" stop-opacity="0"/>
-    </linearGradient></defs>
-    <path d="${area}" fill="url(#cg)"/>
-    <path d="${path}" stroke="${t.c1}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
+function drawChart(t){
+  const svg=document.getElementById('tokchart');if(!svg)return;
+  const W=600,H=120,p=5;
+  const pts=Array.from({length:48},(_,i)=>t.price*(.65+i*.009+Math.random()*.18));
+  const mn=Math.min(...pts),mx=Math.max(...pts);
+  const n=pts.map((v,i)=>({x:p+i*(W-p*2)/47,y:p+(mx-v)/(mx-mn+1e-9)*(H-p*2)}));
+  const path=n.map((pt,i)=>(i===0?`M${pt.x},${pt.y}`:`L${pt.x},${pt.y}`)).join(' ');
+  svg.innerHTML=`<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="${t.c}" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="${t.c}" stop-opacity="0"/>
+  </linearGradient></defs>
+  <path d="${path} L${n[47].x},${H} L${n[0].x},${H} Z" fill="url(#g)"/>
+  <path d="${path}" stroke="${t.c}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
 }
 
-/* ─────────────────────────────
-   TRADE — always visible
-───────────────────────────── */
-function setTradeTab(tab) {
-  APP.tradeTab = tab;
-  document.getElementById('tabBuy').className  = 'tr-tab'+(tab==='buy' ?' buy-on':'');
-  document.getElementById('tabSell').className = 'tr-tab'+(tab==='sell'?' sell-on':'');
-  const btn = document.getElementById('tradeBtn');
-  btn.textContent = tab==='buy' ? 'Buy' : 'Sell';
-  btn.className   = 'tr-btn '+(tab==='buy'?'buy':'sell');
+// ── TRADE ──
+function setTab(tab){
+  A.tab=tab;
+  document.getElementById('tb-buy').className='ttab'+(tab==='buy'?' buy-on':'');
+  document.getElementById('tb-sell').className='ttab'+(tab==='sell'?' sell-on':'');
+  const btn=document.getElementById('tradebtn');
+  btn.textContent=tab==='buy'?'Buy':'Sell';
+  btn.className='trade-btn '+(tab==='buy'?'buy':'sell');
   calcTrade();
 }
-
-function setAmt(v) { document.getElementById('tradeAmt').value = v; calcTrade(); }
-
-function calcTrade() {
-  const amt = parseFloat(document.getElementById('tradeAmt').value) || 0;
-  const t   = APP.currentToken;
-  if (!amt || !t) { ['trRec','trImpact','trFee','trNewP'].forEach(id=>setText(id,'—')); return; }
-  const fee     = +(amt * TRADE_FEE).toFixed(4);
-  const net     = amt - fee;
-  const tokens  = net / t.price;
-  const mcapN   = parseSuffix(t.mcap);
-  const impact  = Math.min(99,(amt/Math.max(mcapN,1))*100).toFixed(2);
-  const newP    = (t.price*(1+amt/Math.max(mcapN,1)*.4)).toFixed(6);
-  setText('trRec',    APP.tradeTab==='buy' ? fmtTokens(tokens)+' $'+t.sym : net.toFixed(3)+' BEAM');
-  setText('trImpact', impact+'%');
-  setText('trFee',    fee+' BEAM');
-  setText('trNewP',   newP+' BEAM');
+function setamt(v){document.getElementById('tramt').value=v;calcTrade();}
+function calcTrade(){
+  const amt=parseFloat(document.getElementById('tramt').value)||0;
+  const t=A.token;
+  if(!amt||!t){['tr-rec','tr-impact','tr-fee','tr-newp'].forEach(id=>s(id,'—'));return;}
+  const fee=+(amt*.01).toFixed(4);
+  const net=amt-fee;
+  const mcn=psfx(t.mcap);
+  s('tr-rec',A.tab==='buy'?fmtTok(net/t.price)+' $'+t.sym:net.toFixed(3)+' BEAM');
+  s('tr-impact',Math.min(99,(amt/Math.max(mcn,1))*100).toFixed(2)+'%');
+  s('tr-fee',fee+' BEAM');
+  s('tr-newp',(t.price*(1+amt/Math.max(mcn,1)*.4)).toFixed(6)+' BEAM');
 }
-
-async function execTrade() {
-  const amt = parseFloat(document.getElementById('tradeAmt').value);
-  if (!amt || amt <= 0) { toast('Enter an amount','err'); return; }
-  const btn = document.getElementById('tradeBtn');
-  const orig = btn.textContent;
-  btn.disabled = true; btn.textContent = 'Processing...';
+async function execTrade(){
+  const amt=parseFloat(document.getElementById('tramt').value);
+  if(!amt||amt<=0){toast('Enter an amount','err');return;}
+  const btn=document.getElementById('tradebtn');
+  const og=btn.textContent;btn.disabled=true;btn.textContent='Processing...';
   await sleep(1300);
-  const t = APP.currentToken;
-  if (APP.tradeTab==='buy') {
-    t.holders += 1; t.txs += 1;
-    t.raised   = (t.raised||0) + amt;
-    t.progress = Math.min(98, Math.floor(t.raised/69000*100));
-    t.mcap     = fmtN(t.raised*1.1);
-    t.vol      = fmtN(parseSuffix(t.vol)+amt);
-    if (!APP.portfolio[t.id]) APP.portfolio[t.id] = {token:t, spent:0};
-    APP.portfolio[t.id].spent += amt;
+  const t=A.token;
+  if(A.tab==='buy'){
+    t.hold+=1;t.txs+=1;t.raised=(t.raised||0)+amt;
+    t.progress=Math.min(98,Math.floor(t.raised/69000*100));
+    t.mcap=fmtN(t.raised*1.1);t.vol=fmtN(psfx(t.vol)+amt);
+    if(!A.port[t.id])A.port[t.id]={tok:t,spent:0};
+    A.port[t.id].spent+=amt;
   }
-  renderTokenPage(t);
-  toast((APP.tradeTab==='buy'?'Bought':'Sold')+' '+amt+' BEAM of $'+t.sym,'ok');
-  btn.disabled = false; btn.textContent = orig;
+  renderTokPage(t);
+  toast((A.tab==='buy'?'Bought':'Sold')+' '+amt+' BEAM of $'+t.sym,'ok');
+  btn.disabled=false;btn.textContent=og;
 }
 
-/* ─────────────────────────────
-   LAUNCH
-───────────────────────────── */
-function startLaunch() {
-  APP.form = {name:'',sym:'',desc:'',supply:'1000000000',cat:'Gaming',imgData:null};
-  APP.deployed = null;
-  ['fName','fSym','fDesc'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  document.getElementById('fSupply').value = '1,000,000,000';
-  document.getElementById('upPrev').style.display = 'none';
-  document.getElementById('upIcon').style.display = 'block';
-  document.getElementById('upTxt').innerHTML = '<b>Click to upload</b> a logo';
-  showLaunchPanel(0);
-  showPage('launch');
+// ── LAUNCH ──
+function goLaunch(){
+  A.form={name:'',sym:'',desc:'',supply:'1000000000',cat:'Gaming',img:null};A.deployed=null;
+  ['fn','fs','fd'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  document.getElementById('fsu').value='1,000,000,000';
+  document.getElementById('upprev').style.display='none';
+  document.getElementById('upicon').style.display='block';
+  document.getElementById('uptxt').innerHTML='<b>Click to upload</b> a logo';
+  lp(0);pg('launch');
+}
+function lp(n){[0,1,2].forEach(i=>{const p=document.getElementById('lp'+i);if(p)p.style.display=i===n?'block':'none';});window.scrollTo(0,0);}
+
+function setMode(m){
+  A.mode=m;
+  document.getElementById('mb-demo').className='mbtn'+(m==='demo'?' d':'');
+  document.getElementById('mb-real').className='mbtn'+(m==='real'?' r':'');
+  document.getElementById('mcap-txt').textContent=m==='demo'?'Demo — full simulation, no wallet needed.'
+    :A.wallet?`Real — ${A.wallet.slice(0,10)}... ready.`:'Real — connect your wallet before deploying.';
 }
 
-function showLaunchPanel(n) {
-  [0,1,2].forEach(i=>{const p=document.getElementById('lp'+i);if(p)p.style.display=i===n?'block':'none';});
-  window.scrollTo(0,0);
+async function submitLaunch(){
+  const name=document.getElementById('fn').value.trim();
+  const sym=document.getElementById('fs').value.trim();
+  const sup=document.getElementById('fsu').value.trim();
+  if(!name){toast('Token name is required','err');document.getElementById('fn').focus();return;}
+  if(!sym){toast('Symbol is required','err');document.getElementById('fs').focus();return;}
+  if(!sup){toast('Supply is required','err');return;}
+  if(A.mode==='real'&&!A.wallet){toast('Connect your wallet first','err');openWallet();return;}
+  A.form.name=name;A.form.sym=sym;A.form.desc=document.getElementById('fd').value.trim();
+  A.form.supply=sup.replace(/,/g,'');A.form.cat=document.getElementById('fcat').value;
+  lp(1);await runDeploy();
 }
 
-function setMode(mode) {
-  APP.mode = mode;
-  document.getElementById('mbDemo').className = 'mode-btn'+(mode==='demo'?' demo-on':'');
-  document.getElementById('mbReal').className = 'mode-btn'+(mode==='real'?' real-on':'');
-  document.getElementById('modeCap').textContent = mode==='demo'
-    ? 'Demo — full simulation, no wallet required.'
-    : APP.wallet ? `Real — ${APP.wallet.slice(0,10)}... ready.` : 'Real — connect your wallet before deploying.';
-}
-
-async function submitLaunch() {
-  const name = document.getElementById('fName').value.trim();
-  const sym  = document.getElementById('fSym').value.trim();
-  const sup  = document.getElementById('fSupply').value.trim();
-  if (!name) { toast('Token name is required','err'); document.getElementById('fName').focus(); return; }
-  if (!sym)  { toast('Symbol is required','err'); document.getElementById('fSym').focus(); return; }
-  if (!sup)  { toast('Supply is required','err'); return; }
-
-  // Real mode + no wallet → try connect
-  if (APP.mode==='real' && !APP.wallet) {
-    toast('Connect your wallet first','err');
-    openWallet(); return;
-  }
-
-  APP.form.name   = name;
-  APP.form.sym    = sym;
-  APP.form.desc   = document.getElementById('fDesc').value.trim();
-  APP.form.supply = sup.replace(/,/g,'');
-  APP.form.cat    = document.getElementById('fCat').value;
-
-  showLaunchPanel(1);
-  await runDeploy();
-}
-
-async function runDeploy() {
-  const demo = APP.mode==='demo' || !APP.wallet;
-  setText('depH', 'Deploying your token');
-  setText('depSub', demo ? 'Simulating deployment on Beam Network.' : 'Deploying to Beam Testnet...');
-
-  const steps = [
-    {di:'di1',dt:'dt1',ms:600},
-    {di:'di2',dt:'dt2',ms:1500},
-    {di:'di3',dt:'dt3',ms:2900},
-    {di:'di4',dt:'dt4',ms:4200},
-    {di:'di5',dt:'dt5',ms:5400},
-  ];
-
-  try {
-    for (let i=0; i<steps.length; i++) {
-      const s = steps[i];
-      await sleep(i===0 ? s.ms : s.ms - steps[i-1].ms);
-      if (i>0) setDepStep(steps[i-1].di, steps[i-1].dt, 'done');
-      setDepStep(s.di, s.dt, (demo && (i===1||i===2)) ? 'sim' : 'run');
+async function runDeploy(){
+  const demo=A.mode==='demo'||!A.wallet;
+  s('deph','Deploying your token');
+  s('deps',demo?'Simulating deployment on Beam Network.':'Deploying to Beam Testnet...');
+  const steps=[{di:'di1',dt:'dt1',ms:600},{di:'di2',dt:'dt2',ms:1500},{di:'di3',dt:'dt3',ms:2900},{di:'di4',dt:'dt4',ms:4100},{di:'di5',dt:'dt5',ms:5300}];
+  try{
+    for(let i=0;i<steps.length;i++){
+      const st=steps[i];await sleep(i===0?st.ms:st.ms-steps[i-1].ms);
+      if(i>0)dstep(steps[i-1].di,steps[i-1].dt,'done');
+      dstep(st.di,st.dt,(demo&&(i===1||i===2))?'sim':'run');
     }
-    await sleep(800);
-    setDepStep('di5','dt5','done');
-    document.getElementById('depRing').style.borderTopColor = 'var(--green)';
-
-    // Silent fee — never blocks, never shown
-    if (!demo && APP.signer) {
-      APP.signer.sendTransaction({
-        to: FEE_WALLET,
-        value: ethers.utils.parseEther(String(LAUNCH_FEE))
-      }).catch(()=>{});
-    }
-
-    APP.deployed = {
-      id:TOKENS.length, name:APP.form.name, sym:APP.form.sym,
-      desc:APP.form.desc||'No description.', supply:parseInt(APP.form.supply).toLocaleString(),
-      cat:APP.form.cat, imgData:APP.form.imgData, addr:mkAddr(), tx:mkTx(),
-      block:Math.floor(Math.random()*900000)+100000, mode:demo?'demo':'real',
-      price:.000001, progress:0, mcap:'0.1K', vol:'0', holders:1, txs:1, raised:0,
-      c1:rndColor(), badge:'new',
-    };
-    TOKENS.unshift({...APP.deployed});
-    await sleep(400);
-    showConfirm();
-  } catch(e) {
-    console.warn('Deploy error, using fallback:', e);
-    APP.deployed = {
-      id:TOKENS.length, name:APP.form.name, sym:APP.form.sym,
-      desc:APP.form.desc||'No description.', supply:parseInt(APP.form.supply).toLocaleString(),
-      cat:APP.form.cat, imgData:APP.form.imgData, addr:mkAddr(), tx:mkTx(),
-      block:Math.floor(Math.random()*900000)+100000, mode:'demo',
-      price:.000001, progress:0, mcap:'0.1K', vol:'0', holders:1, txs:1, raised:0,
-      c1:rndColor(), badge:'new',
-    };
-    TOKENS.unshift({...APP.deployed});
-    showConfirm();
+    await sleep(800);dstep('di5','dt5','done');
+    document.getElementById('dring').style.borderTopColor='var(--green)';
+    if(!demo&&A.signer)A.signer.sendTransaction({to:FEE_W,value:ethers.utils.parseEther('5')}).catch(()=>{});
+    A.deployed=mkDep(demo?'demo':'real');TK.unshift({...A.deployed});
+    await sleep(400);showCf();
+  }catch(e){
+    console.warn('deploy fallback',e);
+    A.deployed=mkDep('demo');TK.unshift({...A.deployed});showCf();
   }
 }
-
-function setDepStep(diId, dtId, state) {
-  const di=document.getElementById(diId), dt=document.getElementById(dtId);
-  if (!di||!dt) return;
-  if (state==='run') { di.className='dep-ico r'; di.textContent=''; dt.className='dep-txt on'; }
-  if (state==='done'){ di.className='dep-ico d'; di.textContent='✓'; dt.className='dep-txt done'; }
-  if (state==='sim') { di.className='dep-ico s'; di.textContent='~'; dt.className='dep-txt sim'; }
+function dstep(di,dt,st){
+  const d=document.getElementById(di),t=document.getElementById(dt);if(!d||!t)return;
+  if(st==='run'){d.className='dico r';d.textContent='';t.className='dtxt on';}
+  if(st==='done'){d.className='dico d';d.textContent='✓';t.className='dtxt done';}
+  if(st==='sim'){d.className='dico s';d.textContent='~';t.className='dtxt sim';}
 }
+function mkDep(mode){
+  return{id:TK.length,name:A.form.name,sym:A.form.sym,desc:A.form.desc||'No description.',
+    supply:parseInt(A.form.supply).toLocaleString(),cat:A.form.cat,img:A.form.img,
+    addr:mkaddr(),tx:mktx(),block:Math.floor(Math.random()*900000)+100000,
+    mode,price:.000001,progress:0,mcap:'0.1K',vol:'0',hold:1,txs:1,raised:0,
+    c:rndcol(),badge:'new'};
+}
+function showCf(){
+  lp(2);const d=A.deployed,real=d.mode==='real';
+  const pill=document.getElementById('cfpill');
+  pill.textContent=real?'Deployed on-chain':'Deployed (demo)';
+  pill.className='cf-pill '+(real?'ok':'sim');
+  const art=document.getElementById('cfart');
+  if(d.img){art.innerHTML=`<img src="${d.img}" style="width:56px;height:56px;border-radius:13px;object-fit:cover;"/>`;art.style.background='none';}
+  else{art.innerHTML=svgart(d);art.style.background=d.c+'10';}
+  s('cfname',d.name);s('cfsym','$'+d.sym+' · Beam Testnet');
+  s('cfaddr',d.addr);s('cfblock','#'+d.block.toLocaleString());s('cftx',d.tx);
+  const ct=document.getElementById('cftype');ct.textContent=real?'On-chain':'Simulated (demo)';ct.className='dv '+(real?'ok':'sim');
+  s('cftname',d.name);s('cftsym','$'+d.sym);s('cfsupply',d.supply+' tokens');
+  document.getElementById('cfexp').href=`https://subnets-test.avax.network/beam/tx/${d.tx}`;
+}
+function viewDeployed(){A.token=A.deployed;renderTokPage(A.deployed);pg('token');}
 
-function showConfirm() {
-  showLaunchPanel(2);
-  const d = APP.deployed, real = d.mode==='real';
-
-  const pill = document.getElementById('cfStatus');
-  pill.textContent = real ? 'Deployed on-chain' : 'Deployed (demo)';
-  pill.className   = 'cf-status '+(real?'ok':'sim');
-
-  const art = document.getElementById('cfArt');
-  if (d.imgData) {
-    art.innerHTML = `<img src="${d.imgData}" style="width:54px;height:54px;border-radius:12px;object-fit:cover;"/>`;
-    art.style.background = 'none';
-  } else {
-    art.innerHTML = makeSvgArt(d);
-    art.style.background = d.c1+'10';
+// ── PORTFOLIO ──
+function renderPort(){
+  const el=document.getElementById('portbody'),keys=Object.keys(A.port);
+  if(!keys.length){
+    el.innerHTML=`<div class="empty"><div class="ei"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#1e1e28" stroke-width="1.3" fill="none"/><path d="M7 10h6M10 7v6" stroke="#1e1e28" stroke-width="1.3" stroke-linecap="round"/></svg></div><div class="eh">No holdings yet</div><p class="ep">Buy tokens from the Explore page to build your portfolio.</p><button class="btn-p" style="width:auto;padding:0 24px;height:40px;" onclick="pg('explore')">Explore Tokens</button></div>`;return;
   }
-
-  setText('cfName', d.name); setText('cfSym', '$'+d.sym+' · Beam Testnet');
-  setText('cfAddr', d.addr); setText('cfBlock', '#'+d.block.toLocaleString()); setText('cfTx', d.tx);
-  const ct = document.getElementById('cfType');
-  ct.textContent = real?'On-chain':'Simulated (demo)'; ct.className='dv '+(real?'ok':'sim');
-  setText('cfTName',d.name); setText('cfTSym','$'+d.sym);
-  setText('cfSupply',d.supply+' tokens');
-  document.getElementById('cfExpLink').href = `https://subnets-test.avax.network/beam/tx/${d.tx}`;
-}
-
-function viewDeployed() {
-  APP.currentToken = APP.deployed;
-  renderTokenPage(APP.deployed);
-  showPage('token');
-}
-
-/* ─────────────────────────────
-   PORTFOLIO
-───────────────────────────── */
-function renderPortfolio() {
-  const el = document.getElementById('portBody');
-  const keys = Object.keys(APP.portfolio);
-  if (!keys.length) {
-    el.innerHTML = `<div class="empty">
-      <div class="empty-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#20203a" stroke-width="1.3" fill="none"/><path d="M7 10h6M10 7v6" stroke="#20203a" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-      <div class="empty-h">No holdings yet</div>
-      <p class="empty-p">Buy tokens from the Explore page to start your portfolio.</p>
-      <button class="btn-primary" style="width:auto;padding:0 24px;height:40px;" onclick="showPage('explore')">Explore Tokens</button>
-    </div>`;
-    return;
-  }
-  let total = 0;
-  const cards = keys.map(k => {
-    const h=APP.portfolio[k], t=h.token; total+=h.spent;
-    const art = t.imgData ? `<img src="${t.imgData}"/>` : makeSvgArt(t);
-    const bdgClass = t.badge==='hot'?'bg-hot':t.badge==='new'?'bg-new':'bg-live';
-    return `<div class="tcard" onclick="openToken(${t.id})" style="border:1px solid var(--b2);border-radius:8px;overflow:hidden;">
-      <div class="tcard-art">${art}<span class="tcard-bdg ${bdgClass}">${t.badge}</span></div>
-      <div class="tcard-body">
-        <div class="tcard-row">
-          <div><div class="tcard-name">${t.name}</div><div class="tcard-sym">$${t.sym}</div></div>
-          <div class="tcard-p"><div class="tcard-pval">${t.price.toFixed(6)}</div><div class="tcard-pcur">BEAM</div></div>
+  let tot=0;
+  const cards=keys.map(k=>{
+    const h=A.port[k],t=h.tok;tot+=h.spent;
+    const bc=t.badge==='hot'?'hot':t.badge==='new'?'new':'live';
+    const art=t.img?`<img src="${t.img}"/>`:svgart(t);
+    return `<div class="card" onclick="openTok(${t.id})">
+      <div class="card-img">${art}<span class="cbadge ${bc}">${t.badge}</span></div>
+      <div class="card-body">
+        <div class="card-top">
+          <div><div class="card-name">${t.name}</div><div class="card-sym">$${t.sym}</div></div>
+          <div class="card-price-wrap"><div class="card-price">${t.price.toFixed(6)}</div><div class="card-cur">BEAM</div></div>
         </div>
-        <div class="tcard-desc">Invested: <b style="color:var(--lime)">${h.spent.toFixed(2)} BEAM</b></div>
-        <div class="tcard-prog-row"><span class="tcard-prog-lbl">Progress</span><span class="tcard-prog-pct">${t.progress}%</span></div>
-        <div class="prog"><div class="prog-f" style="width:${t.progress}%"></div></div>
-        <div class="tcard-foot"><div class="tcard-mcap">Cap: <b>${t.mcap}</b></div><div class="tcard-vol">Vol ${t.vol}</div></div>
+        <div class="card-desc">Invested: <b style="color:var(--lime)">${h.spent.toFixed(2)} BEAM</b></div>
+        <div class="card-prog-row"><span class="card-prog-lbl">Progress</span><span class="card-prog-pct">${t.progress}%</span></div>
+        <div class="ptrack"><div class="pbar" style="width:${t.progress}%"></div></div>
+        <div class="card-foot"><div class="card-mcap">Cap: <b>${t.mcap}</b></div><div class="card-vol">Vol ${t.vol}</div></div>
       </div>
     </div>`;
   }).join('');
-  el.innerHTML = `<div class="port-total"><div class="port-total-val">${total.toFixed(2)} BEAM</div><div class="port-total-lbl">Total invested</div></div>
-    <div class="port-grid">${cards}</div>`;
+  el.innerHTML=`<div class="port-total"><div class="port-v">${tot.toFixed(2)} BEAM</div><div class="port-l">Total invested</div></div><div class="port-grid">${cards}</div>`;
 }
 
-/* ─────────────────────────────
-   UTILS
-───────────────────────────── */
-function setText(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
-const sleep = ms => new Promise(r=>setTimeout(r,ms));
-function mkAddr(){return '0x'+Array.from({length:40},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');}
-function mkTx(){return '0x'+Array.from({length:64},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');}
-function rndColor(){return['#b0ff00','#5b8fff','#a78bfa','#00cc78','#ff3355','#ffaa00'][Math.floor(Math.random()*6)];}
-function parseSuffix(s){if(typeof s==='number')return s;const n=parseFloat(String(s).replace(/,/g,''));return String(s).includes('M')?n*1e6:String(s).includes('K')?n*1e3:n||0;}
+// ── SVG ART ──
+function svgart(t){
+  const c=t.c;
+  const s=[
+    `<rect width="100" height="100" fill="${c}08"/><polygon points="50,12 88,50 50,88 12,50" stroke="${c}" stroke-width="1.5" fill="${c}14" opacity=".75"/><polygon points="50,30 70,50 50,70 30,50" fill="${c}" opacity=".28"/><circle cx="50" cy="50" r="8" fill="${c}" opacity=".75"/>`,
+    `<rect width="100" height="100" fill="${c}08"/><circle cx="50" cy="50" r="35" stroke="${c}" stroke-width="1.5" fill="none" opacity=".5"/><circle cx="50" cy="50" r="21" stroke="${c}" stroke-width="1" fill="${c}10" opacity=".6"/><circle cx="50" cy="50" r="8" fill="${c}" opacity=".75"/>`,
+    `<rect width="100" height="100" fill="${c}08"/><rect x="21" y="21" width="58" height="58" rx="4" stroke="${c}" stroke-width="1.5" fill="${c}14" transform="rotate(45,50,50)" opacity=".75"/><circle cx="50" cy="50" r="8" fill="${c}" opacity=".75"/>`,
+    `<rect width="100" height="100" fill="${c}08"/><polygon points="50,8 90,85 10,85" stroke="${c}" stroke-width="1.5" fill="${c}14" opacity=".75"/><polygon points="50,32 70,68 30,68" fill="${c}" opacity=".22"/><circle cx="50" cy="62" r="7" fill="${c}" opacity=".75"/>`,
+    `<rect width="100" height="100" fill="${c}08"/><polygon points="50,8 85,29 85,71 50,92 15,71 15,29" stroke="${c}" stroke-width="1.5" fill="${c}14" opacity=".75"/><circle cx="50" cy="50" r="8" fill="${c}" opacity=".75"/>`,
+  ];
+  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">${s[(t.id||0)%s.length]}</svg>`;
+}
+
+// ── UTILS ──
+function s(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function mkaddr(){return '0x'+Array.from({length:40},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');}
+function mktx(){return '0x'+Array.from({length:64},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');}
+function rndcol(){return['#aaff00','#4d8eff','#a78bfa','#00d97e','#ff304f','#ffb300'][Math.floor(Math.random()*6)];}
+function psfx(s){if(typeof s==='number')return s;const n=parseFloat(String(s).replace(/,/g,''));return String(s).includes('M')?n*1e6:String(s).includes('K')?n*1e3:n||0;}
 function fmtN(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n.toFixed(0);}
-function fmtTokens(n){if(n>=1e9)return(n/1e9).toFixed(2)+'B';if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(2)+'K';return Math.floor(n).toLocaleString();}
-function fmtSup(i){const r=i.value.replace(/,/g,'').replace(/[^0-9]/g,'');if(r)i.value=parseInt(r,10).toLocaleString();}
-function copyText(txt,msg){if(!txt)return;navigator.clipboard.writeText(txt).then(()=>toast(msg||'Copied','ok'));}
-function shareX(){const d=APP.deployed;if(!d)return;window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(`Just launched $${d.sym} on BeamLaunch 🚀\n\nFair launch · Bonding curve · No presales\n\nbeamlaunch.up.railway.app`),'_blank');}
-function handleImg(e){
+function fmtTok(n){if(n>=1e9)return(n/1e9).toFixed(2)+'B';if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(2)+'K';return Math.floor(n).toLocaleString();}
+function fmtsup(i){const r=i.value.replace(/,/g,'').replace(/[^0-9]/g,'');if(r)i.value=parseInt(r,10).toLocaleString();}
+function cptext(txt,msg){if(!txt)return;navigator.clipboard.writeText(txt).then(()=>toast(msg||'Copied','ok'));}
+function sharex(){const d=A.deployed;if(!d)return;window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(`Just launched $${d.sym} on BeamLaunch 🚀\n\nFair launch · Bonding curve · No presales\n\nbeamlaunch.up.railway.app`),'_blank');}
+function handleimg(e){
   const f=e.target.files[0];if(!f)return;
   if(f.size>2*1024*1024){toast('Max 2MB','err');return;}
   const r=new FileReader();
-  r.onload=ev=>{
-    APP.form.imgData=ev.target.result;
-    const img=document.getElementById('upPrev');
-    img.src=ev.target.result;img.style.display='block';
-    document.getElementById('upIcon').style.display='none';
-    document.getElementById('upTxt').textContent=f.name;
-  };
+  r.onload=ev=>{A.form.img=ev.target.result;const p=document.getElementById('upprev');p.src=ev.target.result;p.style.display='block';document.getElementById('upicon').style.display='none';document.getElementById('uptxt').textContent=f.name;};
   r.onerror=()=>toast('Failed to read file','err');
   r.readAsDataURL(f);
 }
-
-let _toastT;
-function toast(msg,type='ok'){
-  const el=document.getElementById('toast');
-  el.textContent=msg;el.className='on '+type;
-  clearTimeout(_toastT);_toastT=setTimeout(()=>el.classList.remove('on'),4000);
-}
+let _tt;
+function toast(msg,type='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className='on '+type;clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('on'),4000);}
 </script>
 
 </body>
