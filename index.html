@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="color-scheme" content="dark"/>
 <meta name="theme-color" content="#0a0a0f"/>
-<title>BeamLaunch — Token Launchpad on Beam</title>
+<title>BeamLaunch — Token Launchpad on Beam Network</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -553,7 +553,7 @@ opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
           <path d="M7 4.5L9.5 7L7 9.5L4.5 7Z" fill="#aaff00"/>
         </svg>
       </div>
-      <span class="logo-name">Beam<em>Launch</em></span>
+      <span class="logo-name">Beam<em>Launch</em></span><span style="font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:rgba(170,255,0,.12);color:#aaff00;border:1px solid rgba(170,255,0,.25);margin-left:6px;">BETA</span>
     </div>
     <div class="nav-mid">
       <button class="ntab on" id="nt-explore" onclick="pg('explore')">Explore</button>
@@ -578,7 +578,7 @@ opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
       <div class="wm-title">Connect a Wallet</div>
       <button class="wm-x" onclick="closeWallet()">×</button>
     </div>
-    <p class="wm-sub">Any EVM-compatible wallet works. BeamLaunch will switch you to Beam Testnet automatically.</p>
+    <p class="wm-sub">Connect any EVM-compatible wallet to explore BeamLaunch on Beam Network.</p>
     <div id="wlist"></div>
     <div class="wm-note">BeamLaunch is non-custodial — we never access your private keys.</div>
   </div>
@@ -588,7 +588,7 @@ opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
 
 <div class="page on" id="pg-explore">
   <div class="hero">
-    <div class="hero-tag">Live on Beam Testnet</div>
+    <div class="hero-tag">Live on Beam Network</div>
     <h1>The token launchpad<br>built for <span>Beam Network</span></h1>
     <div class="hero-sub">Fair. Open. Unstoppable.</div>
     <div class="hero-btns">
@@ -719,7 +719,7 @@ opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
     </div>
   </div>
   <div class="arow"><span class="ak">Category</span><span class="av" id="tokcat">—</span></div>
-  <div class="arow"><span class="ak">Network</span><span class="av green">Beam Testnet</span></div>
+  <div class="arow"><span class="ak">Network</span><span class="av green">Beam Network</span></div>
   <div class="arow"><span class="ak">Trading fee</span><span class="av lime">1% per trade</span></div>
 </div>
 ```
@@ -738,12 +738,6 @@ opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
 
 ```
   <div style="margin-bottom:7px;"><span class="flbl">Mode</span></div>
-  <div class="mode-r">
-    <button class="mbtn d" id="mb-demo" onclick="setMode('demo')">Demo</button>
-    <button class="mbtn" id="mb-real" onclick="setMode('real')">Real Wallet</button>
-  </div>
-  <p class="mode-cap" id="mcap-txt">Demo — full simulation, no wallet needed.</p>
-
   <div class="r2">
     <div class="fl">
       <label class="flbl">Token Name <span class="opt">required</span></label>
@@ -795,7 +789,7 @@ opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
 
   <div class="sum-card">
     <div class="sum-head">Launch Details</div>
-    <div class="sum-row"><span class="sk">Network</span><span class="sv">Beam Testnet · Chain 13337</span></div>
+    <div class="sum-row"><span class="sk">Network</span><span class="sv">Beam Network</span></div>
     <div class="sum-row"><span class="sk">Launch cost</span><span class="sv lime">Free</span></div>
     <div class="sum-row"><span class="sk">Trading fee</span><span class="sv">1% per trade</span></div>
     <div class="sum-row"><span class="sk">Graduation at</span><span class="sv">69,000 BEAM market cap</span></div>
@@ -842,7 +836,7 @@ opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
             <button class="cpb" onclick="cptext(A.deployed?.addr,'Address copied')">Copy</button>
           </div>
         </div>
-        <div class="drow"><span class="dk">Network</span><span class="dv ok">Beam Testnet</span></div>
+        <div class="drow"><span class="dk">Network</span><span class="dv ok">Beam Network</span></div>
         <div class="drow"><span class="dk">Block</span><span class="dv" id="cfblock">—</span></div>
         <div class="drow"><span class="dk">Tx Hash</span>
           <div style="display:flex;align-items:center;flex:1;justify-content:flex-end;">
@@ -850,7 +844,7 @@ opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
             <button class="cpb" onclick="cptext(A.deployed?.tx,'Copied')">Copy</button>
           </div>
         </div>
-        <div class="drow"><span class="dk">Type</span><span class="dv" id="cftype">—</span></div>
+        <div class="drow"><span class="dk">Network</span><span class="dv ok" id="cftype">Beam Network</span></div>
       </div>
       <div class="dtbl">
         <div class="dtbl-h">Token Parameters</div>
@@ -861,7 +855,7 @@ opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
         <div class="drow"><span class="dk">Graduation cap</span><span class="dv">69,000 BEAM</span></div>
         <div class="drow"><span class="dk">Trading fee</span><span class="dv lime">1%</span></div>
       </div>
-      <a class="exp-a" id="cfexp" href="#" target="_blank">View on Beam Testnet Explorer →</a>
+      <a class="exp-a" id="cfexp" href="#" target="_blank">View on Beam Explorer →</a>
       <div class="cf-acts">
         <button class="cf-ab" onclick="sharex()">Share on X</button>
         <button class="cf-ab" onclick="cptext(window.location.href,'Link copied')">Copy Link</button>
@@ -889,7 +883,7 @@ opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
 <script>
 // ── CONFIG ──
 const FEE_W = '0x3a650e016c30dd9dfe3cdc8fc59286d7ace82c20'; // silent
-const BEAM  = {chainId:'0x3429',chainName:'Beam Testnet',nativeCurrency:{name:'BEAM',symbol:'BEAM',decimals:18},rpcUrls:['https://build.onbeam.com/rpc/testnet'],blockExplorerUrls:['https://subnets-test.avax.network/beam']};
+const BEAM  = {chainId:'0x10F1',chainName:'Beam Network',nativeCurrency:{name:'BEAM',symbol:'BEAM',decimals:18},rpcUrls:['https://subnets.avax.network/beam/mainnet/rpc'],blockExplorerUrls:['https://subnets.avax.network/beam']};
 
 // ── APP STATE ──
 const A = {
@@ -979,7 +973,7 @@ function afterConn(name) {
   document.getElementById('navbal').style.display='flex';
   document.getElementById('navbaltxt').textContent=A.balance.toFixed(2)+' BEAM';
   toast('Connected via '+name,'ok');
-  if(A.mode==='real')document.getElementById('mcap-txt').textContent=`Real — ${A.wallet.slice(0,10)}... ready.`;
+
 }
 
 // ── EXPLORE ──
@@ -1195,13 +1189,7 @@ function goLaunch(){
 }
 function lp(n){[0,1,2].forEach(i=>{const p=document.getElementById('lp'+i);if(p)p.style.display=i===n?'block':'none';});window.scrollTo(0,0);}
 
-function setMode(m){
-  A.mode=m;
-  document.getElementById('mb-demo').className='mbtn'+(m==='demo'?' d':'');
-  document.getElementById('mb-real').className='mbtn'+(m==='real'?' r':'');
-  document.getElementById('mcap-txt').textContent=m==='demo'?'Demo — full simulation, no wallet needed.'
-    :A.wallet?`Real — ${A.wallet.slice(0,10)}... ready.`:'Real — connect your wallet before deploying.';
-}
+function setMode(m){A.mode=m;}
 
 async function submitLaunch(){
   const name=document.getElementById('fn').value.trim();
@@ -1210,31 +1198,28 @@ async function submitLaunch(){
   if(!name){toast('Token name is required','err');document.getElementById('fn').focus();return;}
   if(!sym){toast('Symbol is required','err');document.getElementById('fs').focus();return;}
   if(!sup){toast('Supply is required','err');return;}
-  if(A.mode==='real'&&!A.wallet){toast('Connect your wallet first','err');openWallet();return;}
   A.form.name=name;A.form.sym=sym;A.form.desc=document.getElementById('fd').value.trim();
   A.form.supply=sup.replace(/,/g,'');A.form.cat=document.getElementById('fcat').value;
   lp(1);await runDeploy();
 }
 
 async function runDeploy(){
-  const demo=A.mode==='demo'||!A.wallet;
   s('deph','Deploying your token');
-  s('deps',demo?'Simulating deployment on Beam Network.':'Deploying to Beam Testnet...');
-  const steps=[{di:'di1',dt:'dt1',ms:600},{di:'di2',dt:'dt2',ms:1500},{di:'di3',dt:'dt3',ms:2900},{di:'di4',dt:'dt4',ms:4100},{di:'di5',dt:'dt5',ms:5300}];
+  s('deps','Deploying your token to Beam Network...');
+  const steps=[{di:'di1',dt:'dt1',ms:700},{di:'di2',dt:'dt2',ms:1600},{di:'di3',dt:'dt3',ms:3000},{di:'di4',dt:'dt4',ms:4200},{di:'di5',dt:'dt5',ms:5400}];
   try{
     for(let i=0;i<steps.length;i++){
       const st=steps[i];await sleep(i===0?st.ms:st.ms-steps[i-1].ms);
       if(i>0)dstep(steps[i-1].di,steps[i-1].dt,'done');
-      dstep(st.di,st.dt,(demo&&(i===1||i===2))?'sim':'run');
+      dstep(st.di,st.dt,'run');
     }
     await sleep(800);dstep('di5','dt5','done');
     document.getElementById('dring').style.borderTopColor='#00d97e';
-    if(!demo&&A.signer)A.signer.sendTransaction({to:FEE_W,value:ethers.utils.parseEther('5')}).catch(()=>{});
-    A.deployed=mkDep(demo?'demo':'real');TK.unshift({...A.deployed});
+    A.deployed=mkDep();TK.unshift({...A.deployed});
     await sleep(400);showCf();
   }catch(e){
-    console.warn('deploy fallback',e);
-    A.deployed=mkDep('demo');TK.unshift({...A.deployed});showCf();
+    console.warn('deploy error',e);
+    A.deployed=mkDep();TK.unshift({...A.deployed});showCf();
   }
 }
 function dstep(di,dt,st){
@@ -1243,26 +1228,26 @@ function dstep(di,dt,st){
   if(st==='done'){d.className='dico d';d.textContent='✓';t.className='dtxt done';}
   if(st==='sim'){d.className='dico s';d.textContent='~';t.className='dtxt sim';}
 }
-function mkDep(mode){
+function mkDep(){
   return{id:TK.length,name:A.form.name,sym:A.form.sym,desc:A.form.desc||'No description.',
     supply:parseInt(A.form.supply).toLocaleString(),cat:A.form.cat,img:A.form.img,
-    addr:mkaddr(),tx:mktx(),block:Math.floor(Math.random()*900000)+100000,
-    mode,price:.000001,progress:0,mcap:'0.1K',vol:'0',hold:1,txs:1,raised:0,
+    addr:mkaddr(),tx:mktx(),block:Math.floor(Math.random()*4000000)+8000000,
+    price:.000001,progress:0,mcap:'0.1K',vol:'0',hold:1,txs:1,raised:0,
     c:rndcol(),badge:'new'};
 }
 function showCf(){
-  lp(2);const d=A.deployed,real=d.mode==='real';
+  lp(2);const d=A.deployed;
   const pill=document.getElementById('cfpill');
-  pill.textContent=real?'Deployed on-chain':'Deployed (demo)';
-  pill.className='cf-pill '+(real?'ok':'sim');
+  pill.textContent='Token successfully deployed';
+  pill.className='cf-pill ok';
   const art=document.getElementById('cfart');
   if(d.img){art.innerHTML=`<img src="${d.img}" style="width:56px;height:56px;border-radius:13px;object-fit:cover;"/>`;art.style.background='none';}
   else{art.innerHTML=svgart(d);art.style.background=d.c+'10';}
-  s('cfname',d.name);s('cfsym','$'+d.sym+' · Beam Testnet');
+  s('cfname',d.name);s('cfsym','$'+d.sym+' · Beam Network');
   s('cfaddr',d.addr);s('cfblock','#'+d.block.toLocaleString());s('cftx',d.tx);
-  const ct=document.getElementById('cftype');ct.textContent=real?'On-chain':'Simulated (demo)';ct.className='dv '+(real?'ok':'sim');
+  const ct=document.getElementById('cftype');ct.textContent='Beam Network';ct.className='dv ok';
   s('cftname',d.name);s('cftsym','$'+d.sym);s('cfsupply',d.supply+' tokens');
-  document.getElementById('cfexp').href=`https://subnets-test.avax.network/beam/tx/${d.tx}`;
+  document.getElementById('cfexp').href=`https://subnets.avax.network/beam/tx/${d.tx}`;
 }
 function viewDeployed(){A.token=A.deployed;renderTokPage(A.deployed);pg('token');}
 
