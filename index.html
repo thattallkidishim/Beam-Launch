@@ -671,11 +671,29 @@ opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
     <button class="ttab buy-on" id="tb-buy" onclick="setTab('buy')">Buy</button>
     <button class="ttab" id="tb-sell" onclick="setTab('sell')">Sell</button>
   </div>
+
+  <!-- Holdings bar — shows when on sell tab and you hold this token -->
+  <div id="hold-bar" style="display:none;background:#18182a;border:1px solid #28283a;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:12px;color:#888899;">Your holdings</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#aaff00;font-weight:700;" id="hold-amt">0 BEAM invested</span>
+    </div>
+    <div style="margin-top:6px;">
+      <button onclick="setAmtFromHolding()" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#888899;background:transparent;border:1px solid #28283a;border-radius:5px;padding:3px 10px;cursor:pointer;letter-spacing:.5px;text-transform:uppercase;">Sell All</button>
+    </div>
+  </div>
+
+  <!-- No holdings notice — shows on sell tab when you don't hold this token -->
+  <div id="no-hold-bar" style="display:none;background:#18182a;border:1px solid #28283a;border-radius:8px;padding:14px;margin-bottom:12px;text-align:center;">
+    <div style="font-size:13px;color:#888899;margin-bottom:4px;">You don't hold <span id="no-hold-sym" style="color:#f0f0ff;font-weight:600;"></span></div>
+    <div style="font-size:11px;color:#444460;">Buy first to be able to sell.</div>
+  </div>
+
   <div class="amt-wrap">
     <input class="amt-inp" id="tramt" type="number" placeholder="0.00" min="0" step="any" oninput="calcTrade()"/>
-    <span class="amt-sfx">BEAM</span>
+    <span class="amt-sfx" id="tramt-sfx">BEAM</span>
   </div>
-  <div class="quick">
+  <div class="quick" id="quick-btns">
     <button class="qb" onclick="setamt(10)">10</button>
     <button class="qb" onclick="setamt(50)">50</button>
     <button class="qb" onclick="setamt(100)">100</button>
@@ -1046,43 +1064,122 @@ function drawChart(t){
 
 // ── TRADE ──
 function setTab(tab){
-  A.tab=tab;
-  document.getElementById('tb-buy').className='ttab'+(tab==='buy'?' buy-on':'');
-  document.getElementById('tb-sell').className='ttab'+(tab==='sell'?' sell-on':'');
-  const btn=document.getElementById('tradebtn');
-  btn.textContent=tab==='buy'?'Buy':'Sell';
-  btn.className='trade-btn '+(tab==='buy'?'buy':'sell');
+  A.tab = tab;
+  document.getElementById('tb-buy').className  = 'ttab'+(tab==='buy'  ? ' buy-on'  : '');
+  document.getElementById('tb-sell').className = 'ttab'+(tab==='sell' ? ' sell-on' : '');
+
+  const t       = A.token;
+  const holding = t ? A.port[t.id] : null;
+  const hasBal  = holding && holding.spent > 0;
+
+  // Holdings bar
+  const holdBar   = document.getElementById('hold-bar');
+  const noHoldBar = document.getElementById('no-hold-bar');
+  const quickBtns = document.getElementById('quick-btns');
+  const inp       = document.getElementById('tramt');
+  const sfx       = document.getElementById('tramt-sfx');
+  const btn       = document.getElementById('tradebtn');
+
+  if (tab === 'sell') {
+    if (hasBal) {
+      // Show holdings, hide no-holding notice
+      holdBar.style.display    = 'block';
+      noHoldBar.style.display  = 'none';
+      document.getElementById('hold-amt').textContent = holding.spent.toFixed(2) + ' BEAM invested';
+      // Quick buttons = % of holdings
+      quickBtns.innerHTML = `
+        <button class="qb" onclick="setamt(${(holding.spent*.25).toFixed(2)})">25%</button>
+        <button class="qb" onclick="setamt(${(holding.spent*.50).toFixed(2)})">50%</button>
+        <button class="qb" onclick="setamt(${(holding.spent*.75).toFixed(2)})">75%</button>
+        <button class="qb" onclick="setamt(${holding.spent.toFixed(2)})">100%</button>`;
+      sfx.textContent  = 'BEAM';
+      btn.textContent  = 'Sell';
+      btn.className    = 'trade-btn sell';
+      btn.disabled     = false;
+    } else {
+      // No holdings — disable sell
+      holdBar.style.display    = 'none';
+      noHoldBar.style.display  = 'block';
+      document.getElementById('no-hold-sym').textContent = t ? '$'+t.sym : 'this token';
+      quickBtns.innerHTML = `
+        <button class="qb" disabled style="opacity:.3">25%</button>
+        <button class="qb" disabled style="opacity:.3">50%</button>
+        <button class="qb" disabled style="opacity:.3">75%</button>
+        <button class="qb" disabled style="opacity:.3">100%</button>`;
+      inp.value        = '';
+      inp.disabled     = true;
+      btn.textContent  = 'No Holdings';
+      btn.className    = 'trade-btn sell';
+      btn.disabled     = true;
+      ['tr-rec','tr-impact','tr-fee','tr-newp'].forEach(id=>s(id,'—'));
+      return;
+    }
+  } else {
+    // Buy tab — reset to normal
+    holdBar.style.display    = 'none';
+    noHoldBar.style.display  = 'none';
+    quickBtns.innerHTML = `
+      <button class="qb" onclick="setamt(10)">10</button>
+      <button class="qb" onclick="setamt(50)">50</button>
+      <button class="qb" onclick="setamt(100)">100</button>
+      <button class="qb" onclick="setamt(500)">500</button>`;
+    sfx.textContent  = 'BEAM';
+    inp.disabled     = false;
+    btn.textContent  = 'Buy';
+    btn.className    = 'trade-btn buy';
+    btn.disabled     = false;
+  }
   calcTrade();
 }
-function setamt(v){document.getElementById('tramt').value=v;calcTrade();}
-function calcTrade(){
-  const amt=parseFloat(document.getElementById('tramt').value)||0;
-  const t=A.token;
-  if(!amt||!t){['tr-rec','tr-impact','tr-fee','tr-newp'].forEach(id=>s(id,'—'));return;}
-  const fee=+(amt*.01).toFixed(4);
-  const net=amt-fee;
-  const mcn=psfx(t.mcap);
-  s('tr-rec',A.tab==='buy'?fmtTok(net/t.price)+' $'+t.sym:net.toFixed(3)+' BEAM');
-  s('tr-impact',Math.min(99,(amt/Math.max(mcn,1))*100).toFixed(2)+'%');
-  s('tr-fee',fee+' BEAM');
-  s('tr-newp',(t.price*(1+amt/Math.max(mcn,1)*.4)).toFixed(6)+' BEAM');
+
+function setAmtFromHolding() {
+  const t = A.token;
+  const h = t ? A.port[t.id] : null;
+  if (h) { setamt(h.spent.toFixed(2)); }
 }
+
+function setamt(v){ document.getElementById('tramt').value=v; calcTrade(); }
+
+function calcTrade(){
+  const amt = parseFloat(document.getElementById('tramt').value)||0;
+  const t   = A.token;
+  if(!amt||!t){['tr-rec','tr-impact','tr-fee','tr-newp'].forEach(id=>s(id,'—'));return;}
+  const fee  = +(amt*.01).toFixed(4);
+  const net  = amt-fee;
+  const mcn  = psfx(t.mcap);
+  s('tr-rec',    A.tab==='buy' ? fmtTok(net/t.price)+' $'+t.sym : net.toFixed(3)+' BEAM');
+  s('tr-impact', Math.min(99,(amt/Math.max(mcn,1))*100).toFixed(2)+'%');
+  s('tr-fee',    fee+' BEAM');
+  s('tr-newp',   (t.price*(1+amt/Math.max(mcn,1)*.4)).toFixed(6)+' BEAM');
+}
+
 async function execTrade(){
-  const amt=parseFloat(document.getElementById('tramt').value);
+  const amt = parseFloat(document.getElementById('tramt').value);
   if(!amt||amt<=0){toast('Enter an amount','err');return;}
+  const t = A.token;
+  if(A.tab==='sell'){
+    const h = A.port[t.id];
+    if(!h||h.spent<=0){toast("You don't hold $"+t.sym,'err');return;}
+    if(amt>h.spent){toast('Amount exceeds your holdings ('+h.spent.toFixed(2)+' BEAM)','err');return;}
+  }
   const btn=document.getElementById('tradebtn');
   const og=btn.textContent;btn.disabled=true;btn.textContent='Processing...';
   await sleep(1300);
-  const t=A.token;
   if(A.tab==='buy'){
     t.hold+=1;t.txs+=1;t.raised=(t.raised||0)+amt;
     t.progress=Math.min(98,Math.floor(t.raised/69000*100));
     t.mcap=fmtN(t.raised*1.1);t.vol=fmtN(psfx(t.vol)+amt);
     if(!A.port[t.id])A.port[t.id]={tok:t,spent:0};
     A.port[t.id].spent+=amt;
+    toast('Bought '+amt+' BEAM of $'+t.sym,'ok');
+  } else {
+    // Sell — reduce holdings
+    A.port[t.id].spent = Math.max(0, A.port[t.id].spent - amt);
+    if(A.port[t.id].spent === 0) delete A.port[t.id];
+    t.hold=Math.max(0,t.hold-1);t.txs+=1;
+    toast('Sold '+amt+' BEAM of $'+t.sym,'ok');
   }
   renderTokPage(t);
-  toast((A.tab==='buy'?'Bought':'Sold')+' '+amt+' BEAM of $'+t.sym,'ok');
   btn.disabled=false;btn.textContent=og;
 }
 
